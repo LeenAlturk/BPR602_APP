@@ -52,7 +52,7 @@ NavigationWidget.pushPage(
                 centerTitle: true,
                 backgroundColor: Colors.transparent,
                 title: Text(
-                  'Login',
+                  'Login Screen',
                   style: GoogleFonts.mulish(
                     textStyle: const TextStyle(color: Ktext),
                     fontSize: 24.sp,
