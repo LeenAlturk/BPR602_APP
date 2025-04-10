@@ -1,6 +1,5 @@
 import 'dart:async';
 
-
 import 'package:bpr602_cinema/AllUserScreens/ResetPassword.dart';
 import 'package:bpr602_cinema/Constants/colors.dart';
 import 'package:bpr602_cinema/Constants/sizer.dart';
@@ -69,8 +68,7 @@ class OtpScreenReset extends StatelessWidget {
                         Text(
                           "We have just sent you a 4-digit code",
                           style: GoogleFonts.mulish(
-                            textStyle:
-                                const TextStyle(color: Colors.white),
+                            textStyle: const TextStyle(color: Colors.white),
                             fontSize: 13.sp,
                             fontWeight: FontWeight.w700,
                           ),
@@ -78,8 +76,7 @@ class OtpScreenReset extends StatelessWidget {
                         Text(
                           "via your email",
                           style: GoogleFonts.mulish(
-                            textStyle:
-                                const TextStyle(color:  Colors.white),
+                            textStyle: const TextStyle(color: Colors.white),
                             fontSize: 13.sp,
                             fontWeight: FontWeight.w700,
                           ),
@@ -88,7 +85,7 @@ class OtpScreenReset extends StatelessWidget {
                     ),
                     SizedBox(height: size.height * 0.08),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding:  EdgeInsets.all(size.height * 0.01),
                       child: TimerContainer(
                         otpCode: context.read<OtpCubit>().otp,
                         isresendsuc: context.read<OtpCubit>().resendSuc,
@@ -142,7 +139,6 @@ class _TimerContainerState extends State<TimerContainer> {
 
   @override
   void initState() {
-   
     super.initState();
     startTimer();
   }
@@ -177,7 +173,6 @@ class _TimerContainerState extends State<TimerContainer> {
           mainAxisSize: MainAxisSize.min,
           children: [
             OtpTextField(
-              
               cursorColor: Colors.white,
               numberOfFields: 4,
               showFieldAsBox: true,
@@ -187,11 +182,9 @@ class _TimerContainerState extends State<TimerContainer> {
               borderColor: const Color.fromARGB(255, 168, 45, 49),
               borderRadius: BorderRadius.circular(12),
               autoFocus: true,
-              
               onSubmit: (code) {
                 setState(() {
                   widget.otpCode.text = code;
-                  
                 });
               },
               focusedBorderColor: Colors.white,
@@ -242,21 +235,27 @@ class _TimerContainerState extends State<TimerContainer> {
                           if (widget.isresendsuc) {
                             resendpressed();
                           }
+                          resendpressed();
                         }
                       : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: kbutton,
-                    textStyle: const TextStyle(fontSize: 16, color: Ktext),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(9),
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStateProperty.all(
+                      _timerDuration == 0 ? kbutton : Colors.grey,
                     ),
+                    textStyle: WidgetStateProperty.all(
+                        const TextStyle(fontSize: 16, color: Ktext)),
+                    shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(9),
+                    )),
                   ),
-                  child: const Text(
-                    "Resend",
+                  child: Text(
+                    _timerDuration == 0 ? "Resend" : "wait seconds",
                     style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: ksmallActionColor),
+                        color: _timerDuration == 0
+                            ? ksmallActionColor
+                            : const Color.fromARGB(255, 255, 255, 255)),
                   ),
                 ),
               ],
@@ -270,10 +269,6 @@ class _TimerContainerState extends State<TimerContainer> {
               buttonText: "Confirm",
               onPressed: () {
                 widget.onComplateWriteotp();
-               
-              
-                 
-                
               },
               backgroundColor: kbutton,
               textColor: Kbackground,
@@ -287,7 +282,7 @@ class _TimerContainerState extends State<TimerContainer> {
   @override
   void dispose() {
     _timer.cancel();
-     widget.otpCode.dispose(); 
+    widget.otpCode.dispose();
     super.dispose();
   }
 }

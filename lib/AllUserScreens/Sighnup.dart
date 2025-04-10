@@ -1,4 +1,3 @@
-
 import 'package:bpr602_cinema/AllUserScreens/Login.dart';
 import 'package:bpr602_cinema/AllUserScreens/otp.dart';
 import 'package:bpr602_cinema/Constants/colors.dart';
@@ -28,7 +27,7 @@ class SighnUpScreen extends StatelessWidget {
           return Scaffold(
               backgroundColor: Kbackground,
               appBar: AppBar(
-                 automaticallyImplyLeading: false, 
+                automaticallyImplyLeading: false,
                 centerTitle: true,
                 backgroundColor: Colors.transparent,
                 title: Text(
@@ -39,7 +38,6 @@ class SighnUpScreen extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                
               ),
               body: ListView(
                 shrinkWrap: true,
@@ -64,12 +62,10 @@ class SighnUpScreen extends StatelessWidget {
                           SizedBox(
                             height: size.height * 0.01,
                           ),
-                      
                           Text(
                             "Let’s  Create your account ",
                             style: GoogleFonts.mulish(
-                              textStyle:
-                                  const TextStyle(color: Ktext),
+                              textStyle: const TextStyle(color: Ktext),
                               fontSize: 13.sp,
                               fontWeight: FontWeight.w700,
                             ),
@@ -77,10 +73,10 @@ class SighnUpScreen extends StatelessWidget {
                         ],
                       ),
                       SizedBox(
-                        height: size.height * 0.08,
+                        height: size.height * 0.05,
                       ),
                       Padding(
-                        padding:  EdgeInsets.all(size.height * 0.01),
+                        padding: EdgeInsets.all(size.height * 0.01),
                         child: Column(
                           children: [
                             InputTextForm(
@@ -119,8 +115,29 @@ class SighnUpScreen extends StatelessWidget {
                               prefIcon: Icons.lock,
                               onChange: () {},
                             ),
+                            InputTextForm(
+                              prefIcon: Icons.lock,
+                              formValidator: context
+                                  .read<SignupCubit>()
+                                  .confirmpasswordValidator,
+                              prefixIcon: Icons.lock,
+                              hintText: 'Confirm password',
+                              suffixPressed: () {
+                                context
+                                    .read<SignupCubit>()
+                                    .togglePasswordVisibility();
+                              },
+                              suffixIcon:
+                                  context.read<SignupCubit>().isPasswordHidden
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                              suffIconColor: Colors.white,
+                              showText:
+                                  !context.read<SignupCubit>().isPasswordHidden,
+                              onChange: () {},
+                            ),
                             Padding(
-                              padding:  EdgeInsets.all(size.width * 0.03),
+                              padding: EdgeInsets.all(size.width * 0.03),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
@@ -176,7 +193,7 @@ class SighnUpScreen extends StatelessWidget {
                               ],
                             ),
                             SizedBox(
-                              height: size.height * 0.1,
+                              height: size.height * 0.001,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,

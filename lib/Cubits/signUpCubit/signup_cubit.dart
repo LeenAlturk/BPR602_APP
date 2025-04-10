@@ -53,22 +53,22 @@ class SignupCubit extends Cubit<SignupState> {
 
   
     ResponseRegisterStudentModel? registerStudentModel;
-  Future<void> register() async {
-    if (!formKey2.currentState!.validate()) {
-      return;
-    }
-    emit(SignupAwaitState());
-    try {
-      registerStudentModel = await GetIt.I.get<Authrepo>().registerRepo(
-          RegisterStudentModel(
-              userName: fullNameValidator.controller.text,
-              emailAddress: emailValidator.controller.text,
-              password: passwordValidator.controller.text));
+  // Future<void> register() async {
+  //   if (!formKey2.currentState!.validate()) {
+  //     return;
+  //   }
+  //   emit(SignupAwaitState());
+  //   try {
+  //     registerStudentModel = await GetIt.I.get<Authrepo>().registerRepo(
+  //         RegisterStudentModel(
+  //             userName: fullNameValidator.controller.text,
+  //             emailAddress: emailValidator.controller.text,
+  //             password: passwordValidator.controller.text));
 
-      emit(SignupAcceptState(emailValidator.controller.text));
-    } catch (ex) {
-      emit(SignupErrorState(registerStudentModel!.message!));
-    }
-  }
+  //     emit(SignupAcceptState(emailValidator.controller.text));
+  //   } catch (ex) {
+  //     emit(SignupErrorState(registerStudentModel!.message!));
+  //   }
+  // }
 
 }
