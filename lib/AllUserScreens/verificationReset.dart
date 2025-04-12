@@ -12,7 +12,8 @@ import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class OtpScreenReset extends StatelessWidget {
-  const OtpScreenReset({super.key});
+  final String email ;
+   OtpScreenReset({super.key , required this.email});
 
   @override
   Widget build(BuildContext context) {
@@ -90,12 +91,13 @@ class OtpScreenReset extends StatelessWidget {
                         otpCode: context.read<OtpCubit>().otp,
                         isresendsuc: context.read<OtpCubit>().resendSuc,
                         onComplateWriteotp: () {
+                           final otpValue = context.read<OtpCubit>().otp.text;
                           // Call function when OTP is completed
                           // Clear the OTP field and navigate to the next screen
-                          context.read<OtpCubit>().otp.clear();
+                          //context.read<OtpCubit>().otp.clear();
                           NavigationWidget.pushPage(
                             context,
-                            const ResetPasswordScreen(),
+                             ResetPasswordScreen(email: email ,otp: otpValue,),
                           );
                         },
                         onResendCodePress: () {
@@ -173,11 +175,12 @@ class _TimerContainerState extends State<TimerContainer> {
           mainAxisSize: MainAxisSize.min,
           children: [
             OtpTextField(
+              keyboardType: TextInputType.text,
               cursorColor: Colors.white,
-              numberOfFields: 4,
+              numberOfFields: 6,
               showFieldAsBox: true,
               filled: true,
-              fieldWidth: size.width * 0.15,
+              fieldWidth: size.width * 0.12,
               borderWidth: size.height * 0.002,
               borderColor: const Color.fromARGB(255, 168, 45, 49),
               borderRadius: BorderRadius.circular(12),

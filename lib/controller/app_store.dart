@@ -106,7 +106,7 @@ class DataStore {
   Future<void> setLastNameUser(String value) => box.put(lastName, value);
   Future<void> deleateLastNameUser() => box.delete(lastName);
   Future<void> deleateToken() => box.delete(tOKEN);
-  Future<void> setUserId(String value) => box.put(userId, value);
+  Future<void> setUserId(int value) => box.put(userId, value);
   Future<void> deleateUserId() => box.delete(userId);
 
   // Future<void> setAuth(AuthState value) => box.put(TOKEN, value.name);

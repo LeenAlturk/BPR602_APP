@@ -37,7 +37,7 @@ class BaseClient {
 
   Dio client = Dio(
     BaseOptions(
-      baseUrl: "https://quizzy-001-site1.atempurl.com",
+      baseUrl: "http://cinemate-001-site1.jtempurl.com",
       receiveDataWhenStatusError: true,
       //connectTimeout: 9000, // 60 seconds
       connectTimeout: Duration(milliseconds: 9000),
@@ -49,7 +49,7 @@ class BaseClient {
   BaseClient() {
     client.interceptors.add(LogInterceptor());
     // client.interceptors.add(ClientInterceptor());
-    client.options.baseUrl = "https://quizzy-001-site1.atempurl.com";
+    client.options.baseUrl = "http://cinemate-001-site1.jtempurl.com";
   }
 }
 

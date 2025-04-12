@@ -1,25 +1,44 @@
-
+import 'package:bpr602_cinema/AllUserScreens/Login.dart';
 import 'package:bpr602_cinema/Constants/colors.dart';
 import 'package:bpr602_cinema/Constants/sizer.dart';
 import 'package:bpr602_cinema/Cubits/ResetPaaswordCubit/reset_password_cubit.dart';
 import 'package:bpr602_cinema/wedgets/Navigating.dart';
 import 'package:bpr602_cinema/wedgets/elevatedbtn.dart';
 import 'package:bpr602_cinema/wedgets/textform.dart';
+import 'package:bpr602_cinema/wedgets/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ResetPasswordScreen extends StatelessWidget {
-  const ResetPasswordScreen({super.key});
+  final String otp;
+  final String email;
+  const ResetPasswordScreen(
+      {super.key, required this.email, required this.otp});
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    print('Email: $email');
+    print(' OTP: $otp');
     return BlocProvider(
       create: (context) => ResetPasswordCubit(),
       child: BlocConsumer<ResetPasswordCubit, ResetPasswordState>(
         listener: (context, state) {
-          // TODO: implement listener
+          print(
+              "i am listener i am working $state ++++++++++++++++++++++++++++++++++++++++");
+          if (state is ResetpasswordErrorState) {
+            AppConstants.showToast(context, state.message);
+          }
+
+          if (state is ResetpasswordAcceptState) {
+            // print("before navigate");
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => LoginScreen()),
+            );
+
+            //print("after navigate");
+          }
         },
         builder: (context, state) {
           return Scaffold(
@@ -49,86 +68,130 @@ class ResetPasswordScreen extends StatelessWidget {
                 children: [
                   Column(
                     children: [
-                       SizedBox(
+                      SizedBox(
                         height: size.height * 0.10,
                       ),
                       Text(
-                  'Lets We Reset Your Password',
-                  style: GoogleFonts.mulish(
-                    textStyle: const TextStyle(color: Colors.white),
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w700,
-                  ),),
-                  Text(
-                  'Your Password!!',
-                  style: GoogleFonts.mulish(
-                    textStyle: const TextStyle(color: Colors.white),
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w700,
-                  ),),
+                        'Lets We Reset Your Password',
+                        style: GoogleFonts.mulish(
+                          textStyle: const TextStyle(color: Colors.white),
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      Text(
+                        'Your Password!!',
+                        style: GoogleFonts.mulish(
+                          textStyle: const TextStyle(color: Colors.white),
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
                       SizedBox(
                         height: size.height * 0.10,
                       ),
                       Padding(
-                        padding:  EdgeInsets.all(size.height * 0.01),
-                        child: Column(
-                          children: [
-                            InputTextForm(
-                              formValidator: context
-                                  .read<ResetPasswordCubit>()
-                                  .newpasswordValidator,
-                              hintText: 'Enter your New password',
-                              suffixPressed: () {
-                                context
+                        padding: EdgeInsets.all(size.height * 0.01),
+                        child: Form(
+                          key: context.read<ResetPasswordCubit>().formKey3,
+                          child: Column(
+                            children: [
+                              InputTextForm(
+                                formValidator: context
                                     .read<ResetPasswordCubit>()
-                                    .togglePasswordVisibility();
-                              },
-                              suffixIcon: context
+                                    .newpasswordValidator,
+                                hintText: 'Enter your New password',
+                                suffixPressed: () {
+                                  context
                                       .read<ResetPasswordCubit>()
-                                      .isPasswordHidden
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
-                              suffIconColor: Colors.white,
-                              showText: !context
-                                  .read<ResetPasswordCubit>()
-                                  .isPasswordHidden,
-                              prefIcon: Icons.lock,
-                              onChange: () {},
-                            ),
-                            InputTextForm(
-                              formValidator: context
-                                  .read<ResetPasswordCubit>()
-                                  .confirmpasswordValidator,
-                              hintText: 'Confirm Your password',
-                              suffixPressed: () {
-                                context
+                                      .togglePasswordVisibility();
+                                },
+                                suffixIcon: context
+                                        .read<ResetPasswordCubit>()
+                                        .isPasswordHidden
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                suffIconColor: Colors.white,
+                                showText: !context
                                     .read<ResetPasswordCubit>()
-                                    .togglePasswordVisibility();
-                              },
-                              suffixIcon: context
+                                    .isPasswordHidden,
+                                prefIcon: Icons.lock,
+                                onChange: () {},
+                              ),
+                              InputTextForm(
+                                formValidator: context
+                                    .read<ResetPasswordCubit>()
+                                    .confirmpasswordValidator,
+                                hintText: 'Confirm Your password',
+                                suffixPressed: () {
+                                  context
                                       .read<ResetPasswordCubit>()
-                                      .isPasswordHidden
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
-                              suffIconColor: Colors.white,
-                              showText: !context
-                                  .read<ResetPasswordCubit>()
-                                  .isPasswordHidden,
-                              prefIcon: Icons.lock,
-                              onChange: () {},
-                            ),
-                            SizedBox(
-                              height: size.height * 0.02,
-                            ),
-                            ElevatedBtn(
-                              // minWidth: 200.0,
-                              //minHeight: 20.0,
-                              buttonText: "Reset",
-                              onPressed: () {},
-                              backgroundColor: kbutton,
-                              textColor: Kbackground,
-                            ),
-                          ],
+                                      .togglePasswordVisibility();
+                                },
+                                suffixIcon: context
+                                        .read<ResetPasswordCubit>()
+                                        .isPasswordHidden
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                suffIconColor: Colors.white,
+                                showText: !context
+                                    .read<ResetPasswordCubit>()
+                                    .isPasswordHidden,
+                                prefIcon: Icons.lock,
+                                onChange: () {},
+                              ),
+                              SizedBox(
+                                height: size.height * 0.02,
+                              ),
+                              ElevatedBtn(
+                                // minWidth: 200.0,
+                                //minHeight: 20.0,
+                                buttonText: "Reset",
+                                onPressed: () {
+                                  if (context
+                                      .read<ResetPasswordCubit>()
+                                      .newpasswordValidator
+                                      .controller
+                                      .text
+                                      .isEmpty) {
+                                    AppConstants.showToast(
+                                        context, 'password is empety');
+                                  } else if (context
+                                      .read<ResetPasswordCubit>()
+                                      .confirmpasswordValidator
+                                      .controller
+                                      .text
+                                      .isEmpty) {
+                                    AppConstants.showToast(context,
+                                        'confirmed password is empety');
+                                  } else if (context
+                                          .read<ResetPasswordCubit>()
+                                          .newpasswordValidator
+                                          .controller
+                                          .text !=
+                                      context
+                                          .read<ResetPasswordCubit>()
+                                          .confirmpasswordValidator
+                                          .controller
+                                          .text) {
+                                    AppConstants.showToast(context,
+                                        'password and confirm password not match');
+                                  } else if (!context
+                                      .read<ResetPasswordCubit>()
+                                      .formKey3
+                                      .currentState!
+                                      .validate()) {
+                                  } else {
+                                    context
+                                        .read<ResetPasswordCubit>()
+                                        .resetpassword(email, otp);
+                                  }
+                                },
+                                backgroundColor: kbutton,
+                                textColor: Kbackground,
+                              ),
+                            ],
+                          ),
                         ),
                       )
                     ],

@@ -40,35 +40,65 @@ class SignupCubit extends Cubit<SignupState> {
   );
   final FormValidator passwordValidator = FormValidator(
     hint: 'Password',
-    regExp: RegExp(r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$'),
+    regExp: RegExp(r'^.{8,}$'),
     errorMessage: 'symbols, uppercase letters, number',
   );
   final FormValidator confirmpasswordValidator = FormValidator(
     hint: 'confirm Password',
-    regExp: RegExp(r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$'),
+    regExp: RegExp(r'^.{8,}$'),
     errorMessage: 'symbols, uppercase letters ,number,',
   );
 
   final GlobalKey<FormState> formKey2 = GlobalKey<FormState>();
 
   
-    ResponseRegisterStudentModel? registerStudentModel;
-  // Future<void> register() async {
-  //   if (!formKey2.currentState!.validate()) {
-  //     return;
-  //   }
-  //   emit(SignupAwaitState());
-  //   try {
-  //     registerStudentModel = await GetIt.I.get<Authrepo>().registerRepo(
-  //         RegisterStudentModel(
-  //             userName: fullNameValidator.controller.text,
-  //             emailAddress: emailValidator.controller.text,
-  //             password: passwordValidator.controller.text));
+//     CustomerRegisterRsponse? customerRegisterresp;
+//   Future<void> register() async {
+//     if (!formKey2.currentState!.validate()) {
+//       return;
+//     }
+//     emit(SignupAwaitState());
+//     try {
+//       customerRegisterresp = await GetIt.I.get<Authrepo>().registerRepo(
+//           CustomerRegister(
+//               userName: fullNameValidator.controller.text,
+//               emailAddress: emailValidator.controller.text,
+//               password: passwordValidator.controller.text));
 
-  //     emit(SignupAcceptState(emailValidator.controller.text));
-  //   } catch (ex) {
-  //     emit(SignupErrorState(registerStudentModel!.message!));
-  //   }
-  // }
+//       emit(SignupAcceptState(emailValidator.controller.text));
+//     } catch (ex) {
+// emit(SignupErrorState(customerRegisterresp!.message!));    }
+//   }
+CustomerRegisterRsponse? customerRegisterresp;
+
+Future<void> register() async {
+  if (!formKey2.currentState!.validate()) {
+    return;
+  }
+
+  emit(SignupAwaitState());
+
+  try {
+    customerRegisterresp = await GetIt.I.get<Authrepo>().registerRepo(
+      CustomerRegister(
+        userName: fullNameValidator.controller.text,
+        emailAddress: emailValidator.controller.text,
+        password: passwordValidator.controller.text,
+      ),
+    );
+
+    // Check if server response has an error message
+    if (customerRegisterresp != null &&
+        customerRegisterresp!.success == false) {
+      // assuming 'status' is false when there is an error
+      emit(SignupErrorState(customerRegisterresp!.message ?? "An error occurred"));
+    } else {
+      emit(SignupAcceptState(emailValidator.controller.text));
+    }
+  } catch (ex) {
+    emit(SignupErrorState("Registration failed. Please try again later."));
+  }
+}
+
 
 }

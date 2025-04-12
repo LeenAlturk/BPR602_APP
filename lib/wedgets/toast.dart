@@ -56,9 +56,10 @@ class AppConstants {
                     Text(
                       text,
                       style: TextStyle(
+                        
                         color: Colors.white,
-                        fontSize: 15.sp,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 13.sp,
+                        fontWeight: FontWeight.normal,
                       ),
                     ),
                   ],

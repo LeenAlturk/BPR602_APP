@@ -6,6 +6,7 @@ import 'package:bpr602_cinema/Cubits/cheackemailCubit/cheackemail_cubit.dart';
 import 'package:bpr602_cinema/wedgets/Navigating.dart';
 import 'package:bpr602_cinema/wedgets/elevatedbtn.dart';
 import 'package:bpr602_cinema/wedgets/textform.dart';
+import 'package:bpr602_cinema/wedgets/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -20,7 +21,21 @@ class Cheackemail extends StatelessWidget {
       create: (context) => CheackemailCubit(),
       child: BlocConsumer<CheackemailCubit, CheackemailState>(
         listener: (context, state) {
-          // TODO: implement listener
+          print(
+              "i am listener i am working $state ++++++++++++++++++++++++++++++++++++++++");
+          if (state is CheackemailErrorState) {
+            AppConstants.showToast(context, state.message);
+          }
+
+          if (state is CheackemailAcceptState) {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                  builder: (context) =>
+                      OtpScreenReset(email: state.email)),
+            );
+
+            print("after navigate");
+          }
         },
         builder: (context, state) {
           return Scaffold(
@@ -93,30 +108,48 @@ class Cheackemail extends StatelessWidget {
                       ),
                       Padding(
                         padding:  EdgeInsets.all(size.height * 0.01),
-                        child: Column(
-                          children: [
-                            InputTextForm(
-                              formValidator: context
-                                  .read<CheackemailCubit>()
-                                  .emailValidatorcheack,
-                              prefixIcon: Icons.email,
-                              prefIcon: Icons.email,
-                              hintText: 'Enter your email',
-                              iconData: Icons.email,
-                              onChange: () {},
-                            ),
-                            ElevatedBtn(
-                              //minWidth: 200.0,
-                              //minHeight: 20.0,
-                              buttonText: "Confirm",
-                              onPressed: () {
-                                NavigationWidget.pushPage(
-                                    context, const OtpScreenReset());
-                              },
-                              backgroundColor: kbutton,
-                              textColor: Kbackground,
-                            ),
-                          ],
+                        child: Form(
+                           key: context.read<CheackemailCubit>().formKey1,
+                          child: Column(
+                            children: [
+                              InputTextForm(
+                                formValidator: context
+                                    .read<CheackemailCubit>()
+                                    .emailValidatorcheack,
+                                prefixIcon: Icons.email,
+                                prefIcon: Icons.email,
+                                hintText: 'Enter your email',
+                                iconData: Icons.email,
+                                onChange: () {},
+                              ),
+                                state is CheackemailAwaitState
+                                      ? const Center(
+                                          child: CircularProgressIndicator(),
+                                        )
+                                      : ElevatedBtn(
+                                //minWidth: 200.0,
+                                //minHeight: 20.0,
+                                buttonText: "Confirm",
+                                onPressed: () {
+                                  if (context
+                                                .read<CheackemailCubit>()
+                                                .emailValidatorcheack
+                                                .controller
+                                                .text
+                                                .isNotEmpty ) {
+                                              context
+                                                  .read<CheackemailCubit>()
+                                                  .resetsentCode();
+                                            } else {
+                                              AppConstants.showToast(
+                                                  context, "Email is Empty");
+                                            }
+                                },
+                                backgroundColor: kbutton,
+                                textColor: Kbackground,
+                              ),
+                            ],
+                          ),
                         ),
                       )
                     ],

@@ -36,19 +36,20 @@ class _HomeScreenState extends State<HomeScreen> {
             backgroundColor: Kbackground,
             appBar: AppBar(
               backgroundColor: Kbackground,
-              leading: const Padding(
+              leading:  Padding(
                 padding: EdgeInsets.all(8.0),
                 child: CircleAvatar(
                   backgroundColor: kbutton,
-                  child: Text("L", style: TextStyle(color: Colors.black)),
+                  child: Text( DataStore.instance.getUserEmail![0]
+                                    .toUpperCase(), style: TextStyle(color: Colors.black)),
                 ),
               ),
               title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Hello,  Leen',
-                    style: TextStyle(
+"Hello ${DataStore.instance.getUserEmail!.split('@')[0][0].toUpperCase()}${DataStore.instance.getUserEmail!.split('@')[0].substring(1)}"
+                    ,style: TextStyle(
                         fontSize: 14.sp,
                         color: Ktext,
                         fontWeight: FontWeight.bold),

@@ -6,6 +6,7 @@ import 'package:bpr602_cinema/Cubits/signUpCubit/signup_cubit.dart';
 import 'package:bpr602_cinema/wedgets/Navigating.dart';
 import 'package:bpr602_cinema/wedgets/elevatedbtn.dart';
 import 'package:bpr602_cinema/wedgets/textform.dart';
+import 'package:bpr602_cinema/wedgets/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,7 +22,17 @@ class SighnUpScreen extends StatelessWidget {
       create: (context) => SignupCubit(),
       child: BlocConsumer<SignupCubit, SignupState>(
         listener: (context, state) {
-          // TODO: implement listener
+          if (state is SignupErrorState) {
+            AppConstants.showToast(context, state.message);
+          }
+          //s2
+          if (state is SignupAcceptState) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => OtpScreen(email: state.email)),
+            );
+          }
         },
         builder: (context, state) {
           return Scaffold(
@@ -77,144 +88,216 @@ class SighnUpScreen extends StatelessWidget {
                       ),
                       Padding(
                         padding: EdgeInsets.all(size.height * 0.01),
-                        child: Column(
-                          children: [
-                            InputTextForm(
-                              formValidator:
-                                  context.read<SignupCubit>().fullNameValidator,
-                              prefIcon: Icons.person,
-                              hintText: 'Enter your Full Name',
-                              iconData: Icons.person,
-                              onChange: () {},
-                            ),
-                            InputTextForm(
-                              formValidator:
-                                  context.read<SignupCubit>().emailValidator,
-                              prefixIcon: Icons.email,
-                              prefIcon: Icons.email,
-                              hintText: 'Enter your email',
-                              iconData: Icons.email,
-                              onChange: () {},
-                            ),
-                            InputTextForm(
-                              formValidator:
-                                  context.read<SignupCubit>().passwordValidator,
-                              hintText: 'Enter your password',
-                              suffixPressed: () {
-                                context
+                        child: Form(
+                            key: context.read<SignupCubit>().formKey2,
+                          child: Column(
+                            children: [
+                              InputTextForm(
+                                formValidator:
+                                    context.read<SignupCubit>().fullNameValidator,
+                                prefIcon: Icons.person,
+                                hintText: 'Enter your Full Name',
+                                iconData: Icons.person,
+                                onChange: () {},
+                              ),
+                              InputTextForm(
+                                formValidator:
+                                    context.read<SignupCubit>().emailValidator,
+                                prefixIcon: Icons.email,
+                                prefIcon: Icons.email,
+                                hintText: 'Enter your email',
+                                iconData: Icons.email,
+                                onChange: () {},
+                              ),
+                              InputTextForm(
+                                formValidator:
+                                    context.read<SignupCubit>().passwordValidator,
+                                hintText: 'Enter your password',
+                                suffixPressed: () {
+                                  context
+                                      .read<SignupCubit>()
+                                      .togglePasswordVisibility();
+                                },
+                                suffixIcon:
+                                    context.read<SignupCubit>().isPasswordHidden
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                suffIconColor: Colors.white,
+                                showText:
+                                    !context.read<SignupCubit>().isPasswordHidden,
+                                prefIcon: Icons.lock,
+                                onChange: () {},
+                              ),
+                              InputTextForm(
+                                prefIcon: Icons.lock,
+                                formValidator: context
                                     .read<SignupCubit>()
-                                    .togglePasswordVisibility();
-                              },
-                              suffixIcon:
-                                  context.read<SignupCubit>().isPasswordHidden
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                              suffIconColor: Colors.white,
-                              showText:
-                                  !context.read<SignupCubit>().isPasswordHidden,
-                              prefIcon: Icons.lock,
-                              onChange: () {},
-                            ),
-                            InputTextForm(
-                              prefIcon: Icons.lock,
-                              formValidator: context
-                                  .read<SignupCubit>()
-                                  .confirmpasswordValidator,
-                              prefixIcon: Icons.lock,
-                              hintText: 'Confirm password',
-                              suffixPressed: () {
-                                context
-                                    .read<SignupCubit>()
-                                    .togglePasswordVisibility();
-                              },
-                              suffixIcon:
-                                  context.read<SignupCubit>().isPasswordHidden
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                              suffIconColor: Colors.white,
-                              showText:
-                                  !context.read<SignupCubit>().isPasswordHidden,
-                              onChange: () {},
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(size.width * 0.03),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Checkbox(
-                                    value: context
-                                        .read<SignupCubit>()
-                                        .isAgreedToTerms,
-                                    onChanged: (value) {
+                                    .confirmpasswordValidator,
+                                prefixIcon: Icons.lock,
+                                hintText: 'Confirm password',
+                                suffixPressed: () {
+                                  context
+                                      .read<SignupCubit>()
+                                      .togglePasswordVisibility();
+                                },
+                                suffixIcon:
+                                    context.read<SignupCubit>().isPasswordHidden
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                suffIconColor: Colors.white,
+                                showText:
+                                    !context.read<SignupCubit>().isPasswordHidden,
+                                onChange: () {},
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(size.width * 0.03),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Checkbox(
+                                      value: context
+                                          .read<SignupCubit>()
+                                          .isAgreedToTerms,
+                                      onChanged: (value) {
+                                        context
+                                            .read<SignupCubit>()
+                                            .toggleAgreedToTerms();
+                                      },
+                                      activeColor: kbutton,
+                                    ),
+                                    Flexible(
+                                      child: Text(
+                                        'I agree to the terms terms of Service and Privecy',
+                                        style: TextStyle(
+                                            color: Ktext, fontSize: 11.sp),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              ElevatedBtn(
+                                //minWidth: 200.0,
+                                //minHeight: 20.0,
+                                buttonText: "SignUp",
+                                onPressed: () {
+                                  if (context
+                                      .read<SignupCubit>()
+                                      .fullNameValidator
+                                      .controller
+                                      .text
+                                      .isEmpty) {
+                                    AppConstants.showToast(
+                                        context, 'full name is empety');
+                                    return;
+                                  } else if (context
+                                      .read<SignupCubit>()
+                                      .emailValidator
+                                      .controller
+                                      .text
+                                      .isEmpty) {
+                                    AppConstants.showToast(
+                                        context, 'email is empety');
+                                  } else if (context
+                                      .read<SignupCubit>()
+                                      .passwordValidator
+                                      .controller
+                                      .text
+                                      .isEmpty) {
+                                    AppConstants.showToast(
+                                        context, 'password is empety');
+                                  } else if (context
+                                      .read<SignupCubit>()
+                                      .confirmpasswordValidator
+                                      .controller
+                                      .text
+                                      .isEmpty) {
+                                    AppConstants.showToast(
+                                        context, 'confirmed password is empety');
+                                  } else if (context
+                                          .read<SignupCubit>()
+                                          .passwordValidator
+                                          .controller
+                                          .text
+                                          .length <
+                                      8) {
+                                    AppConstants.showToast(context,
+                                        'Password should be 8 Char or More');
+                                  } else if (context
+                                          .read<SignupCubit>()
+                                          .confirmpasswordValidator
+                                          .controller
+                                          .text
+                                          .length <
+                                      8) {
+                                    AppConstants.showToast(context,
+                                        'Confirm Password Should be 8 Char or More');
+                                  } else if (!context
+                                      .read<SignupCubit>()
+                                      .formKey2
+                                      .currentState!
+                                      .validate()) {
+                                  } else if (context
+                                          .read<SignupCubit>()
+                                          .confirmpasswordValidator
+                                          .controller
+                                          .text !=
                                       context
                                           .read<SignupCubit>()
-                                          .toggleAgreedToTerms();
-                                    },
-                                    activeColor: kbutton,
+                                          .passwordValidator
+                                          .controller
+                                          .text) {
+                                    AppConstants.showToast(context,
+                                        'password and confirm password not match');
+                                  } else {
+                                    context.read<SignupCubit>().register();
+                                  }
+                                },
+                                backgroundColor: kbutton,
+                                textColor: Kbackground,
+                              ),
+                              SizedBox(
+                                height: size.height * 0.02,
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'By creating an account, you accept Cinemate’s',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 10.sp),
                                   ),
-                                  Flexible(
-                                    child: Text(
-                                      'I agree to the terms terms of Service and Privecy',
-                                      style: TextStyle(
-                                          color: Ktext, fontSize: 11.sp),
-                                    ),
+                                  Text(
+                                    ' Terms of Service and Privacy Policy?',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 9.sp),
                                   ),
                                 ],
                               ),
-                            ),
-                            ElevatedBtn(
-                              //minWidth: 200.0,
-                              //minHeight: 20.0,
-                              buttonText: "SignUp",
-                              onPressed: () {
-                                NavigationWidget.pushPage(
-                                    context, const OtpScreen());
-                              },
-                              backgroundColor: kbutton,
-                              textColor: Kbackground,
-                            ),
-                            SizedBox(
-                              height: size.height * 0.02,
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'By creating an account, you accept Cinemate’s',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 10.sp),
-                                ),
-                                Text(
-                                  ' Terms of Service and Privacy Policy?',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 9.sp),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: size.height * 0.001,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                const Text(
-                                  'Already Have Account ?',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                TextButton(
-                                    onPressed: () {
-                                      NavigationWidget.pushPage(
-                                          context, const LoginScreen());
-                                    },
-                                    child: const Text(
-                                      'Login',
-                                      style: TextStyle(color: Ktext),
-                                    ))
-                              ],
-                            ),
-                          ],
+                              SizedBox(
+                                height: size.height * 0.001,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  const Text(
+                                    'Already Have Account ?',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  TextButton(
+                                      onPressed: () {
+                                        NavigationWidget.pushPage(
+                                            context, const LoginScreen());
+                                      },
+                                      child: const Text(
+                                        'Login',
+                                        style: TextStyle(color: Ktext),
+                                      ))
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       )
                     ],

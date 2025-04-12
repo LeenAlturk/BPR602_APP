@@ -1,32 +1,33 @@
+// To parse this JSON data, do
+//
+//     final customerRegisterRsponse = customerRegisterRsponseFromJson(jsonString);
+
 import 'dart:convert';
 
-ResponseRegisterStudentModel responseRegisterStudentModelFromJson(String str) =>
-    ResponseRegisterStudentModel.fromJson(json.decode(str));
+CustomerRegisterRsponse customerRegisterRsponseFromJson(String str) => CustomerRegisterRsponse.fromJson(json.decode(str));
 
-String responseRegisterStudentModelToJson(ResponseRegisterStudentModel data) =>
-    json.encode(data.toJson());
+String customerRegisterRsponseToJson(CustomerRegisterRsponse data) => json.encode(data.toJson());
 
-class ResponseRegisterStudentModel {
-  bool success;
-  String? message;
-  String? data;
+class CustomerRegisterRsponse {
+     bool success;
+     String? message;
+     int? data;
 
-  ResponseRegisterStudentModel({
-    required this.success,
-    this.message,
-    this.data,
-  });
+    CustomerRegisterRsponse({
+       required this.success,
+         this.message,
+          this.data,
+    });
 
-  factory ResponseRegisterStudentModel.fromJson(Map<String, dynamic> json) =>
-      ResponseRegisterStudentModel(
+    factory CustomerRegisterRsponse.fromJson(Map<String, dynamic> json) => CustomerRegisterRsponse(
         success: json["success"],
         message: json["message"],
         data: json["data"],
-      );
+    );
 
-  Map<String, dynamic> toJson() => {
+    Map<String, dynamic> toJson() => {
         "success": success,
         "message": message,
         "data": data,
-      };
+    };
 }

@@ -1,7 +1,7 @@
 abstract class LinksUrl {
-  static const baseUrl = "http://quizzy-001-site1.atempurl.com/";
+  static const baseUrl = "http://cinemate-001-site1.jtempurl.com/";
 
-  static const registerUrl = "/api/Auth/student-register";
+  static const registerUrl = "/api/Auth/customer-register";
   static const confirmEmail = "/api/Auth/confirm-email";
   static const reSendCode = "/api/Auth/resend-verfication-code";
   static const logIn = "/api/Auth/LogIn";

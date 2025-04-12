@@ -26,6 +26,10 @@ class LoginScreen extends StatelessWidget {
       create: (context) => LoginCubit(),
       child: BlocConsumer<LoginCubit, LoginState>(
         listener: (context, state) {
+           if (state is LogInErrorState) {
+            AppConstants.showToast(context, state.message);
+          }
+
           if (state is LogInAcceptState) {
             NavigationWidget.pushPage(
                 context,
@@ -40,9 +44,7 @@ NavigationWidget.pushPage(
                   initialIndex: 0,
                 ));
           }
-          if (state is LogInErrorState) {
-            //AppConstants.showToast(context, state.message);
-          }
+         
         },
         builder: (context, state) {
           return Scaffold(
@@ -61,7 +63,7 @@ NavigationWidget.pushPage(
                 ),
               ),
               body: Form(
-                key: context.read<LoginCubit>().formKeyLogin,
+                key: context.read<LoginCubit>().formKey1,
                 child: ListView(
                   shrinkWrap: true,
                   physics: const BouncingScrollPhysics(),
@@ -196,7 +198,7 @@ NavigationWidget.pushPage(
                                               'password empety');
                                         } else if (!context
                                             .read<LoginCubit>()
-                                            .formKeyLogin
+                                            .formKey1
                                             .currentState!
                                             .validate()) {
                                         } else {
