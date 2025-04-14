@@ -49,6 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Text(
 "Hello ${DataStore.instance.getUserEmail!.split('@')[0][0].toUpperCase()}${DataStore.instance.getUserEmail!.split('@')[0].substring(1)}"
+                    
                     ,style: TextStyle(
                         fontSize: 14.sp,
                         color: Ktext,

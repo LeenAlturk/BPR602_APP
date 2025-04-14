@@ -30,8 +30,14 @@ class OtpCubit extends Cubit<OtpState> {
       DataStore.instance
           .setRefreshToken(confirmEmailResponse!.data!.refreshToken!);
       // DataStore.instance.setUserId(responseLogInModel.data!.id);
-
+           if (confirmEmailResponse != null &&
+        confirmEmailResponse!.success == false) {
+   
+      emit(SendCodeErrorState(confirmEmailResponse!.message ?? "An error occurred"));
+    } else {
       emit(SendCodeAcceptState());
+    }
+      //emit(SendCodeAcceptState());
     } catch (ex) {
       emit(SendCodeErrorState(confirmEmailResponse!.message!));
     }
@@ -45,6 +51,7 @@ class OtpCubit extends Cubit<OtpState> {
           .get<Authrepo>()
           .resendCode(ReSendOtpModel(email: email));
       resendSuc = true;
+ 
       emit(ReSendCodeAcceptState());
     } catch (ex) {
       emit(ReSendCodeErrorState(resendResponse!.message!));

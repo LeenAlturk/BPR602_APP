@@ -8,3 +8,10 @@ final class Changepasswordvisibility extends ChangePasswordempState {
   final bool visibile;
   Changepasswordvisibility({required this.visibile});
 }
+final class  ChangepasswordAwaitState extends ChangePasswordempState {}
+final class  ChangepasswordAcceptState extends ChangePasswordempState {}
+class ChangepasswordErrorState extends ChangePasswordempState {
+  final String message;
+
+  ChangepasswordErrorState(this.message);
+}

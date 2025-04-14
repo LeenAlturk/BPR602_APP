@@ -14,15 +14,29 @@ class SplashCubit extends Cubit<SplashState> {
   String? isLogedIn;
   String? role;
 
-  void checkFirstOpen() {
-    isFirstOpen = DataStore.instance.numOpen;
-    isLogedIn = DataStore.instance.token;
-    role = DataStore.instance.roal;
-  print('Fetched isFirstOpen: $isFirstOpen');
+  // void checkFirstOpen() {
+  //   isFirstOpen = DataStore.instance.numOpen;
+  //   isLogedIn = DataStore.instance.token;
+  //   role = DataStore.instance.roal;
+  //   print('Fetched isFirstOpen: $isFirstOpen');
+  // print('Fetched isLogedIn: $isLogedIn');
+  // print('Fetched role: $role');
 
-    emit(FirstOpenState());
-  }
-  
+  //   emit(FirstOpenState());
+  // }
+  Future<void> checkFirstOpen() async {
+  isFirstOpen = DataStore.instance.numOpen;
+  isLogedIn = DataStore.instance.token;
+  role = DataStore.instance.roal;
+
+  print('Fetched isFirstOpen: $isFirstOpen');
+  print('Fetched isLogedIn: $isLogedIn');
+  print('Fetched role: $role');
+
+  emit(SplashLoaded());
+}
+
+
   bool isInternet = false;
   late StreamSubscription subscription;
   bool showConnectivity(ConnectivityResult result) {

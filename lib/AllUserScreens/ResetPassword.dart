@@ -32,6 +32,7 @@ class ResetPasswordScreen extends StatelessWidget {
           }
 
           if (state is ResetpasswordAcceptState) {
+            AppConstants.showToast(context, "password reseted succesfully " , icon: Icons.done_rounded ,iconcolor: Colors.green);
             // print("before navigate");
             Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => LoginScreen()),

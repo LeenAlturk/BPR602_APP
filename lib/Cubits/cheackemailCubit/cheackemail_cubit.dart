@@ -32,11 +32,16 @@ class CheackemailCubit extends Cubit<CheackemailState> {
               cheackemail(email: emailValidatorcheack.controller.text));
       // .get<AuthRepo>()
       // .resendCode(ReSendOtpModel(email: email));
-
-      emit(
-          CheackemailAcceptState(email: emailValidatorcheack.controller.text));
+ if (cheakemailResponse != null &&
+        cheakemailResponse!.success == false) {
+   
+      emit(CheackemailErrorState(cheakemailResponse!.message ?? "An error occurred"));
+    } else {
+     emit(CheackemailAcceptState(email: emailValidatorcheack.controller.text));
+    }
+     // emit(CheackemailAcceptState(email: emailValidatorcheack.controller.text));
     } catch (ex) {
-      emit(CheackemailErrorState(cheakemailResponse!.message!));
+     emit(CheackemailErrorState("Something went wrong, please try again."));
     }
   }
 }

@@ -1,12 +1,15 @@
+import 'package:bpr602_cinema/controller/app_store.dart';
 import 'package:bpr602_cinema/data/api_client.dart';
 import 'package:bpr602_cinema/data/link.dart';
 import 'package:bpr602_cinema/models/request/Login_Request.dart';
+import 'package:bpr602_cinema/models/request/change_passPresponse.dart';
 import 'package:bpr602_cinema/models/request/cheakemail_req.dart';
 import 'package:bpr602_cinema/models/request/confirm_emailreg_request.dart';
 import 'package:bpr602_cinema/models/request/register_request.dart';
 import 'package:bpr602_cinema/models/request/resendrequest.dart';
 import 'package:bpr602_cinema/models/request/resetpasswordreq.dart';
 import 'package:bpr602_cinema/models/response/Login_response.dart';
+import 'package:bpr602_cinema/models/response/changepassword_resp.dart';
 import 'package:bpr602_cinema/models/response/cheakemail_response.dart';
 import 'package:bpr602_cinema/models/response/confirmEmail_response.dart';
 import 'package:bpr602_cinema/models/response/register_response_model.dart';
@@ -160,7 +163,7 @@ Future<ConfirmEmailResponse> sendCode(SendOtpModel sendOtpModel) async {
   }
 
 //end login
-
+///add sucess when 400
     Future<CheakemailResponse> sendEmailReSetPassword(
       cheackemail cheackemailinst) async {
     try {
@@ -174,7 +177,7 @@ Future<ConfirmEmailResponse> sendCode(SendOtpModel sendOtpModel) async {
           return CheakemailResponse(
               success: false, message: "Internal Server Error");
         } else if (ex.response!.statusCode == 400) {
-          return CheakemailResponse(message: ex.response!.data['message']);
+          return CheakemailResponse(message: ex.response!.data['message'],success: false);
         } else if (ex.type == DioExceptionType.connectionTimeout) {
           return CheakemailResponse(
               success: false, message: 'Internet is week');
@@ -230,5 +233,40 @@ Future<ConfirmEmailResponse> sendCode(SendOtpModel sendOtpModel) async {
     }
   }
 
+
+//change pass
+Future<ChangePasswordResponse> changePassword(
+      ChangePasswordRequest changepasswordres) async {
+    try {
+      var response = await client.post(LinksUrl.changepassword, data: changepasswordres , options: Options( headers: {
+             'Authorization': "Bearer ${DataStore.instance.token}",
+      'accept': '*/*',
+      'Content-Type': 'application/json',
+    
+          },));
+      
+      return ChangePasswordResponse.fromJson(response.data);
+    } catch (ex) {
+      if (ex is DioException) {
+        if (ex.response!.statusCode == 500) {
+          return ChangePasswordResponse(
+              success: false, message: "Internal Server Error");
+        } else if (ex.response!.statusCode == 400) {
+          return ChangePasswordResponse.fromJson(ex.response!.data);
+        } else if (ex.type == DioExceptionType.connectionTimeout) {
+          return ChangePasswordResponse(
+              success: false, message: 'Internet is week');
+        } else if (ex.type == DioExceptionType.receiveTimeout) {
+          return ChangePasswordResponse(
+              success: false, message: 'Internet is week');
+        } else {
+          return ChangePasswordResponse(
+              success: false, message: "Some thing Error");
+        }
+      } else {
+        return ChangePasswordResponse(success: false, message: "Try Again");
+      }
+    }
+  }
 
 }

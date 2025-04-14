@@ -1,5 +1,7 @@
 import 'package:bpr602_cinema/AllUserScreens/Login.dart';
 import 'package:bpr602_cinema/AllUserScreens/otp.dart';
+import 'package:bpr602_cinema/AllUserScreens/privecy.dart';
+import 'package:bpr602_cinema/AllUserScreens/term.dart';
 import 'package:bpr602_cinema/Constants/colors.dart';
 import 'package:bpr602_cinema/Constants/sizer.dart';
 import 'package:bpr602_cinema/Cubits/signUpCubit/signup_cubit.dart';
@@ -7,6 +9,7 @@ import 'package:bpr602_cinema/wedgets/Navigating.dart';
 import 'package:bpr602_cinema/wedgets/elevatedbtn.dart';
 import 'package:bpr602_cinema/wedgets/textform.dart';
 import 'package:bpr602_cinema/wedgets/toast.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -33,6 +36,8 @@ class SighnUpScreen extends StatelessWidget {
                   builder: (context) => OtpScreen(email: state.email)),
             );
           }
+                     AppConstants.showToast(context, " 1 Step until you complete create account " , icon: Icons.done , iconcolor:  Colors.green);
+
         },
         builder: (context, state) {
           return Scaffold(
@@ -89,12 +94,13 @@ class SighnUpScreen extends StatelessWidget {
                       Padding(
                         padding: EdgeInsets.all(size.height * 0.01),
                         child: Form(
-                            key: context.read<SignupCubit>().formKey2,
+                          key: context.read<SignupCubit>().formKey2,
                           child: Column(
                             children: [
                               InputTextForm(
-                                formValidator:
-                                    context.read<SignupCubit>().fullNameValidator,
+                                formValidator: context
+                                    .read<SignupCubit>()
+                                    .fullNameValidator,
                                 prefIcon: Icons.person,
                                 hintText: 'Enter your Full Name',
                                 iconData: Icons.person,
@@ -110,8 +116,9 @@ class SighnUpScreen extends StatelessWidget {
                                 onChange: () {},
                               ),
                               InputTextForm(
-                                formValidator:
-                                    context.read<SignupCubit>().passwordValidator,
+                                formValidator: context
+                                    .read<SignupCubit>()
+                                    .passwordValidator,
                                 hintText: 'Enter your password',
                                 suffixPressed: () {
                                   context
@@ -123,8 +130,9 @@ class SighnUpScreen extends StatelessWidget {
                                         ? Icons.visibility
                                         : Icons.visibility_off,
                                 suffIconColor: Colors.white,
-                                showText:
-                                    !context.read<SignupCubit>().isPasswordHidden,
+                                showText: !context
+                                    .read<SignupCubit>()
+                                    .isPasswordHidden,
                                 prefIcon: Icons.lock,
                                 onChange: () {},
                               ),
@@ -145,8 +153,9 @@ class SighnUpScreen extends StatelessWidget {
                                         ? Icons.visibility
                                         : Icons.visibility_off,
                                 suffIconColor: Colors.white,
-                                showText:
-                                    !context.read<SignupCubit>().isPasswordHidden,
+                                showText: !context
+                                    .read<SignupCubit>()
+                                    .isPasswordHidden,
                                 onChange: () {},
                               ),
                               Padding(
@@ -165,13 +174,59 @@ class SighnUpScreen extends StatelessWidget {
                                       },
                                       activeColor: kbutton,
                                     ),
-                                    Flexible(
-                                      child: Text(
-                                        'I agree to the terms terms of Service and Privecy',
-                                        style: TextStyle(
-                                            color: Ktext, fontSize: 11.sp),
+                                    // Flexible(
+                                    //   child: Text(
+                                    //     'I agree to the terms terms of Service and Privecy',
+                                    //     style: TextStyle(
+                                    //         color: Ktext, fontSize: 11.sp),
+                                    //   ),
+                                    // ),
+                                    Text.rich(
+                                      TextSpan(
+                                        children: [
+                                          TextSpan(
+                                              text: 'I agree to the ',
+                                              style: TextStyle(
+                                                  color: Ktext,
+                                                  fontSize: 11.sp)),
+                                          TextSpan(
+                                            text: 'Terms of Service',
+                                            style: TextStyle(
+                                                color: Colors.blue,
+                                                decoration:
+                                                    TextDecoration.underline),
+                                            recognizer: TapGestureRecognizer()
+                                              ..onTap = () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (_) =>
+                                                            TermsScreen()));
+                                              },
+                                          ),
+                                          TextSpan(
+                                              text: ' and ',
+                                              style: TextStyle(
+                                                  color: Ktext,
+                                                  fontSize: 11.sp)),
+                                          TextSpan(
+                                            text: 'Privacy Policy',
+                                            style: TextStyle(
+                                                color: Colors.blue,
+                                                decoration:
+                                                    TextDecoration.underline),
+                                            recognizer: TapGestureRecognizer()
+                                              ..onTap = () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (_) =>
+                                                            PrivacyPolicyScreen()));
+                                              },
+                                          ),
+                                        ],
                                       ),
-                                    ),
+                                    )
                                   ],
                                 ),
                               ),
@@ -211,8 +266,8 @@ class SighnUpScreen extends StatelessWidget {
                                       .controller
                                       .text
                                       .isEmpty) {
-                                    AppConstants.showToast(
-                                        context, 'confirmed password is empety');
+                                    AppConstants.showToast(context,
+                                        'confirmed password is empety');
                                   } else if (context
                                           .read<SignupCubit>()
                                           .passwordValidator
@@ -248,6 +303,11 @@ class SighnUpScreen extends StatelessWidget {
                                           .text) {
                                     AppConstants.showToast(context,
                                         'password and confirm password not match');
+                                  } else if (!context
+                                      .read<SignupCubit>()
+                                      .isAgreedToTerms) {
+                                    AppConstants.showToast(
+                                        context, 'You must Accept terms ');
                                   } else {
                                     context.read<SignupCubit>().register();
                                   }

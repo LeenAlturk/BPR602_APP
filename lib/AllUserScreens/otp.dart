@@ -33,7 +33,9 @@ class OtpScreen extends StatelessWidget {
               MaterialPageRoute(builder: (context) => LoginScreen()),
               (route) => false,
             );
+          
           }
+           AppConstants.showToast(context, "Your Account is ready" , icon: Icons.done , iconcolor:  Colors.green);
         },
         builder: (context, state) {
           return WillPopScope(
@@ -87,7 +89,7 @@ class OtpScreen extends StatelessWidget {
                         return AlertDialog(
                           title: const Text('Are you sure?'),
                           content: const Text(
-                              'Going back will cancel the OTP verification.'),
+                              'Going back will Not allow you   to register  again with same Email  .'),
                           actions: [
                             TextButton(
                               onPressed: () {

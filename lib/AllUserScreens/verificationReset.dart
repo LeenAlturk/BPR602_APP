@@ -101,7 +101,7 @@ class OtpScreenReset extends StatelessWidget {
                           );
                         },
                         onResendCodePress: () {
-                          // Call function to resend code
+                           context.read<OtpCubit>().resendCode(email);
                         },
                       ),
                     ),
