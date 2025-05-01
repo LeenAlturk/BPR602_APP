@@ -54,7 +54,7 @@ NavigationWidget.pushPage(
                 centerTitle: true,
                 backgroundColor: Colors.transparent,
                 title: Text(
-                  'Login Screen',
+                  'Login ',
                   style: GoogleFonts.mulish(
                     textStyle: const TextStyle(color: Ktext),
                     fontSize: 24.sp,
@@ -77,10 +77,10 @@ NavigationWidget.pushPage(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "Hi , Leen ",
+                              "Cinemate Cinema",
                               style: GoogleFonts.mulish(
                                 textStyle: const TextStyle(color: Ktext),
-                                fontSize: 26.sp,
+                                fontSize: 22.sp,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
@@ -88,7 +88,7 @@ NavigationWidget.pushPage(
                               height: size.height * 0.01,
                             ),
                             Text(
-                              "Welcome back ! ",
+                              "Welcome Dear! ",
                               style: GoogleFonts.mulish(
                                 textStyle:  TextStyle(color: kbutton),
                                 fontSize: 13.sp,
@@ -217,7 +217,7 @@ NavigationWidget.pushPage(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
-                                    'By creating an account, you accept Cinemate’s',
+                                    'By Login to  account, you accept Cinemate’s',
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 10.sp),
                                   ),

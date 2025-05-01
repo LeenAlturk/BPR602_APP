@@ -1,4 +1,5 @@
 import 'package:bpr602_cinema/AllUserScreens/Login.dart';
+import 'package:bpr602_cinema/AllUserScreens/verificationReset.dart';
 import 'package:bpr602_cinema/Constants/colors.dart';
 import 'package:bpr602_cinema/Constants/sizer.dart';
 import 'package:bpr602_cinema/Cubits/ResetPaaswordCubit/reset_password_cubit.dart';
@@ -27,9 +28,24 @@ class ResetPasswordScreen extends StatelessWidget {
         listener: (context, state) {
           print(
               "i am listener i am working $state ++++++++++++++++++++++++++++++++++++++++");
+          // if (state is ResetpasswordErrorState) {
+          //   AppConstants.showToast(context, state.message);
+          // }
           if (state is ResetpasswordErrorState) {
-            AppConstants.showToast(context, state.message);
-          }
+  AppConstants.showToast(context, state.message);
+
+  // إذا الخطأ سببه الرمز
+  if (state.message.toLowerCase().contains('wrong code')) {
+    // الرجوع إلى صفحة OTP
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (_) => OtpScreenReset(email: email), // أو حسب اسم شاشتك
+      ),
+    );
+  }
+}
+
+          
 
           if (state is ResetpasswordAcceptState) {
             AppConstants.showToast(context, "password reseted succesfully " , icon: Icons.done_rounded ,iconcolor: Colors.green);
@@ -81,7 +97,7 @@ class ResetPasswordScreen extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        'Your Password!!',
+                        'Dont Warry Dear',
                         style: GoogleFonts.mulish(
                           textStyle: const TextStyle(color: Colors.white),
                           fontSize: 14.sp,

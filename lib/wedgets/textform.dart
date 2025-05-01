@@ -166,6 +166,7 @@ class FormValidator {
   FormValidator({this.hint, this.regExp, this.errorMessage});
 
   String? validator(String? inputText) {
+    
     return regExp!.hasMatch(inputText!) ? null : errorMessage;
   }
 }

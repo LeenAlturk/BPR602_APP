@@ -33,9 +33,9 @@ class OtpScreen extends StatelessWidget {
               MaterialPageRoute(builder: (context) => LoginScreen()),
               (route) => false,
             );
-          
+             AppConstants.showToast(context, "Your Account is ready" , icon: Icons.done , iconcolor:  Colors.green);
           }
-           AppConstants.showToast(context, "Your Account is ready" , icon: Icons.done , iconcolor:  Colors.green);
+           
         },
         builder: (context, state) {
           return WillPopScope(

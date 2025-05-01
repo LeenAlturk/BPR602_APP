@@ -43,6 +43,7 @@ import 'package:bpr602_cinema/AllUserScreens/spalshscreen.dart';
 import 'package:bpr602_cinema/Cubits/Cartcubit/shopping_cart_cubit.dart';
 import 'package:bpr602_cinema/controller/app_store.dart';
 import 'package:bpr602_cinema/data/resorses_repo/auth_repo.dart';
+import 'package:bpr602_cinema/data/resorses_repo/image_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -79,7 +80,8 @@ void main() async {
   } finally {
     // Register dependencies (if needed in your app)
     GetIt.I.registerSingleton<Authrepo>(Authrepo());
-
+    GetIt.I.registerSingleton<Imagerepo>(Imagerepo());
+    GetIt.I.registerSingleton<ShoppingCartCubit>(ShoppingCartCubit());
    
     if (DataStore.instance.hasToken) {
       log('user token is : ${DataStore.instance.token}');

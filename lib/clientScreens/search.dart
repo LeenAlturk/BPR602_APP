@@ -1,6 +1,7 @@
 import 'package:bpr602_cinema/Constants/colors.dart';
 import 'package:bpr602_cinema/Constants/sizer.dart';
 import 'package:bpr602_cinema/Cubits/Searchcubit/search_cubit.dart';
+import 'package:bpr602_cinema/Cubits/mycubit/mycubit_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
@@ -11,7 +12,7 @@ class SearchScreen extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
 
     return BlocProvider(
-      create: (_) => SearchCubit(),
+      create: (_) => MycubitCubit(),
       child: Scaffold(
         backgroundColor: Kbackground,
         appBar: AppBar(
@@ -26,7 +27,7 @@ class SearchScreen extends StatelessWidget {
         ),
         body: Column(
           children: [
-            BlocBuilder<SearchCubit, SearchState>(
+            BlocBuilder<MycubitCubit, MycubitState>(
               builder: (context, state) {
                 return Padding(
                     padding: EdgeInsets.all(size.height * 0.01),
@@ -34,19 +35,19 @@ class SearchScreen extends StatelessWidget {
                       style: TextStyle(color: Colors.white),
                       onChanged: (query) {
                         if (query.isEmpty) {
-                          context.read<SearchCubit>().clearSearch();
+                          context.read<MycubitCubit>().clearSearch();
                         } else {
-                          context.read<SearchCubit>().search(query);
+                          context.read<MycubitCubit>().search(query);
                         }
                       },
                       decoration: InputDecoration(
                         hintText: 'Search',
                         prefixIcon: const Icon(Icons.search),
-                        suffixIcon: state is! SearchInitial
+                        suffixIcon: state is! MycubitInitial
                             ? IconButton(
                                 icon: const Icon(Icons.close),
                                 onPressed: () {
-                                  context.read<SearchCubit>().clearSearch();
+                                  context.read<MycubitCubit>().clearSearch();
                                 },
                               )
                             : null,
@@ -73,9 +74,9 @@ class SearchScreen extends StatelessWidget {
 
             // Filter Selection or Search Results
             Expanded(
-              child: BlocBuilder<SearchCubit, SearchState>(
+              child: BlocBuilder<MycubitCubit, MycubitState>(
                 builder: (context, state) {
-                  if (state is SearchInitial) {
+                  if (state is MycubitInitial) {
                     return FilterGrid();
                   } else if (state is FilterSelected) {
                     return Center(
@@ -151,7 +152,7 @@ class FilterGrid extends StatelessWidget {
         final filter = filters[index];
         return GestureDetector(
           onTap: () {
-            context.read<SearchCubit>().selectFilter(filter);
+            context.read<MycubitCubit>().selectFilter(filter);
           },
           child: Container(
            decoration: BoxDecoration(

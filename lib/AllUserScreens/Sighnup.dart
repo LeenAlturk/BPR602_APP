@@ -35,9 +35,10 @@ class SighnUpScreen extends StatelessWidget {
               MaterialPageRoute(
                   builder: (context) => OtpScreen(email: state.email)),
             );
-          }
-                     AppConstants.showToast(context, " 1 Step until you complete create account " , icon: Icons.done , iconcolor:  Colors.green);
+               AppConstants.showToast(context, " 1 Step until you complete create account " , icon: Icons.done , iconcolor:  Colors.green);
 
+          }
+                  
         },
         builder: (context, state) {
           return Scaffold(
@@ -192,7 +193,8 @@ class SighnUpScreen extends StatelessWidget {
                                           TextSpan(
                                             text: 'Terms of Service',
                                             style: TextStyle(
-                                                color: Colors.blue,
+                                              fontSize: 12.sp,
+                                                color: kbutton,
                                                 decoration:
                                                     TextDecoration.underline),
                                             recognizer: TapGestureRecognizer()
@@ -212,7 +214,8 @@ class SighnUpScreen extends StatelessWidget {
                                           TextSpan(
                                             text: 'Privacy Policy',
                                             style: TextStyle(
-                                                color: Colors.blue,
+                                               fontSize: 12.sp,
+                                                color: kbutton,
                                                 decoration:
                                                     TextDecoration.underline),
                                             recognizer: TapGestureRecognizer()

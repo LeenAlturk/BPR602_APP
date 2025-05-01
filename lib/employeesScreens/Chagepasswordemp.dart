@@ -1,4 +1,5 @@
 
+import 'package:bpr602_cinema/AllUserScreens/Login.dart';
 import 'package:bpr602_cinema/Constants/colors.dart';
 import 'package:bpr602_cinema/Cubits/ChangePasswordempcubit/change_passwordemp_cubit.dart';
 import 'package:bpr602_cinema/wedgets/elevatedbtn.dart';
@@ -16,11 +17,21 @@ class Chagepasswordemp extends StatelessWidget {
       create: (context) => ChangePasswordempCubit(),
       child: BlocConsumer<ChangePasswordempCubit, ChangePasswordempState>(
         listener: (context, state) {
-                  if (state is ChangepasswordErrorState) {
+          if (state is ChangepasswordErrorState) {
+            if (state.message == "SessionExpired") {
+              AppConstants.showToast(context, state.message);
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                  (route) => false);
+            } else {
+              AppConstants.showToast(context, state.message);
+            }
+          }
+          if (state is ChangepasswordErrorState) {
             AppConstants.showToast(context, state.message);
           }
           if (state is ChangepasswordAcceptState) {
-            AppConstants.showToast(context, "password changed succesfully");
+            AppConstants.showToast(context, "password changed succesfully" , icon: Icons.done , iconcolor:  Colors.green);
           }
         },
         builder: (context, state) {

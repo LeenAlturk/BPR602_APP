@@ -8,12 +8,11 @@ abstract class LinksUrl {
   static const sendResetPasswordCode = "/api/Auth/send-reset-passwordCode";
   static const reSetPassword = "/api/Auth/reset-password";
   static const changepassword = "/api/Auth/change-password";
-  static const getTeacherClasses = "/api/Class/get-teacher-classes";
-  static const getStudentsClass = "/api/Class/get-students/";
-  static const getProfileTeacherr = "/api/Auth/get-teacher-profile";
-  static const accepteStudent = "/api/Class/post-accept-student";
-  static const deleteStudent = "/api/Class/post-delete-student/";
-  static const addQuiz = "/api/Exam";
+  static const imagepost = "/api/Image";
+  // رابط الحذف باستخدام imageId
+  static String deleteImage(int imageId) {
+    return "api/Image/$imageId";  // هذا يضيف imageId في الرابط
+  }
 
   static const refreshToken = "/api/Auth/refresh-token";
 

@@ -5,6 +5,7 @@ import 'package:bpr602_cinema/models/request/Login_Request.dart';
 import 'package:bpr602_cinema/models/request/change_passPresponse.dart';
 import 'package:bpr602_cinema/models/request/cheakemail_req.dart';
 import 'package:bpr602_cinema/models/request/confirm_emailreg_request.dart';
+import 'package:bpr602_cinema/models/request/refreshreq.dart';
 import 'package:bpr602_cinema/models/request/register_request.dart';
 import 'package:bpr602_cinema/models/request/resendrequest.dart';
 import 'package:bpr602_cinema/models/request/resetpasswordreq.dart';
@@ -12,6 +13,7 @@ import 'package:bpr602_cinema/models/response/Login_response.dart';
 import 'package:bpr602_cinema/models/response/changepassword_resp.dart';
 import 'package:bpr602_cinema/models/response/cheakemail_response.dart';
 import 'package:bpr602_cinema/models/response/confirmEmail_response.dart';
+import 'package:bpr602_cinema/models/response/refreshresponse.dart';
 import 'package:bpr602_cinema/models/response/register_response_model.dart';
 import 'package:bpr602_cinema/models/response/resendresponse.dart';
 import 'package:bpr602_cinema/models/response/resetpasswordresp.dart';
@@ -248,7 +250,41 @@ Future<ChangePasswordResponse> changePassword(
       return ChangePasswordResponse.fromJson(response.data);
     } catch (ex) {
       if (ex is DioException) {
-        if (ex.response!.statusCode == 500) {
+          if (ex.response!.statusCode == 401) {
+          try {
+            RefreshRequest refreshTokenModel = RefreshRequest(
+              accessToken: DataStore.instance.token,
+              refreshToken: DataStore.instance.getrefreshToken,
+            );
+            var refreshToken = await client.post(LinksUrl.refreshToken,
+                data: refreshTokenModel.toJson());
+            RefreshResponse reafreshTokenModel =
+                RefreshResponse.fromJson(refreshToken.data);
+            DataStore.instance.setToken(reafreshTokenModel.data.accessToken);
+            DataStore.instance
+                .setRefreshToken(reafreshTokenModel.data.refreshToken);
+
+            return changePassword(changepasswordres);
+          } catch (ex) {
+            if (ex is DioException) {
+              if (ex.response?.statusCode == 401) {
+  // التوكنات منتهية تمامًا - يجب تسجيل خروج المستخدم
+  return ChangePasswordResponse(success: false, message: 'SessionExpired');
+}
+              if (ex.type == DioExceptionType.connectionTimeout) {
+                return ChangePasswordResponse(message: 'Internet is Week');
+              }
+              if (ex.type == DioExceptionType.receiveTimeout) {
+                return ChangePasswordResponse(message: 'Internet is Week');
+              }
+              if (ex.type == DioExceptionType.unknown) {
+                return ChangePasswordResponse(message: 'Some Things Error');
+              } else {
+                return ChangePasswordResponse(message: 'Some Things Error');
+              }
+            }
+          }
+        }else if (ex.response!.statusCode == 500) {
           return ChangePasswordResponse(
               success: false, message: "Internal Server Error");
         } else if (ex.response!.statusCode == 400) {
@@ -267,6 +303,7 @@ Future<ChangePasswordResponse> changePassword(
         return ChangePasswordResponse(success: false, message: "Try Again");
       }
     }
+     return ChangePasswordResponse(success: false, message: "Unexpected error");
   }
 
 }
