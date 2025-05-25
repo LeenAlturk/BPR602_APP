@@ -10,3 +10,12 @@ final class SeeallFilterSelected extends SeeallState {
 
   SeeallFilterSelected({required this.selectindex});
 }
+final class Movietypeinitial extends  SeeallState{}
+final class MovietypeLoadingstate extends  SeeallState{}
+final class MovietypeAcceptstate  extends  SeeallState{}
+final class MovietypErrorstate  extends  SeeallState{
+  final String message;
+
+  MovietypErrorstate({required this.message});
+
+}

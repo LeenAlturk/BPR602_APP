@@ -1,4 +1,8 @@
 import 'package:bloc/bloc.dart';
+import 'package:bpr602_cinema/controller/app_store.dart';
+import 'package:bpr602_cinema/data/resorses_repo/movies_repo.dart';
+import 'package:bpr602_cinema/models/response/MovieTyperes.dart';
+import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';
 
 
@@ -19,7 +23,7 @@ class MycubitCubit extends Cubit<MycubitState> {
   ];
 
   String? selectedFilter;
-
+GetMovieTypemodel ? getMovieTypemodel;
   /// Selects a filter and emits a [FilterSelected] state
   void selectFilter(String filter) {
     selectedFilter = filter;
@@ -54,4 +58,32 @@ class MycubitCubit extends Cubit<MycubitState> {
   void clearSearch() {
     emit(MycubitInitial());
   }
+
+
+     Future <void> getmovietype () async{
+      emit(Movietypsearcheinitial());
+      try {
+         getMovieTypemodel = await GetIt.I.get<GetMovieallinfoRepo>().gemovietype();
+            if (getMovieTypemodel!.message == 'Session Is Done') {
+              
+              DataStore.instance.deleateRefreshToken();
+                DataStore.instance.deleateToken();
+                DataStore.instance.deleateRoalUser();
+        emit(MovietypsearchErrorstate(message: getMovieTypemodel!.message!));
+      } else if (getMovieTypemodel!.data != null) {
+        emit(MycubitInitial());
+      } else if (getMovieTypemodel!.message == 'Internet is Week') {
+        emit(MovietypsearchErrorstate(message: getMovieTypemodel!.message!));
+      } else {
+        emit(MovietypsearchErrorstate(message: getMovieTypemodel!.message!));
+      }
+      } catch (e) {
+      if (getMovieTypemodel!.message == 'Session Is Done') {
+       
+        emit(MovietypsearchErrorstate(message: getMovieTypemodel!.message!));
+      } else {
+        emit(MovietypsearchErrorstate(message: getMovieTypemodel!.message!));
+      }
+      }
+   }
 }

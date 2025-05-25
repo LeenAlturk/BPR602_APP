@@ -1,5 +1,4 @@
-
-
+import 'package:bpr602_cinema/AllUserScreens/Login.dart';
 import 'package:bpr602_cinema/Constants/colors.dart';
 import 'package:bpr602_cinema/Cubits/SeeAllcubit/seeall_cubit.dart';
 import 'package:bpr602_cinema/clientScreens/detailesPage.dart';
@@ -8,6 +7,7 @@ import 'package:bpr602_cinema/wedgets/Navigating.dart';
 import 'package:bpr602_cinema/wedgets/filter.dart';
 import 'package:bpr602_cinema/wedgets/searchBar.dart';
 import 'package:bpr602_cinema/wedgets/seeallMovieCard.dart';
+import 'package:bpr602_cinema/wedgets/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,9 +21,20 @@ class SeeAllShowingNow extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
 
     return BlocProvider(
-      create: (context) => SeeallCubit(),
+      create: (context) => SeeallCubit()..getmovietype(),
       child: BlocListener<SeeallCubit, SeeallState>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is MovietypErrorstate) {
+            if (state.message == "Session Is Done") {
+              AppConstants.showToast(context, state.message);
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                  (route) => false);
+            } else {
+              AppConstants.showToast(context, state.message);
+            }
+          }
+        },
         child: Scaffold(
           backgroundColor: Kbackground,
           appBar: AppBar(
@@ -44,7 +55,7 @@ class SeeAllShowingNow extends StatelessWidget {
           body: Column(
             children: [
               Padding(
-                padding:  EdgeInsets.all(size.height * 0.01 ),
+                padding: EdgeInsets.all(size.height * 0.01),
                 child: MySearchBar(
                   controller: searchController,
                   hintText: 'Search movies...',
@@ -66,43 +77,103 @@ class SeeAllShowingNow extends StatelessWidget {
               ),
               BlocBuilder<SeeallCubit, SeeallState>(
                 builder: (context, state) {
-                    
-
                   final selectedIndex =
                       (state is SeeallFilterSelected) ? state.selectindex : 0;
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      CustomFilterChip(
-                        label: 'All',
-                        isSelected: selectedIndex == 0,
-                        onSelected: () {
-                          context.read<SeeallCubit>().selectFilter(0);
-                        },
-                      ),
-                      CustomFilterChip(
-                        label: 'Action',
-                        isSelected: selectedIndex == 1,
-                        onSelected: () {
-                          context.read<SeeallCubit>().selectFilter(1);
-                        },
-                      ),
-                      CustomFilterChip(
-                        label: 'Drama',
-                        isSelected: selectedIndex == 2,
-                        onSelected: () {
-                          context.read<SeeallCubit>().selectFilter(2);
-                        },
-                      ),
-                      CustomFilterChip(
-                        label: 'Horror',
-                        isSelected: selectedIndex == 3,
-                        onSelected: () {
-                          context.read<SeeallCubit>().selectFilter(3);
-                        },
-                      ),
-                    ],
-                  );
+                  final cubit = context.read<SeeallCubit>();
+                  if (state is Movietypeinitial) {
+                     return SizedBox(
+                        height: 50,
+                       child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 7,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: CustomFilterChip(
+                                label:"....",
+                                isSelected: selectedIndex == index,
+                                onSelected: () {
+                                  context.read<SeeallCubit>().selectFilter(index);
+                                },
+                              ),
+                            );
+                          }),
+                     );
+                  }
+
+                  // if (state is MovietypErrorstate) {
+                  //   return Center(child: Text(state.message));
+                  // }
+
+                  if (cubit.getMovieTypemodel?.data == null) {
+                    return const SizedBox();
+                  }
+                  if (state is MovietypeAcceptstate &&
+                      cubit.getMovieTypemodel?.data != null) {
+                    return SizedBox(
+                        height: 50,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: context
+                              .read<SeeallCubit>()
+                              .getMovieTypemodel!
+                              .data!
+                              .length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: CustomFilterChip(
+                                label: context
+                                    .read<SeeallCubit>()
+                                    .getMovieTypemodel!
+                                    .data![index]
+                                    .englishName!,
+                                isSelected: selectedIndex == index,
+                                onSelected: () {
+                                  context.read<SeeallCubit>().selectFilter(index);
+                                },
+                              ),
+                            );
+                          }),
+                    );
+                  }
+                  return const SizedBox.shrink();
+
+                  // return Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //   children: [
+                  //     CustomFilterChip(
+                  //       label: 'All',
+                  //       isSelected: selectedIndex == 0,
+                  //       onSelected: () {
+                  //         context.read<SeeallCubit>().selectFilter(0);
+                  //       },
+                  //     ),
+                  //     CustomFilterChip(
+                  //       label: 'Action',
+                  //       isSelected: selectedIndex == 1,
+                  //       onSelected: () {
+                  //         context.read<SeeallCubit>().selectFilter(1);
+                  //       },
+                  //     ),
+                  //     CustomFilterChip(
+                  //       label: 'Drama',
+                  //       isSelected: selectedIndex == 2,
+                  //       onSelected: () {
+                  //         context.read<SeeallCubit>().selectFilter(2);
+                  //       },
+                  //     ),
+                  //     CustomFilterChip(
+                  //       label: 'Horror',
+                  //       isSelected: selectedIndex == 3,
+                  //       onSelected: () {
+                  //         context.read<SeeallCubit>().selectFilter(3);
+                  //       },
+                  //     ),
+                  //   ],
+                  // );
                 },
               ),
               Expanded(
@@ -116,19 +187,19 @@ class SeeAllShowingNow extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(
                             vertical: 10.0, horizontal: 13.0),
                         child: GestureDetector(
-                          onTap: (){
-                              NavigationWidget.pushPage(
-                                  context,
-                                  DetailesPage(
-                                    Isshowing: true,
-                                    syn: movie.synopsis,
-                                    title: movie.title,
-                                    imgurl: movie.poster,
-                                    duration: movie.duration,
-                                    director: 'the director',
-                                    genre: movie.genre,
-                                    ar: '+18',
-                                  ));
+                          onTap: () {
+                            NavigationWidget.pushPage(
+                                context,
+                                DetailesPage(
+                                  Isshowing: true,
+                                  syn: movie.synopsis,
+                                  title: movie.title,
+                                  imgurl: movie.poster,
+                                  duration: movie.duration,
+                                  director: 'the director',
+                                  genre: movie.genre,
+                                  ar: '+18',
+                                ));
                           },
                           child: SeeallMovieCard(
                             Language: "EN",

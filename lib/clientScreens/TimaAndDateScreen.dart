@@ -108,8 +108,8 @@ class _TimeAndDateScreenState extends State<TimeAndDateScreen> {
                               context.read<TimaAndDateScreenCubit>().today),
                           focusedDay:
                               context.read<TimaAndDateScreenCubit>().today,
-                          firstDay: DateTime.utc(2025, 1, 16),
-                          lastDay: DateTime.utc(2025, 5, 1),
+                          firstDay: DateTime.utc(2025, 4, 16),
+                          lastDay: DateTime.utc(2025, 7, 1),
                           availableGestures: AvailableGestures.all,
                           locale: "en_US",
                           rowHeight: 35,

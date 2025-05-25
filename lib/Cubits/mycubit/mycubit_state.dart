@@ -21,3 +21,13 @@ class SearchError extends MycubitState {
   final String message;
   SearchError(this.message);
 }
+
+final class Movietypsearcheinitial extends  MycubitState{}
+final class MovietypesearchLoadingstate extends  MycubitState{}
+final class MovietypesearchAcceptstate  extends  MycubitState{}
+final class MovietypsearchErrorstate  extends  MycubitState{
+  final String message;
+
+  MovietypsearchErrorstate({required this.message});
+
+}

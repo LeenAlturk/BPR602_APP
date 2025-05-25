@@ -56,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    'Lets stream your favorite movie',
+                    'Lets stream your favorite movies',
                     style: TextStyle(fontSize: 12.sp, color:Colors.white),
                   ),
                 ],

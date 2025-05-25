@@ -15,7 +15,7 @@ abstract class LinksUrl {
   }
 
   static const refreshToken = "/api/Auth/refresh-token";
-
+   static const movieType = "/api/MovieType";
   static const getAllclasses = "/api/Class/get-available-student-classes";
   static const getMyclasses = "/api/Class/get-student-classes";
   static const refreshreq = "/api/Auth/refresh-token";
