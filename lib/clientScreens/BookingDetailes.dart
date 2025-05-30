@@ -9,37 +9,38 @@ import 'package:bpr602_cinema/wedgets/seeallMovieCard.dart';
 import 'package:flutter/material.dart';
 
 class BookingDetailes extends StatelessWidget {
-  final String? title;
-  final String? syn;
-  final String? imgurl;
-  final int? duration;
-  final String? director;
-  final String? ar;
-  final String? genre;
-  final int? totalpriceseat;
-  final double? totalSnackPrice;
+  // final String? title;
+  // final String? syn;
+  // final String? imgurl;
+  // final int? duration;
+  // final String? director;
+  // final String? ar;
+  // final String? genre;
+  // final int? totalpriceseat;
+  // final double? totalSnackPrice;
   const BookingDetailes(
       {super.key,
-       this.syn,
-       this.totalpriceseat,
-       this.imgurl,
-       this.duration,
-       this.director,
-       this.ar,
-       this.genre,
-       this.totalSnackPrice ,
-       this.title});
+      //  this.syn,
+      //  this.totalpriceseat,
+      //  this.imgurl,
+      //  this.duration,
+      //  this.director,
+      //  this.ar,
+      //  this.genre,
+      //  this.totalSnackPrice ,
+      //  this.title
+       });
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    int mytotalpriceseat = totalpriceseat!;
+    //int mytotalpriceseat = totalpriceseat!;
     return Scaffold(
       backgroundColor: Kbackground,
       appBar: AppBar(
         backgroundColor: Kbackground,
         title: Text(
-          '$title Detailes',
+          'Minions Detailes',
           style: TextStyle(color: Ktext, fontSize: 14.sp),
         ),
         leading: IconButton(
@@ -60,12 +61,12 @@ class BookingDetailes extends StatelessWidget {
                 padding: EdgeInsets.all(size.height * 0.02),
                 child: SeeallMovieCard(
                   Language: "EN",
-                  title: title!,
-                  imgurl: imgurl!,
-                  genre: genre!,
-                  director: director!,
-                  duration: duration!,
-                  ar: ar!,
+                  title: "Minions",
+                  imgurl: "https://m.media-amazon.com/images/M/MV5BMTQxNzY1MjI5NF5BMl5BanBnXkFtZTcwNTI0MDY1OQ@@._V1_QL75_UX380_CR0,20,380,562_.jpg",
+                  genre: "Animation",
+                  director: "director",
+                  duration: 98,
+                  ar: "+18",
                 ),
               ),
               Container(
@@ -284,7 +285,9 @@ class BookingDetailes extends StatelessWidget {
               textColor: ksmallActionColor,
               buttonText: "Continue",
               onPressed: () {
-                NavigationWidget.pushPage(context, Bill( totalpriceseat: mytotalpriceseat , title: title!, imgurl: imgurl!,));
+                NavigationWidget.pushPage(context, Bill(
+                   //totalpriceseat: mytotalpriceseat , title: title!, imgurl: imgurl!,
+                   ));
               },
             ),
           )

@@ -4,7 +4,14 @@ part of 'detailes_cubit.dart';
 abstract class DetailesState {}
 
 class DetailesInitial extends DetailesState {}
+class Detailesloadingstate extends DetailesState{}
+class DetailesAcceptstate extends DetailesState{}
+class DetailEerorstate extends DetailesState{
+  final String message;
 
+  DetailEerorstate({required this.message});
+
+}
 class VideoLoading extends DetailesState {}
 
 class VideoLoaded extends DetailesState {

@@ -60,6 +60,7 @@ class ChangePasswordempCubit extends Cubit<ChangePasswordempState> {
         DataStore.instance.deleateRefreshToken();
         DataStore.instance.deleateRoalUser();
 }
+emit(ChangepasswordErrorState(changePasswordResponse!.message!));
     } else {
       emit(ChangepasswordAcceptState());
     }

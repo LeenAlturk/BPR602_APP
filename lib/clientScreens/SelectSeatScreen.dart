@@ -12,22 +12,23 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 
 class SelectSeatScreen extends StatefulWidget {
-  final String syn;
-  final String title;
-  final String imgurl;
-  final int duration;
-  final String director;
-  final String ar;
-  final String genre;
+  // final String syn;
+  // final String title;
+  // final String imgurl;
+  // final int duration;
+  // final String director;
+  // final String ar;
+  // final String genre;
   const SelectSeatScreen(
       {super.key,
-      required this.syn,
-      required this.imgurl,
-      required this.duration,
-      required this.director,
-      required this.ar,
-      required this.genre,
-      required this.title});
+      // required this.syn,
+      // required this.imgurl,
+      // required this.duration,
+      // required this.director,
+      // required this.ar,
+      // required this.genre,
+      // required this.title
+      });
   @override
   State<SelectSeatScreen> createState() => _SelectSeatScreenState();
 }
@@ -365,14 +366,14 @@ class _SelectSeatScreenState extends State<SelectSeatScreen> {
                           NavigationWidget.pushPage(
                               context,
                               BookingDetailes(
-                                syn: widget.syn,
-                                imgurl: widget.imgurl,
-                                duration: widget.duration,
-                                totalpriceseat: selectedSeats.length * 100,
-                                director: 'Director ',
-                                ar: widget.ar,
-                                genre: widget.genre,
-                                title: widget.title,
+                                // syn: widget.syn,
+                                // imgurl: widget.imgurl,
+                                // duration: widget.duration,
+                                // totalpriceseat: selectedSeats.length * 100,
+                                // director: 'Director ',
+                                // ar: widget.ar,
+                                // genre: widget.genre,
+                                // title: widget.title,
                               ));
                         }
                       : null,

@@ -1,0 +1,213 @@
+import 'dart:convert';
+
+class MovieResponseById {
+    bool? success;
+    dynamic message;
+    Data? data;
+
+    MovieResponseById({
+        this.success,
+        this.message,
+        this.data,
+    });
+
+    factory MovieResponseById.fromRawJson(String str) => MovieResponseById.fromJson(json.decode(str));
+
+    String toRawJson() => json.encode(toJson());
+
+    factory MovieResponseById.fromJson(Map<String, dynamic> json) => MovieResponseById(
+        success: json["success"],
+        message: json["message"],
+        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "success": success,
+        "message": message,
+        "data": data?.toJson(),
+    };
+}
+
+class Data {
+    int? id;
+    String? name;
+    int? year;
+    String? status;
+    String? description;
+    DateTime? fromDate;
+    DateTime? toDate;
+    DateTime? lastDateShowing;
+    double? rate;
+    String? trailerUrl;
+    Movie? movieClassification;
+    Image? image;
+    dynamic secondaryImage;
+    Director? director;
+    List<Movie>? movieSubtitles;
+    List<Movie>? movieLanguages;
+    List<Movie>? movieTypes;
+    List<Director>? movieCasts;
+
+    Data({
+        this.id,
+        this.name,
+        this.year,
+        this.status,
+        this.description,
+        this.fromDate,
+        this.toDate,
+        this.lastDateShowing,
+        this.rate,
+        this.trailerUrl,
+        this.movieClassification,
+        this.image,
+        this.secondaryImage,
+        this.director,
+        this.movieSubtitles,
+        this.movieLanguages,
+        this.movieTypes,
+        this.movieCasts,
+    });
+
+    factory Data.fromRawJson(String str) => Data.fromJson(json.decode(str));
+
+    String toRawJson() => json.encode(toJson());
+
+    factory Data.fromJson(Map<String, dynamic> json) => Data(
+        id: json["id"],
+        name: json["name"],
+        year: json["year"],
+        status: json["status"],
+        description: json["description"],
+        fromDate: json["fromDate"] == null ? null : DateTime.parse(json["fromDate"]),
+        toDate: json["toDate"] == null ? null : DateTime.parse(json["toDate"]),
+        lastDateShowing: json["lastDateShowing"] == null ? null : DateTime.parse(json["lastDateShowing"]),
+        rate: json["rate"]?.toDouble(),
+        trailerUrl: json["trailerUrl"],
+        movieClassification: json["movieClassification"] == null ? null : Movie.fromJson(json["movieClassification"]),
+        image: json["image"] == null ? null : Image.fromJson(json["image"]),
+        secondaryImage: json["secondaryImage"],
+        director: json["director"] == null ? null : Director.fromJson(json["director"]),
+        movieSubtitles: json["movieSubtitles"] == null ? [] : List<Movie>.from(json["movieSubtitles"]!.map((x) => Movie.fromJson(x))),
+        movieLanguages: json["movieLanguages"] == null ? [] : List<Movie>.from(json["movieLanguages"]!.map((x) => Movie.fromJson(x))),
+        movieTypes: json["movieTypes"] == null ? [] : List<Movie>.from(json["movieTypes"]!.map((x) => Movie.fromJson(x))),
+        movieCasts: json["movieCasts"] == null ? [] : List<Director>.from(json["movieCasts"]!.map((x) => Director.fromJson(x))),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "year": year,
+        "status": status,
+        "description": description,
+        "fromDate": "${fromDate!.year.toString().padLeft(4, '0')}-${fromDate!.month.toString().padLeft(2, '0')}-${fromDate!.day.toString().padLeft(2, '0')}",
+        "toDate": "${toDate!.year.toString().padLeft(4, '0')}-${toDate!.month.toString().padLeft(2, '0')}-${toDate!.day.toString().padLeft(2, '0')}",
+        "lastDateShowing": lastDateShowing?.toIso8601String(),
+        "rate": rate,
+        "trailerUrl": trailerUrl,
+        "movieClassification": movieClassification?.toJson(),
+        "image": image?.toJson(),
+        "secondaryImage": secondaryImage,
+        "director": director?.toJson(),
+        "movieSubtitles": movieSubtitles == null ? [] : List<dynamic>.from(movieSubtitles!.map((x) => x.toJson())),
+        "movieLanguages": movieLanguages == null ? [] : List<dynamic>.from(movieLanguages!.map((x) => x.toJson())),
+        "movieTypes": movieTypes == null ? [] : List<dynamic>.from(movieTypes!.map((x) => x.toJson())),
+        "movieCasts": movieCasts == null ? [] : List<dynamic>.from(movieCasts!.map((x) => x.toJson())),
+    };
+}
+
+class Director {
+    int? id;
+    String? firstName;
+    String? lastName;
+    dynamic image;
+    String? castType;
+
+    Director({
+        this.id,
+        this.firstName,
+        this.lastName,
+        this.image,
+        this.castType,
+    });
+
+    factory Director.fromRawJson(String str) => Director.fromJson(json.decode(str));
+
+    String toRawJson() => json.encode(toJson());
+
+    factory Director.fromJson(Map<String, dynamic> json) => Director(
+        id: json["id"],
+        firstName: json["firstName"],
+        lastName: json["lastName"],
+        image: json["image"],
+        castType: json["castType"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "id": id,
+        "firstName": firstName,
+        "lastName": lastName,
+        "image": image,
+        "castType": castType,
+    };
+}
+
+class Image {
+    int? id;
+    String? url;
+    dynamic title;
+
+    Image({
+        this.id,
+        this.url,
+        this.title,
+    });
+
+    factory Image.fromRawJson(String str) => Image.fromJson(json.decode(str));
+
+    String toRawJson() => json.encode(toJson());
+
+    factory Image.fromJson(Map<String, dynamic> json) => Image(
+        id: json["id"],
+        url: json["url"],
+        title: json["title"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "id": id,
+        "url": url,
+        "title": title,
+    };
+}
+
+class Movie {
+    int? id;
+    String? arabicName;
+    String? englishName;
+    String? code;
+
+    Movie({
+        this.id,
+        this.arabicName,
+        this.englishName,
+        this.code,
+    });
+
+    factory Movie.fromRawJson(String str) => Movie.fromJson(json.decode(str));
+
+    String toRawJson() => json.encode(toJson());
+
+    factory Movie.fromJson(Map<String, dynamic> json) => Movie(
+        id: json["id"],
+        arabicName: json["arabicName"],
+        englishName: json["englishName"],
+        code: json["code"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "id": id,
+        "arabicName": arabicName,
+        "englishName": englishName,
+        "code": code,
+    };
+}

@@ -14,15 +14,13 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 /// Bill Screen
 class Bill extends StatelessWidget {
-  final String title;
-  final String imgurl;
-  final int totalpriceseat;
+  // final String title;
+  // final String imgurl;
+  // final int totalpriceseat;
 
   const Bill({
     super.key,
-    required this.totalpriceseat,
-    required this.title,
-    required this.imgurl,
+  
   });
 
   @override
@@ -55,9 +53,9 @@ class Bill extends StatelessWidget {
               children: [
                 itemBookingSeatbill(
                   size: size,
-                  imgurl: imgurl,
-                  title: title,
-                  price: totalpriceseat,
+                  imgurl: "https://m.media-amazon.com/images/M/MV5BMTQxNzY1MjI5NF5BMl5BanBnXkFtZTcwNTI0MDY1OQ@@._V1_QL75_UX380_CR0,20,380,562_.jpg",
+                  title: "Minions",
+                  price: 100,
                   date: '12-10-2024',
                   Seat: 'C7 , C8 , C9 ,',
                 ),
@@ -95,7 +93,7 @@ class Bill extends StatelessWidget {
                     
                       children: [
                         Text(
-                      '${totalpriceseat + 100} .IQD',
+                      '${100 + 100} .IQD',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 15.sp,

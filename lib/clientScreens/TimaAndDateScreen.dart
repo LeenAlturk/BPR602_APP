@@ -9,23 +9,23 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class TimeAndDateScreen extends StatefulWidget {
-  final String title;
-  final String syn;
-  final String imgurl;
-  final int duration;
-  final String director;
-  final String ar;
-  final String genre;
+  // final String title;
+  // final String syn;
+  // final String imgurl;
+  // final int duration;
+  // final String director;
+  // final String ar;
+  // final String genre;
 
   const TimeAndDateScreen({
     super.key,
-    required this.title,
-    required this.syn,
-    required this.imgurl,
-    required this.duration,
-    required this.director,
-    required this.ar,
-    required this.genre,
+    // required this.title,
+    // required this.syn,
+    // required this.imgurl,
+    // required this.duration,
+    // required this.director,
+    // required this.ar,
+    // required this.genre,
   });
 
   @override
@@ -611,13 +611,13 @@ class _TimeAndDateScreenState extends State<TimeAndDateScreen> {
                                       NavigationWidget.pushPage(
                                         context,
                                         SelectSeatScreen(
-                                          title: widget.title,
-                                          syn: widget.syn,
-                                          imgurl: widget.imgurl,
-                                          duration: widget.duration,
-                                          director: "DIRECTOR",
-                                          ar: widget.ar,
-                                          genre: widget.genre,
+                                          // title: widget.title,
+                                          // syn: widget.syn,
+                                          // imgurl: widget.imgurl,
+                                          // duration: widget.duration,
+                                          // director: "DIRECTOR",
+                                          // ar: widget.ar,
+                                          // genre: widget.genre,
                                         ),
                                       );
                                     },

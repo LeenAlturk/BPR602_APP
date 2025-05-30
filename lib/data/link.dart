@@ -13,9 +13,11 @@ abstract class LinksUrl {
   static String deleteImage(int imageId) {
     return "api/Image/$imageId";  // هذا يضيف imageId في الرابط
   }
-
+  
   static const refreshToken = "/api/Auth/refresh-token";
    static const movieType = "/api/MovieType";
+   static const getmovies = "/api/Movie";
+   static const getmoviesbyid = "/api/Movie";
   static const getAllclasses = "/api/Class/get-available-student-classes";
   static const getMyclasses = "/api/Class/get-student-classes";
   static const refreshreq = "/api/Auth/refresh-token";

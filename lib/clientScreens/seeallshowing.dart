@@ -2,6 +2,7 @@ import 'package:bpr602_cinema/AllUserScreens/Login.dart';
 import 'package:bpr602_cinema/Constants/colors.dart';
 import 'package:bpr602_cinema/Cubits/SeeAllcubit/seeall_cubit.dart';
 import 'package:bpr602_cinema/clientScreens/detailesPage.dart';
+import 'package:bpr602_cinema/data/link.dart';
 import 'package:bpr602_cinema/models/movietempModel.dart';
 import 'package:bpr602_cinema/wedgets/Navigating.dart';
 import 'package:bpr602_cinema/wedgets/filter.dart';
@@ -56,34 +57,47 @@ class SeeAllShowingNow extends StatelessWidget {
             children: [
               Padding(
                 padding: EdgeInsets.all(size.height * 0.01),
-                child: MySearchBar(
-                  controller: searchController,
-                  hintText: 'Search movies...',
-                  leading: const Icon(
-                    Icons.search,
-                    color: Colors.white,
-                  ),
-                  trailing: [
-                    IconButton(
-                      icon: const Icon(Icons.clear),
-                      onPressed: () {
-                        searchController.clear();
+                child: Builder(
+                  builder: (searchContext) {
+                    return MySearchBar(
+                      controller: searchController,
+                      hintText: 'Search movies...',
+                      leading: const Icon(
+                        Icons.search,
+                        color: Colors.white,
+                      ),
+                      trailing: [
+                        IconButton(
+                          icon: const Icon(Icons.clear),
+                          onPressed: () {
+                            searchController.clear();
+                            BlocProvider.of<SeeallCubit>(searchContext)
+                                .searchMovies('');
+                          },
+                        ),
+                      ],
+                      onChanged: (value) {
+                        BlocProvider.of<SeeallCubit>(searchContext)
+                            .searchMovies(value);
                       },
-                    ),
-                  ],
-                  onChanged: (value) {},
-                  onSubmitted: (value) {},
+                      onSubmitted: (value) {
+                        BlocProvider.of<SeeallCubit>(searchContext)
+                            .searchMovies(value);
+                      },
+                    );
+                  },
                 ),
               ),
               BlocBuilder<SeeallCubit, SeeallState>(
                 builder: (context, state) {
-                  final selectedIndex =
-                      (state is SeeallFilterSelected) ? state.selectindex : 0;
                   final cubit = context.read<SeeallCubit>();
-                  if (state is Movietypeinitial) {
-                     return SizedBox(
-                        height: 50,
-                       child: ListView.builder(
+                  // استخدم الحالة الحالية لتحديد الفلتر المحدد
+                  final selectedIndex = cubit.selectedFilter;
+
+                  if (cubit.getMovieTypemodel == null) {
+                    return SizedBox(
+                      height: 50,
+                      child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: 7,
                           itemBuilder: (context, index) {
@@ -91,128 +105,136 @@ class SeeAllShowingNow extends StatelessWidget {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 8.0),
                               child: CustomFilterChip(
-                                label:"....",
-                                isSelected: selectedIndex == index,
-                                onSelected: () {
-                                  context.read<SeeallCubit>().selectFilter(index);
-                                },
-                              ),
-                            );
-                          }),
-                     );
-                  }
-
-                  // if (state is MovietypErrorstate) {
-                  //   return Center(child: Text(state.message));
-                  // }
-
-                  if (cubit.getMovieTypemodel?.data == null) {
-                    return const SizedBox();
-                  }
-                  if (state is MovietypeAcceptstate &&
-                      cubit.getMovieTypemodel?.data != null) {
-                    return SizedBox(
-                        height: 50,
-                      child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: context
-                              .read<SeeallCubit>()
-                              .getMovieTypemodel!
-                              .data!
-                              .length,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: CustomFilterChip(
-                                label: context
-                                    .read<SeeallCubit>()
-                                    .getMovieTypemodel!
-                                    .data![index]
-                                    .englishName!,
-                                isSelected: selectedIndex == index,
-                                onSelected: () {
-                                  context.read<SeeallCubit>().selectFilter(index);
-                                },
+                                label: "....",
+                                isSelected: false,
+                                onSelected: () {},
                               ),
                             );
                           }),
                     );
                   }
-                  return const SizedBox.shrink();
 
-                  // return Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  //   children: [
-                  //     CustomFilterChip(
-                  //       label: 'All',
-                  //       isSelected: selectedIndex == 0,
-                  //       onSelected: () {
-                  //         context.read<SeeallCubit>().selectFilter(0);
-                  //       },
-                  //     ),
-                  //     CustomFilterChip(
-                  //       label: 'Action',
-                  //       isSelected: selectedIndex == 1,
-                  //       onSelected: () {
-                  //         context.read<SeeallCubit>().selectFilter(1);
-                  //       },
-                  //     ),
-                  //     CustomFilterChip(
-                  //       label: 'Drama',
-                  //       isSelected: selectedIndex == 2,
-                  //       onSelected: () {
-                  //         context.read<SeeallCubit>().selectFilter(2);
-                  //       },
-                  //     ),
-                  //     CustomFilterChip(
-                  //       label: 'Horror',
-                  //       isSelected: selectedIndex == 3,
-                  //       onSelected: () {
-                  //         context.read<SeeallCubit>().selectFilter(3);
-                  //       },
-                  //     ),
-                  //   ],
-                  // );
+                  return SizedBox(
+                    height: 50,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: cubit.getMovieTypemodel!.data!.length + 1,
+                      itemBuilder: (context, index) {
+                        if (index == 0) {
+                          return Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: CustomFilterChip(
+                              label: 'All',
+                              isSelected: selectedIndex == 0,
+                              onSelected: () {
+                                cubit.selectFilter(0);
+                              },
+                            ),
+                          );
+                        }
+
+                        final movieType =
+                            cubit.getMovieTypemodel!.data![index - 1];
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: CustomFilterChip(
+                            label: movieType.englishName ?? 'Unknown',
+                            isSelected: selectedIndex == index,
+                            onSelected: () {
+                              cubit.selectFilter(index);
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  );
                 },
               ),
-              Expanded(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.vertical,
-                  itemCount: movies.length,
-                  itemBuilder: (context, index) {
-                    final movie = movies[index];
-                    return Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 13.0),
-                        child: GestureDetector(
-                          onTap: () {
-                            NavigationWidget.pushPage(
-                                context,
-                                DetailesPage(
-                                  Isshowing: true,
-                                  syn: movie.synopsis,
-                                  title: movie.title,
-                                  imgurl: movie.poster,
-                                  duration: movie.duration,
-                                  director: 'the director',
-                                  genre: movie.genre,
-                                  ar: '+18',
-                                ));
-                          },
-                          child: SeeallMovieCard(
-                            Language: "EN",
-                            title: movie.title,
-                            imgurl: movie.poster,
-                            genre: movie.genre,
-                            director: 'the diractor',
-                            duration: movie.duration,
-                            ar: "+18",
-                          ),
-                        ));
-                  },
-                ),
+              BlocBuilder<SeeallCubit, SeeallState>(
+                builder: (context, state) {
+                  final cubit = context.read<SeeallCubit>();
+                  return Expanded(
+                    // child: ListView.builder(
+                    //   shrinkWrap: true,
+                    //   scrollDirection: Axis.vertical,
+                    //   itemCount: movies.length,
+                    //   itemBuilder: (context, index) {
+                    //     final movie = movies[index];
+                    //     return Padding(
+                    //         padding: const EdgeInsets.symmetric(
+                    //             vertical: 10.0, horizontal: 13.0),
+                    //         child: GestureDetector(
+                    //           onTap: () {
+                    //             // NavigationWidget.pushPage(
+                    //             //     context,
+                    //             //     DetailesPage(
+                    //             //       Isshowing: true,
+                    //             //       syn: movie.synopsis,
+                    //             //       title: movie.title,
+                    //             //       imgurl: movie.poster,
+                    //             //       duration: movie.duration,
+                    //             //       director: 'the director',
+                    //             //       genre: movie.genre,
+                    //             //       ar: '+18',
+                    //             //     ));
+                    //           },
+                    //           child: SeeallMovieCard(
+                    //             Language: "EN",
+                    //             title: movie.title,
+                    //             imgurl: movie.poster,
+                    //             genre: movie.genre,
+                    //             director: 'the diractor',
+                    //             duration: movie.duration,
+                    //             ar: "+18",
+                    //           ),
+                    //         ));
+                    //   },
+                    // ),
+                    child: ListView.builder(
+                      itemCount: cubit.movies.length + 1,
+                      itemBuilder: (context, index) {
+                        if (index < cubit.movies.length) {
+                          final movie = cubit.movies[index];
+                          return SeeallMovieCard(
+                            //  imageUrl: moviedata.image != null
+                            //                 ? '${LinksUrl.baseUrl}${moviedata.image!.url}'
+                            //                 : null,
+                            imgurl: movie.image != null
+                                ? '${LinksUrl.baseUrl}${movie.image!.url}'
+                                : 'https://ina.iq/eng/uploads/posts/2021-05/thumbs/upload_1621342522_427621977.png',
+                            title: movie.name!,
+
+                            genre: movie.movieTypes != null
+                                ? movie.movieTypes!
+                                    .map((type) => type.englishName ?? '')
+                                    .join(', ')
+                                : '',
+                            director: movie.director!.firstName!,
+                            duration:
+                                90, // Consider getting this from API as well
+                            ar: movie.movieClassification!.englishName!,
+                            Language: movie.movieLanguages != null
+                                ? movie.movieLanguages!
+                                    .map((type) => type.englishName ?? '')
+                                    .join(', ')
+                                : '',
+                          );
+                        } else {
+                          if (cubit.hasMore) {
+                            cubit.getmovie();
+                            return const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 16),
+                              child: Center(child: CircularProgressIndicator()),
+                            );
+                          } else {
+                            return const SizedBox.shrink();
+                          }
+                        }
+                      },
+                    ),
+                  );
+                },
               ),
             ],
           ),

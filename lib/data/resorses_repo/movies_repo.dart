@@ -3,6 +3,8 @@ import 'package:bpr602_cinema/data/api_client.dart';
 import 'package:bpr602_cinema/data/link.dart';
 import 'package:bpr602_cinema/models/request/refreshreq.dart';
 import 'package:bpr602_cinema/models/response/MovieTyperes.dart';
+import 'package:bpr602_cinema/models/response/movie_respone_id.dart';
+import 'package:bpr602_cinema/models/response/movies_response_model.dart';
 import 'package:bpr602_cinema/models/response/refreshresponse.dart';
 import 'package:dio/dio.dart';
 class GetMovieallinfoRepo extends BaseClient {
@@ -80,4 +82,158 @@ class GetMovieallinfoRepo extends BaseClient {
       }
     }
   }
+
+
+//movie all 
+
+  Future<MovieResponse> getallmovies({
+  String searchQuery = '',
+  int pageIndex = 0,
+  int pageSize = 10,
+  int ?movieTypeID 
 }
+      ) async {
+    Map<String, dynamic> headers = {
+      'Authorization': "Bearer ${DataStore.instance.token}",
+      'accept': '*/*',
+      // 'Content-Type': 'application/json',
+      // 'Accept': 'application/json',
+    };
+    try {
+      var response = await client.get(LinksUrl.getmovies ,
+          queryParameters: {
+           'SearchQuery': searchQuery,
+        'PageIndex': pageIndex,
+        'PageSize': pageSize,
+        'MovieTypeID' : movieTypeID
+          },
+          options: Options(headers: headers));
+      print(response.data);
+      return MovieResponse.fromJson(response.data);
+    } catch (ex) {
+      if (ex is DioException) {
+        if (ex.response!.statusCode == 401) {
+          try {
+            RefreshRequest refreshTokenModel = RefreshRequest(
+              accessToken: DataStore.instance.token,
+              refreshToken: DataStore.instance.getrefreshToken,
+            );
+            var refreshToken = await client.post(LinksUrl.refreshToken,
+                data: refreshTokenModel.toJson());
+            RefreshResponse reafreshTokenModel =
+                RefreshResponse.fromJson(refreshToken.data);
+            DataStore.instance.setToken(reafreshTokenModel.data.accessToken);
+            DataStore.instance
+                .setRefreshToken(reafreshTokenModel.data.refreshToken);
+
+            return getallmovies();
+          } catch (ex) {
+            if (ex is DioException) {
+              if (ex.response!.statusCode == 401) {
+             
+                return MovieResponse(message: 'Session Is Done' , success: false);
+                
+              }
+              if (ex.type == DioExceptionType.connectionTimeout) {
+                return MovieResponse(message: 'Internet is Week' , success: false);
+              }
+              if (ex.type == DioExceptionType.receiveTimeout) {
+                return MovieResponse(message: 'Internet is Week');
+              }
+              if (ex.type == DioExceptionType.unknown) {
+                return MovieResponse(message: 'Some Things Error');
+              } else {
+                return MovieResponse(message: 'Some Things Error');
+              }
+            }
+          }
+        }
+        if (ex.type == DioExceptionType.connectionTimeout) {
+          return MovieResponse(message: 'Internet is Week' , success: false);
+        }
+        if (ex.type == DioExceptionType.receiveTimeout) {
+          return MovieResponse(message: 'Internet is Week');
+        }
+        if (ex.type == DioExceptionType.unknown) {
+          return MovieResponse(message: 'Some Things Error');
+        } else {
+          return MovieResponse(message: 'Some Things Error');
+        }
+      } else {
+        return MovieResponse(message: 'Some Things Error');
+      }
+    }
+  }
+
+  //get movie by id 
+  //====================================================================
+   Future<MovieResponseById> getmoviedetailse(int hallid ) async {
+    Map<String, dynamic> headers = {
+      "Authorization": "Bearer ${DataStore.instance.token}",
+      'accept': '/',
+      // 'Content-Type': 'application/json',
+      // 'Accept': 'application/json',
+    };
+    try {
+      var response = await client.get('http://cinemate-001-site1.jtempurl.com/api/Movie/$hallid',
+          //queryParameters: {"id": hallid},
+          options: Options(headers: headers));
+      print(response.data);
+      return MovieResponseById.fromJson(response.data);
+    } catch (ex) {
+      if (ex is DioException) {
+        if (ex.response!.statusCode == 401) {
+          try {
+            RefreshRequest refreshTokenModel = RefreshRequest(
+              accessToken: DataStore.instance.token,
+              refreshToken: DataStore.instance.getrefreshToken,
+            );
+            var refreshToken = await client.post(LinksUrl.refreshToken,
+                data: refreshTokenModel.toJson());
+            RefreshResponse reafreshTokenModel =
+                RefreshResponse.fromJson(refreshToken.data);
+            DataStore.instance.setToken(reafreshTokenModel.data.accessToken);
+            DataStore.instance
+                .setRefreshToken(reafreshTokenModel.data.refreshToken);
+
+            return getmoviedetailse(hallid);
+          } catch (ex) {
+            if (ex is DioException) {
+              if (ex.response!.statusCode == 401) {
+             
+                return MovieResponseById(message: 'Session Is Done' , success: false);
+                
+              }
+              if (ex.type == DioExceptionType.connectionTimeout) {
+                return MovieResponseById(message: 'Internet is Week' , success: false);
+              }
+              if (ex.type == DioExceptionType.receiveTimeout) {
+                return MovieResponseById(message: 'Internet is Week');
+              }
+              if (ex.type == DioExceptionType.unknown) {
+                return MovieResponseById(message: 'Some Things Error');
+              } else {
+                return MovieResponseById(message: 'Some Things Error');
+              }
+            }
+          }
+        }
+        if (ex.type == DioExceptionType.connectionTimeout) {
+          return MovieResponseById(message: 'Internet is Week' , success: false);
+        }
+        if (ex.type == DioExceptionType.receiveTimeout) {
+          return MovieResponseById(message: 'Internet is Week');
+        }
+        if (ex.type == DioExceptionType.unknown) {
+          return MovieResponseById(message: 'Some Things Error');
+        } else {
+          return MovieResponseById(message: 'Some Things Error');
+        }
+      } else {
+        return MovieResponseById(message: 'Some Things Error');
+      }
+    }
+  }
+  ///===========================================================================
+}
+  

@@ -1,4 +1,9 @@
 import 'package:bloc/bloc.dart';
+import 'package:bpr602_cinema/controller/app_store.dart';
+import 'package:bpr602_cinema/data/resorses_repo/hall_repo.dart';
+import 'package:bpr602_cinema/data/resorses_repo/movies_repo.dart';
+import 'package:bpr602_cinema/models/response/movie_respone_id.dart';
+import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -53,6 +58,36 @@ late YoutubePlayerController _controller;
   // Dispose of the controller
   void disposeController() {
     _controller.dispose();
+  }
+
+//getmoviebyid
+  
+  MovieResponseById? movieResponseById;
+  Future<void> getMoviedetailes(int id ) async {
+    emit(Detailesloadingstate());
+    try  {
+      movieResponseById =
+          await GetIt.I.get<GetMovieallinfoRepo>().getmoviedetailse(id);
+      if (movieResponseById!.message == 'Session Is Done') {
+              
+              DataStore.instance.deleateRefreshToken();
+                DataStore.instance.deleateToken();
+        emit(DetailEerorstate(message: movieResponseById!.message!));
+      } else if (movieResponseById?.data != null) {
+        emit(DetailesAcceptstate());
+      } else if (movieResponseById!.message == 'Internet is Week') {
+        emit(DetailEerorstate(message: movieResponseById!.message!));
+      } else {
+        emit(DetailEerorstate(message: movieResponseById!.message!));
+      }
+    } catch (ex) {
+      if (movieResponseById!.message == 'Session Is Done') {
+       
+        emit(DetailEerorstate(message: movieResponseById!.message!));
+      } else {
+        emit(DetailEerorstate(message: movieResponseById!.message!));
+      }
+    }
   }
 }
   // void play() {

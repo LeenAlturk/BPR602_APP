@@ -3,17 +3,17 @@ import 'package:bpr602_cinema/Constants/sizer.dart';
 import 'package:flutter/material.dart';
 
 class MovieCard extends StatelessWidget {
-  final String imageUrl;
-  final String title;
-  final String genre;
-  final double rating;
+  final String ? imageUrl;
+  final String? title;
+  final String? genre;
+  final double ?rating;
 
   const MovieCard({
     super.key,
-    required this.imageUrl,
-    required this.title,
-    required this.genre,
-    required this.rating,
+     this.imageUrl,
+     this.title,
+     this.genre,
+     this.rating,
   });
 
   @override
@@ -44,7 +44,7 @@ class MovieCard extends StatelessWidget {
               ClipRRect(
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
                 child: Image.network(
-                  imageUrl,
+                  imageUrl!,
                   height: size.height * 0.25,
                   width: size.width * 0.48,
                   fit: BoxFit.cover,
@@ -78,7 +78,7 @@ class MovieCard extends StatelessWidget {
           Padding(
             padding:  EdgeInsets.all(size.height * 0.01),
             child: Text(
-              title,
+              title!,
               style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
@@ -90,7 +90,7 @@ class MovieCard extends StatelessWidget {
           Padding(
             padding:  EdgeInsets.symmetric(horizontal: size.width * 0.01),
             child: Text(
-              genre,
+              genre!,
               style: TextStyle(
                 color: Colors.white70,
                 fontSize: 12.sp,

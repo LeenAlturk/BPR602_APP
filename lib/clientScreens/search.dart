@@ -3,6 +3,7 @@ import 'package:bpr602_cinema/Constants/colors.dart';
 import 'package:bpr602_cinema/Constants/sizer.dart';
 import 'package:bpr602_cinema/Cubits/Searchcubit/search_cubit.dart';
 import 'package:bpr602_cinema/Cubits/mycubit/mycubit_cubit.dart';
+import 'package:bpr602_cinema/wedgets/seeallMovieCard.dart';
 import 'package:bpr602_cinema/wedgets/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -157,10 +158,20 @@ class SearchScreen extends StatelessWidget {
                       return ListView.builder(
                         itemCount: state.results.length,
                         itemBuilder: (context, index) {
-                          return ListTile(
-                              title: Text(
-                                  style: TextStyle(color: Colors.white),
-                                  state.results[index]));
+                          return 
+                          // ListTile(
+                          //     title: Text(
+                          //         style: TextStyle(color: Colors.white),
+                          //         state.results[index]));
+                          SeeallMovieCard(
+                            Language: "EN",
+                            title: state.results[index],
+                            imgurl: "https://m.media-amazon.com/images/M/MV5BMTQxNzY1MjI5NF5BMl5BanBnXkFtZTcwNTI0MDY1OQ@@._V1_QL75_UX380_CR0,20,380,562_.jpg",
+                            genre: "+18",
+                            director: 'the diractor',
+                            duration: 96,
+                            ar: "+18",
+                          );
                         },
                       );
                     } else if (state is SearchError) {

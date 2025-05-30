@@ -19,3 +19,14 @@ final class MovietypErrorstate  extends  SeeallState{
   MovietypErrorstate({required this.message});
 
 }
+final class Movieallloading extends SeeallState{}
+final class MovieallAcceptstate extends SeeallState {
+  final List<MovieDatum > movies;
+
+  MovieallAcceptstate({required this.movies});
+}
+final class MovieallErrortstate extends SeeallState{
+  final String message;
+
+  MovieallErrortstate({required this.message}); 
+}
