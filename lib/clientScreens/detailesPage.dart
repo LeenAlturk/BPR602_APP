@@ -1,4 +1,3 @@
-
 import 'package:bpr602_cinema/AllUserScreens/Login.dart';
 import 'package:bpr602_cinema/Animation/Fadeinfadeout.dart';
 import 'package:bpr602_cinema/Constants/colors.dart';
@@ -16,7 +15,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class DetailesPage extends StatelessWidget {
-  
   final bool Isshowing;
   final int id;
 
@@ -30,42 +28,13 @@ class DetailesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    final List<Map<String, String>> castList = [
-      {
-        "name": "Pierre Coffin",
-        "photo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFMCkoVu64f_681eRDxbyq0_JW2lX8PK6Vla5nel49I2suSRbQBpIF3DfAxOWf4lhEPVdlEZb6Sg08X6hpiprIaA"
-      },
-      {
-        "name": "Benjamin Bratt",
-        "photo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHg015qGeq5v_rkgRNfJHvChEnxvqfAAygZc0K6sO-ZqhCM2FAwQaQ-caGXiOfJq3WiaZlDbQPtKlJmlD-EBL_bQ"
-      },
-      {
-        "name": "Ava Benavente",
-        "photo": "https://media.licdn.com/dms/image/v2/D4E03AQHHsmwaEV9biA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1703785342675?e=2147483647&v=beta&t=O4h0e5CCWYkk59F2U1ZkvifKMdUcO0ZaZOtfgDBRvwU"
-      },
-      {
-        "name": "Michael Beattie",
-        "photo": "https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/252082_v9_ba.jpg"
-      },
-    ];
-    final List<Map<String, String>> directorList = [
-      {
-        "Posistion": "Director",
-        "name": "Pierre Coffin",
-        "photo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFMCkoVu64f_681eRDxbyq0_JW2lX8PK6Vla5nel49I2suSRbQBpIF3DfAxOWf4lhEPVdlEZb6Sg08X6hpiprIaA"
-      },
-      {
-        "Posistion": "Director ASS",
-        "name": "Pierre Coffin",
-        "photo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFMCkoVu64f_681eRDxbyq0_JW2lX8PK6Vla5nel49I2suSRbQBpIF3DfAxOWf4lhEPVdlEZb6Sg08X6hpiprIaA"
-      },
-    ];
 
     return BlocProvider(
-      create: (context) => DetailesCubit()..getMoviedetailes(id), // Only fetch movie details initially
+      create: (context) => DetailesCubit()
+        ..getMoviedetailes(id), // Only fetch movie details initially
       child: BlocListener<DetailesCubit, DetailesState>(
         listener: (context, state) {
-           if (state is DetailEerorstate) {
+          if (state is DetailEerorstate) {
             if (state.message == "Session Is Done") {
               AppConstants.showToast(context, state.message);
               Navigator.of(context).pushAndRemoveUntil(
@@ -75,9 +44,19 @@ class DetailesPage extends StatelessWidget {
               AppConstants.showToast(context, state.message);
             }
           }
-          if (state is DetailesAcceptstate && context.read<DetailesCubit>().movieResponseById?.data?.trailerUrl != null) {
+          if (state is DetailesAcceptstate &&
+              context
+                      .read<DetailesCubit>()
+                      .movieResponseById
+                      ?.data
+                      ?.trailerUrl !=
+                  null) {
             // Once movie details are accepted and trailerUrl is available, initialize the video
-            context.read<DetailesCubit>().intialization(context.read<DetailesCubit>().movieResponseById!.data!.trailerUrl!);
+            context.read<DetailesCubit>().intialization(context
+                .read<DetailesCubit>()
+                .movieResponseById!
+                .data!
+                .trailerUrl!);
           } else if (state is VideoError) {
             print("Listener: Error in video loading - ${state.error}");
           } else if (state is DetailEerorstate) {
@@ -91,14 +70,18 @@ class DetailesPage extends StatelessWidget {
           builder: (context, state) {
             final cubit = context.read<DetailesCubit>();
 
-            if (state is Detailesloadingstate || cubit.movieResponseById?.data == null) {
+            if (state is Detailesloadingstate ||
+                cubit.movieResponseById?.data == null) {
               return const Scaffold(
                 backgroundColor: Kbackground,
                 body: Center(child: CircularProgressIndicator()),
               );
             }
 
-            if (state is DetailesAcceptstate || state is VideoLoaded || state is VideoLoading || state is VideoError) {
+            if (state is DetailesAcceptstate ||
+                state is VideoLoaded ||
+                state is VideoLoading ||
+                state is VideoError) {
               return Scaffold(
                 backgroundColor: Kbackground,
                 appBar: AppBar(
@@ -124,23 +107,42 @@ class DetailesPage extends StatelessWidget {
                           padding: EdgeInsets.all(size.height * 0.002),
                           child: FadeInDown(
                             child: SeeallMovieCard(
-                              Language: cubit.movieResponseById!.data!.movieLanguages != null
-                                  ? cubit.movieResponseById!.data!.movieLanguages!
+                              subtitle: cubit.movieResponseById!.data!
+                                          .movieSubtitles !=
+                                      null
+                                  ? cubit
+                                      .movieResponseById!.data!.movieSubtitles!
+                                      .map((type) => type.englishName ?? '')
+                                      .join(', ')
+                                  : '',
+                              rating: cubit.movieResponseById!.data!.rate!,
+                              Language: cubit.movieResponseById!.data!
+                                          .movieLanguages !=
+                                      null
+                                  ? cubit
+                                      .movieResponseById!.data!.movieLanguages!
                                       .map((type) => type.englishName ?? '')
                                       .join(', ')
                                   : '',
                               title: cubit.movieResponseById!.data!.name!,
-                              imgurl: (cubit.movieResponseById?.data?.image?.url != null)
+                              imgurl: (cubit.movieResponseById?.data?.image
+                                          ?.url !=
+                                      null)
                                   ? '${LinksUrl.baseUrl}${cubit.movieResponseById!.data!.image!.url}'
                                   : 'https://ina.iq/eng/uploads/posts/2021-05/thumbs/upload_1621342522_427621977.png',
-                              genre: cubit.movieResponseById!.data!.movieTypes != null
+                              genre: cubit.movieResponseById!.data!
+                                          .movieTypes !=
+                                      null
                                   ? cubit.movieResponseById!.data!.movieTypes!
                                       .map((type) => type.englishName ?? '')
                                       .join(', ')
                                   : '',
-                              director: cubit.movieResponseById!.data!.director!.firstName!,
-                              duration: 90, // Consider getting this from API as well
-                              ar: cubit.movieResponseById!.data!.movieClassification!.englishName!,
+                              director: cubit.movieResponseById!.data!.director!
+                                  .firstName!,
+                              duration:
+                                  90, // Consider getting this from API as well
+                              ar: cubit.movieResponseById!.data!
+                                  .movieClassification!.englishName!,
                             ),
                           ),
                         ),
@@ -164,10 +166,14 @@ class DetailesPage extends StatelessWidget {
                         ),
                         // Video player section
                         BlocBuilder<DetailesCubit, DetailesState>(
-                          buildWhen: (previous, current) => current is VideoLoading || current is VideoLoaded || current is VideoError,
+                          buildWhen: (previous, current) =>
+                              current is VideoLoading ||
+                              current is VideoLoaded ||
+                              current is VideoError,
                           builder: (context, state) {
                             if (state is VideoLoading) {
-                              return const Center(child: CircularProgressIndicator());
+                              return const Center(
+                                  child: CircularProgressIndicator());
                             } else if (state is VideoError) {
                               return Center(
                                 child: Text(state.error,
@@ -231,7 +237,8 @@ class DetailesPage extends StatelessWidget {
                                   collapseText: 'Read less',
                                   maxLines: 3,
                                   linkColor: Ktext,
-                                  style: const TextStyle(fontSize: 16.0, color: Colors.white),
+                                  style: const TextStyle(
+                                      fontSize: 16.0, color: Colors.white),
                                 ),
                               ],
                             ),
@@ -265,75 +272,184 @@ class DetailesPage extends StatelessWidget {
                                     ),
                                     IconButton(
                                       onPressed: () {
+                                        // showModalBottomSheet(
+                                        //     backgroundColor: Kbackground,
+                                        //     context: context,
+                                        //     builder: (BuildContext context) {
+                                        //       return SizedBox(
+                                        //         width: 400,
+                                        //         height: size.height,
+                                        //         child: SingleChildScrollView(
+                                        //           child: Column(
+                                        //             children: [
+                                        //               Padding(
+                                        //                 padding: EdgeInsets.all(size.height * 0.01),
+                                        //                 child: Text(
+                                        //                   "Movie Actor",
+                                        //                   style: TextStyle(
+                                        //                     color: beige3,
+                                        //                     fontSize: 18.sp,
+                                        //                     fontWeight: FontWeight.bold,
+                                        //                   ),
+                                        //                 ),
+                                        //               ),
+                                        //               SizedBox(
+                                        //                 height: 400,
+                                        //                 child: Padding(
+                                        //                   padding: EdgeInsets.all(size.height * 0.01),
+                                        //                   child: ListView.builder(
+                                        //                     scrollDirection: Axis.vertical,
+                                        //                     shrinkWrap: true,
+                                        //                     itemCount: castList.length,
+                                        //                     itemBuilder: (context, index) {
+                                        //                       return Padding(
+                                        //                         padding: const EdgeInsets.symmetric(
+                                        //                             vertical: 8.0, horizontal: 16.0),
+                                        //                         child: Row(
+                                        //                           children: [
+                                        //                             Row(
+                                        //                               children: [
+                                        //                                 ClipRRect(
+                                        //                                   borderRadius:
+                                        //                                       BorderRadius.circular(50),
+                                        //                                   child: Image.network(
+                                        //                                     castList[index]["photo"]!,
+                                        //                                     height: 60,
+                                        //                                     width: 60,
+                                        //                                     fit: BoxFit.cover,
+                                        //                                   ),
+                                        //                                 ),
+                                        //                                 const SizedBox(width: 16),
+                                        //                                 Text(
+                                        //                                   castList[index]["name"]!,
+                                        //                                   style: const TextStyle(
+                                        //                                     fontSize: 16,
+                                        //                                     color: Colors.white,
+                                        //                                   ),
+                                        //                                 ),
+                                        //                               ],
+                                        //                             ),
+                                        //                           ],
+                                        //                         ),
+                                        //                       );
+                                        //                     },
+                                        //                   ),
+                                        //                 ),
+                                        //               ),
+                                        //             ],
+                                        //           ),
+                                        //         ),
+                                        //       );
+                                        //     });
                                         showModalBottomSheet(
-                                            backgroundColor: Kbackground,
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return SizedBox(
-                                                width: 400,
-                                                height: size.height,
-                                                child: SingleChildScrollView(
-                                                  child: Column(
-                                                    children: [
-                                                      Padding(
-                                                        padding: EdgeInsets.all(size.height * 0.01),
-                                                        child: Text(
-                                                          "Movie Actor",
-                                                          style: TextStyle(
-                                                            color: beige3,
-                                                            fontSize: 18.sp,
-                                                            fontWeight: FontWeight.bold,
-                                                          ),
-                                                        ),
+                                          backgroundColor: Kbackground,
+                                          context: context,
+                                          isScrollControlled: true,
+                                          builder: (BuildContext context) {
+                                            return SizedBox(
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.5,
+                                              child: Column(
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsets.all(16.0),
+                                                    child: Text(
+                                                      "Movie Cast",
+                                                      style: TextStyle(
+                                                        color: beige3,
+                                                        fontSize: 20.sp,
+                                                        fontWeight:
+                                                            FontWeight.bold,
                                                       ),
-                                                      SizedBox(
-                                                        height: 400,
-                                                        child: Padding(
-                                                          padding: EdgeInsets.all(size.height * 0.01),
-                                                          child: ListView.builder(
-                                                            scrollDirection: Axis.vertical,
-                                                            shrinkWrap: true,
-                                                            itemCount: castList.length,
-                                                            itemBuilder: (context, index) {
-                                                              return Padding(
-                                                                padding: const EdgeInsets.symmetric(
-                                                                    vertical: 8.0, horizontal: 16.0),
-                                                                child: Row(
-                                                                  children: [
-                                                                    Row(
-                                                                      children: [
-                                                                        ClipRRect(
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(50),
-                                                                          child: Image.network(
-                                                                            castList[index]["photo"]!,
-                                                                            height: 60,
-                                                                            width: 60,
-                                                                            fit: BoxFit.cover,
-                                                                          ),
-                                                                        ),
-                                                                        const SizedBox(width: 16),
-                                                                        Text(
-                                                                          castList[index]["name"]!,
-                                                                          style: const TextStyle(
-                                                                            fontSize: 16,
-                                                                            color: Colors.white,
-                                                                          ),
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              );
-                                                            },
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
+                                                    ),
                                                   ),
-                                                ),
-                                              );
-                                            });
+                                                  Expanded(
+                                                    child: ListView.builder(
+                                                      padding: EdgeInsets.zero,
+                                                      itemCount: cubit
+                                                          .movieResponseById!
+                                                          .data!
+                                                          .movieCasts!
+                                                          .length,
+                                                      itemBuilder:
+                                                          (context, index) {
+                                                        final actor = cubit
+                                                            .movieResponseById!
+                                                            .data!
+                                                            .movieCasts![index];
+                                                        return Padding(
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                            vertical: 8.0,
+                                                            horizontal: 16.0,
+                                                          ),
+                                                          child: ListTile(
+                                                            leading: ClipRRect(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          50),
+                                                              child: actor.image
+                                                                          ?.url !=
+                                                                      null
+                                                                  ? Image
+                                                                      .network(
+                                                                      '${LinksUrl.baseUrl}${actor.image!.url}',
+                                                                      height:
+                                                                          60,
+                                                                      width: 60,
+                                                                      fit: BoxFit
+                                                                          .cover,
+                                                                      errorBuilder: (context, error, stackTrace) => Icon(
+                                                                          Icons
+                                                                              .person,
+                                                                          size:
+                                                                              60,
+                                                                          color:
+                                                                              Colors.grey),
+                                                                    )
+                                                                  : Icon(
+                                                                      Icons
+                                                                          .person,
+                                                                      size: 60,
+                                                                      color: Colors
+                                                                          .grey),
+                                                            ),
+                                                            title: Text(
+                                                              '${actor.firstName} ${actor.lastName}',
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 16.sp,
+                                                              ),
+                                                            ),
+                                                            subtitle:
+                                                                actor.castType !=
+                                                                        null
+                                                                    ? Text(
+                                                                        'as ${actor.castType}',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          color:
+                                                                              Colors.grey,
+                                                                          fontSize:
+                                                                              14.sp,
+                                                                        ),
+                                                                      )
+                                                                    : null,
+                                                          ),
+                                                        );
+                                                      },
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                        );
                                       },
                                       icon: const Icon(
                                         Icons.arrow_drop_down_circle,
@@ -356,8 +472,8 @@ class DetailesPage extends StatelessWidget {
                                 NavigationWidget.pushPage(
                                   context,
                                   TimeAndDateScreen(
-                                    // You might want to pass more details to TimeAndDateScreen
-                                  ),
+                                      // You might want to pass more details to TimeAndDateScreen
+                                      ),
                                 );
                               },
                             ),

@@ -127,6 +127,9 @@ class SeeallMovieCard extends StatelessWidget {
   final String ar;
   final String genre;
   final String Language;
+  final double rating;
+  final String subtitle;
+  final String  ? status ;
 
   const SeeallMovieCard({
     super.key,
@@ -136,7 +139,12 @@ class SeeallMovieCard extends StatelessWidget {
     required this.genre,
     required this.ar,
     required this.director,
-    required this.Language
+    required this.Language,
+    required this.rating,
+    required this.subtitle,
+    this.status
+
+    
   });
 
   @override
@@ -153,19 +161,54 @@ class SeeallMovieCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start, // لمحاذاة العناصر للأعلى في الصف
         children: [
-          ClipRRect(
-            borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(12), bottom: Radius.circular(12)),
-            child: Image.network(
-              imgurl,
-              height: size.height * 0.30, // تأكد من أن الارتفاع يطابق ارتفاع الحاوية
-              width: size.width * 0.36,
-              fit: BoxFit.cover,
-            ),
+          // ClipRRect(
+          //   borderRadius: const BorderRadius.vertical(
+          //       top: Radius.circular(12), bottom: Radius.circular(12)),
+          //   child: Image.network(
+          //     imgurl,
+          //     height: size.height * 0.30, // تأكد من أن الارتفاع يطابق ارتفاع الحاوية
+          //     width: size.width * 0.36,
+          //     fit: BoxFit.cover,
+          //   ),
+          // ),
+          Stack(
+            children: [
+              ClipRRect(
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(12) , bottom: Radius.circular(12)),
+                child: Image.network(
+                  imgurl,
+                  height: size.height * 0.30,
+                  width: size.width * 0.36,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Positioned(
+                top: size.height * 0.01,
+                right: size.height * 0.01,
+                child: Container(
+                  padding: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    // ignore: deprecated_member_use
+                    color: Colors.black.withOpacity(0.7),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.star, color: Colors.yellow, size: 16.sp),
+                       SizedBox(width: size.width * 0.025),
+                      Text(
+                        rating.toString(),
+                        style: TextStyle(color: Colors.white, fontSize: 14.sp),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
           Expanded( // يسمح للعمود بأخذ المساحة المتبقية
             child: Padding(
-              padding: EdgeInsets.all(size.width * 0.03),
+              padding: EdgeInsets.all(size.width * 0.02),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -173,16 +216,20 @@ class SeeallMovieCard extends StatelessWidget {
                   Text(
                     title,
                     style: TextStyle(
-                        color: Colors.white,
+                        color:kbutton,
                         fontSize: 14.sp,
                         fontWeight: FontWeight.bold),
                     maxLines: 2, // يسمح للعنوان بالالتفاف لسطرين
                     overflow: TextOverflow.ellipsis, // يضيف "..." إذا كان العنوان أطول من اللازم
                   ),
+                    SizedBox(
+                    height: size.height * 0.0022,
+                  ),
+                  _buildDetailRow("status:", status.toString()),
                   SizedBox(
                     height: size.height * 0.01,
                   ),
-                  _buildDetailRow("Duration:", duration.toString()),
+                  _buildDurationRow("Duration:", duration.toString()),
                   SizedBox(
                     height: size.height * 0.01,
                   ),
@@ -190,15 +237,19 @@ class SeeallMovieCard extends StatelessWidget {
                   SizedBox(
                     height: size.height * 0.01,
                   ),
-                  _buildDetailRow("AR:", ar),
+                  _buildDetailRow("M.class:", ar),
                   SizedBox(
                     height: size.height * 0.01,
                   ),
-                  _buildDetailRow("Genre:", genre),
+                  _buildDetailRow("Type:", genre),
                   SizedBox(
                     height: size.height * 0.01,
                   ),
                   _buildDetailRow("Language:", Language),
+                   SizedBox(
+                    height: size.height * 0.01,
+                  ),
+                  _buildDetailRow("Subtitles:", Language),
                 ],
               ),
             ),
@@ -217,7 +268,7 @@ class SeeallMovieCard extends StatelessWidget {
           child: Text(
             label,
             style: TextStyle(
-                color: Colors.white,
+                color:Ktext,
                 fontSize: 12.sp,
                 fontWeight: FontWeight.bold),
           ),
@@ -226,6 +277,35 @@ class SeeallMovieCard extends StatelessWidget {
         Expanded( // يسمح للقيمة بأخذ المساحة المتبقية
           child: Text(
             value,
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 12.sp,
+                fontWeight: FontWeight.bold),
+            maxLines: 2, // يسمح للقيمة بالالتفاف لسطرين
+            overflow: TextOverflow.ellipsis, // يضيف "..." إذا كانت القيمة أطول من اللازم
+          ),
+        ),
+      ],
+    );
+  }
+  Widget _buildDurationRow(String label, String value) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start, // لمحاذاة النص للأعلى
+      children: [
+        SizedBox(
+          width: 70, // عرض ثابت للتصنيف لضمان المحاذاة
+          child: Text(
+            label,
+            style: TextStyle(
+                color:Ktext,
+                fontSize: 12.sp,
+                fontWeight: FontWeight.bold),
+          ),
+        ),
+        SizedBox(width: 5), // مسافة صغيرة بين التصنيف والقيمة
+        Expanded( // يسمح للقيمة بأخذ المساحة المتبقية
+          child: Text(
+            "$value minute",
             style: TextStyle(
                 color: Colors.white,
                 fontSize: 12.sp,

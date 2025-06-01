@@ -90,7 +90,8 @@ class GetMovieallinfoRepo extends BaseClient {
   String searchQuery = '',
   int pageIndex = 0,
   int pageSize = 10,
-  int ?movieTypeID 
+  int ?movieTypeID ,
+  String? status,
 }
       ) async {
     Map<String, dynamic> headers = {
@@ -105,7 +106,8 @@ class GetMovieallinfoRepo extends BaseClient {
            'SearchQuery': searchQuery,
         'PageIndex': pageIndex,
         'PageSize': pageSize,
-        'MovieTypeID' : movieTypeID
+        'MovieTypeID' : movieTypeID,
+        'status' :status
           },
           options: Options(headers: headers));
       print(response.data);

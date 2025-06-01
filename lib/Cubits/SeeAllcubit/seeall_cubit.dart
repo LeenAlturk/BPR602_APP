@@ -9,7 +9,8 @@ import 'package:meta/meta.dart';
 part 'seeall_state.dart';
 
 class SeeallCubit extends Cubit<SeeallState> {
-  SeeallCubit() : super(SeeallInitial());
+  final String statustype;
+  SeeallCubit({required  this.statustype}) : super(SeeallInitial());
   GetMovieTypemodel? getMovieTypemodel;
   int selectedFilter = 0;
   String searchQuery = '';
@@ -18,7 +19,7 @@ class SeeallCubit extends Cubit<SeeallState> {
   bool hasMore = true;
   int? selectedMovieTypeID;
   List<MovieDatum> movies = [];
-
+  
   Future<void> getmovietype() async {
     emit(Movietypeinitial());
     try {
@@ -65,6 +66,14 @@ class SeeallCubit extends Cubit<SeeallState> {
     emit(Movieallloading());
     getmovie();
   }
+  void clearSearch() {
+  searchQuery = '';
+  currentPage = 0;
+  hasMore = true;
+  movies.clear();
+  emit(Movieallloading());
+  getmovie();
+}
 
   Future<void> getmovie() async {
     if (isFetching || !hasMore) return;
@@ -80,6 +89,7 @@ class SeeallCubit extends Cubit<SeeallState> {
         pageIndex: currentPage,
         pageSize: 10,
         movieTypeID: selectedMovieTypeID,
+        status: statustype,
       );
 
       if (response.message == 'Session Is Done') {

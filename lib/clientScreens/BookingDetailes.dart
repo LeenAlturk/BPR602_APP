@@ -60,6 +60,8 @@ class BookingDetailes extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.all(size.height * 0.02),
                 child: SeeallMovieCard(
+                  subtitle: "En",
+                  rating: 4.5,
                   Language: "EN",
                   title: "Minions",
                   imgurl: "https://m.media-amazon.com/images/M/MV5BMTQxNzY1MjI5NF5BMl5BanBnXkFtZTcwNTI0MDY1OQ@@._V1_QL75_UX380_CR0,20,380,562_.jpg",

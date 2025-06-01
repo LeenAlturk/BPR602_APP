@@ -1,5 +1,6 @@
 import 'package:bpr602_cinema/AllUserScreens/Login.dart';
 import 'package:bpr602_cinema/Constants/colors.dart';
+import 'package:bpr602_cinema/Constants/sizer.dart';
 import 'package:bpr602_cinema/Cubits/SeeAllcubit/seeall_cubit.dart';
 import 'package:bpr602_cinema/clientScreens/detailesPage.dart';
 import 'package:bpr602_cinema/data/link.dart';
@@ -13,7 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SeeAllShowingNow extends StatelessWidget {
-  const SeeAllShowingNow({super.key});
+  final String statustype;
+  const SeeAllShowingNow({super.key, required this.statustype});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +24,7 @@ class SeeAllShowingNow extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
 
     return BlocProvider(
-      create: (context) => SeeallCubit()..getmovietype(),
+      create: (context) => SeeallCubit(statustype: statustype)..getmovietype(),
       child: BlocListener<SeeallCubit, SeeallState>(
         listener: (context, state) {
           if (state is MovietypErrorstate) {
@@ -59,6 +61,7 @@ class SeeAllShowingNow extends StatelessWidget {
                 padding: EdgeInsets.all(size.height * 0.01),
                 child: Builder(
                   builder: (searchContext) {
+                          searchController.text = BlocProvider.of<SeeallCubit>(searchContext).searchQuery;
                     return MySearchBar(
                       controller: searchController,
                       hintText: 'Search movies...',
@@ -70,9 +73,12 @@ class SeeAllShowingNow extends StatelessWidget {
                         IconButton(
                           icon: const Icon(Icons.clear),
                           onPressed: () {
-                            searchController.clear();
+                            
                             BlocProvider.of<SeeallCubit>(searchContext)
                                 .searchMovies('');
+                                
+                                searchController.clear();
+                                
                           },
                         ),
                       ],
@@ -154,65 +160,52 @@ class SeeAllShowingNow extends StatelessWidget {
               BlocBuilder<SeeallCubit, SeeallState>(
                 builder: (context, state) {
                   final cubit = context.read<SeeallCubit>();
+
+                  // تصفية الأفلام حسب statustype
+                  final filteredMovies = cubit.movies
+                      .where((movie) => movie.status == statustype)
+                      .toList();
+
+                  // التحقق من أن القائمة المصفاة فارغة، وليس هناك جلب للبيانات حالياً
+                  if (filteredMovies.isEmpty && !cubit.isFetching) {
+                    return Center(
+                      child: Text(
+                        'No Movies available',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                        ),
+                      ),
+                    );
+                  }
+
                   return Expanded(
-                    // child: ListView.builder(
-                    //   shrinkWrap: true,
-                    //   scrollDirection: Axis.vertical,
-                    //   itemCount: movies.length,
-                    //   itemBuilder: (context, index) {
-                    //     final movie = movies[index];
-                    //     return Padding(
-                    //         padding: const EdgeInsets.symmetric(
-                    //             vertical: 10.0, horizontal: 13.0),
-                    //         child: GestureDetector(
-                    //           onTap: () {
-                    //             // NavigationWidget.pushPage(
-                    //             //     context,
-                    //             //     DetailesPage(
-                    //             //       Isshowing: true,
-                    //             //       syn: movie.synopsis,
-                    //             //       title: movie.title,
-                    //             //       imgurl: movie.poster,
-                    //             //       duration: movie.duration,
-                    //             //       director: 'the director',
-                    //             //       genre: movie.genre,
-                    //             //       ar: '+18',
-                    //             //     ));
-                    //           },
-                    //           child: SeeallMovieCard(
-                    //             Language: "EN",
-                    //             title: movie.title,
-                    //             imgurl: movie.poster,
-                    //             genre: movie.genre,
-                    //             director: 'the diractor',
-                    //             duration: movie.duration,
-                    //             ar: "+18",
-                    //           ),
-                    //         ));
-                    //   },
-                    // ),
                     child: ListView.builder(
-                      itemCount: cubit.movies.length + 1,
+                      itemCount:
+                          filteredMovies.length + (cubit.hasMore ? 1 : 0),
                       itemBuilder: (context, index) {
-                        if (index < cubit.movies.length) {
-                          final movie = cubit.movies[index];
-                          return SeeallMovieCard(
-                            //  imageUrl: moviedata.image != null
-                            //                 ? '${LinksUrl.baseUrl}${moviedata.image!.url}'
-                            //                 : null,
+                        if (index < filteredMovies.length) {
+                          final movie = filteredMovies[index];
+                          return 
+                          SeeallMovieCard(
+                            status: movie.status,
+                            subtitle:  movie.movieSubtitles != null
+                                ? movie.movieLanguages!
+                                    .map((type) => type.englishName ?? '')
+                                    .join(', ')
+                                : '', 
+                            rating: movie.rate! ,
                             imgurl: movie.image != null
                                 ? '${LinksUrl.baseUrl}${movie.image!.url}'
                                 : 'https://ina.iq/eng/uploads/posts/2021-05/thumbs/upload_1621342522_427621977.png',
                             title: movie.name!,
-
                             genre: movie.movieTypes != null
                                 ? movie.movieTypes!
                                     .map((type) => type.englishName ?? '')
                                     .join(', ')
                                 : '',
                             director: movie.director!.firstName!,
-                            duration:
-                                90, // Consider getting this from API as well
+                            duration: movie.durationInMinutes!,
                             ar: movie.movieClassification!.englishName!,
                             Language: movie.movieLanguages != null
                                 ? movie.movieLanguages!
@@ -220,16 +213,14 @@ class SeeAllShowingNow extends StatelessWidget {
                                     .join(', ')
                                 : '',
                           );
+                        } else if (cubit.hasMore) {
+                          cubit.getmovie();
+                          return const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 16),
+                            child: Center(child: CircularProgressIndicator()),
+                          );
                         } else {
-                          if (cubit.hasMore) {
-                            cubit.getmovie();
-                            return const Padding(
-                              padding: EdgeInsets.symmetric(vertical: 16),
-                              child: Center(child: CircularProgressIndicator()),
-                            );
-                          } else {
-                            return const SizedBox.shrink();
-                          }
+                          return const SizedBox.shrink();
                         }
                       },
                     ),

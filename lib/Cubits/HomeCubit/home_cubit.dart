@@ -29,12 +29,13 @@ class HomeCubit extends Cubit<HomeState> {
         emit(MovieErrortstate(message: movieResponse!.message!));
       }
       } catch (e) {
-      if (movieResponse!.message == 'Session Is Done') {
+      // if (movieResponse!.message == 'Session Is Done') {
        
-        emit(MovieErrortstate(message: movieResponse!.message!));
-      } else {
-        emit(MovieErrortstate(message: movieResponse!.message!));
-      }
+      //   emit(MovieErrortstate(message: movieResponse!.message!));
+      // } else {
+      //   emit(MovieErrortstate(message: movieResponse!.message!));
+      // }
+       emit(MovieErrortstate(message: 'Something went wrong'));
       }
    }
 }
