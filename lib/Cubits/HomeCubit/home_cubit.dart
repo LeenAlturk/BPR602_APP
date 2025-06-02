@@ -10,11 +10,15 @@ part 'home_state.dart';
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit() : super(HomeInitial());
   TextEditingController SearchController = TextEditingController();
+  
   MovieResponse? movieResponse ; 
    Future <void> getmovie () async{
       emit(Movieloading());
       try {
-         movieResponse = await GetIt.I.get<GetMovieallinfoRepo>().getallmovies();
+        
+         movieResponse = await GetIt.I.get<GetMovieallinfoRepo>().getallmovies(
+          
+         );
             if (movieResponse!.message == 'Session Is Done') {
               
               DataStore.instance.deleateRefreshToken();

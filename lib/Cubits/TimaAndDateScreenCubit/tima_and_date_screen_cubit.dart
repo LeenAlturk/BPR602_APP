@@ -1,4 +1,8 @@
 import 'package:bloc/bloc.dart';
+import 'package:bpr602_cinema/controller/app_store.dart';
+import 'package:bpr602_cinema/data/resorses_repo/movies_repo.dart';
+import 'package:bpr602_cinema/models/response/movie_respone_id.dart';
+import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';
 
 part 'tima_and_date_screen_state.dart';
@@ -46,7 +50,7 @@ bool isVip = true; // Default: VIP
   String? selectedIMAXTime; // Store selected IMAX time
   final List<String> subtitles = ["en", "Ar", "Fr", "Tr"];
   final List<String> Language = ["en", "Ar", "Fr", "Tr"];
-  String selectedSubtitle = "en"; // Default subtitle
+  //String selectedSubtitle = "en"; // Default subtitle
   String selectedlang = "en"; // Default subtitle
   final List<String> standardTimes = [
     "10:00 AM",
@@ -92,18 +96,18 @@ void selectIMAXTime(int? index) {
 }
 
 
-   void selectSubtitle(String subtitle) {
-  if (selectedSubtitle != subtitle) {
-    selectedSubtitle = subtitle;
-    emit(TimaAndDateScreenSubtitleSelected(subtitle)); // Only emit when the subtitle changes
-  }
-}
-   void selectLang(String language) {
-  if (selectedlang != language) {
-    selectedlang = language;
-    emit(TimaAndDateScreenlangSelected(language)); // Only emit when the subtitle changes
-  }
-}
+//    void selectSubtitle(String subtitle) {
+//   if (selectedSubtitle != subtitle) {
+//     selectedSubtitle = subtitle;
+//     emit(TimaAndDateScreenSubtitleSelected(subtitle)); // Only emit when the subtitle changes
+//   }
+// }
+//    void selectLang(String language) {
+//   if (selectedlang != language) {
+//     selectedlang = language;
+//     emit(TimaAndDateScreenlangSelected(language)); // Only emit when the subtitle changes
+//   }
+// }
 
 void SwitchHale (bool value){
 isVip = value;
@@ -113,4 +117,65 @@ void SwitchTech (bool value){
 is3D = value;
  emit(TimaAndDateScreenTech(is3D));
 }
+
+// In TimaAndDateScreenCubit:
+
+
+
+
+// To:
+List<Movie> availableLanguages = [];
+List<Movie> availableSubtitles = [];
+Movie? selectedLanguage;
+Movie? selectedSubtitle;
+  DateTime? startDate;
+  DateTime? endDate;
+// Update the getMoviedetailesTAndD method:
+ MovieResponseById? movieResponseById;
+Future<void> getMoviedetailesTAndD(int id) async {
+  emit(TimeAndDateLoading());
+  try {
+    movieResponseById = await GetIt.I.get<GetMovieallinfoRepo>().getmoviedetailse(id);
+
+    if (movieResponseById!.message == 'Session Is Done') {
+      DataStore.instance.deleateRefreshToken();
+      DataStore.instance.deleateToken();
+      emit(TimeAndDateEroorSttae(message: movieResponseById!.message!));
+    } else if (movieResponseById?.data != null) {
+      // Get data from API
+      availableLanguages = movieResponseById!.data!.movieLanguages ?? [];
+      availableSubtitles = movieResponseById!.data!.movieSubtitles ?? [];
+      
+      // Set default selections if available
+      if (availableLanguages.isNotEmpty) {
+        selectedLanguage = availableLanguages.first;
+      }
+      if (availableSubtitles.isNotEmpty) {
+        selectedSubtitle = availableSubtitles.first;
+      }
+
+      // Set date range
+      startDate = movieResponseById!.data!.fromDate ?? DateTime.now();
+      endDate = movieResponseById!.data!.toDate ?? DateTime.now().add(Duration(days: 30));
+
+      emit(TimeAndDateAcceptState());
+    } else {
+      emit(TimeAndDateEroorSttae(message: movieResponseById!.message!));
+    }
+  } catch (ex) {
+    emit(TimeAndDateEroorSttae(message: movieResponseById?.message ?? 'Unknown error'));
+  }
+}
+
+// Update the selection methods:
+void selectSubtitle(Movie subtitle) {
+  selectedSubtitle = subtitle;
+  emit(TimaAndDateScreenSubtitleSelected(subtitle));
+}
+
+void selectLang(Movie language) {
+  selectedLanguage = language;
+  emit(TimaAndDateScreenlangSelected(language));
+}
+
 }

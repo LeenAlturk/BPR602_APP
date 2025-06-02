@@ -288,9 +288,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             cubit.movieResponse?.data != null) {
                           // Filter only "Now Showing" movies
                           final nowShowingMovies = cubit.movieResponse!.data!
-                              .where((movie) => movie.status == "Now Showing")
+                              .where((movie) => movie.status!.contains("Showing"))
                               .toList();
-              
+              // == "Now Showing"
                           return SizedBox(
                             height: size.height * 0.36,
                             width: size.width,
@@ -415,9 +415,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             cubit.movieResponse?.data != null) {
                           // Filter only "Coming Soon" movies
                           final comingSoonMovies = cubit.movieResponse!.data!
-                              .where((movie) => movie.status == "Coming Soon")
+                              .where((movie) => movie.status!.contains( "Coming"))
                               .toList();
-              
+              // == "Coming Soon"
                           return SizedBox(
                             height: size.height * 0.36,
                             width: size.width,

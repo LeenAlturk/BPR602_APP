@@ -62,7 +62,34 @@ late YoutubePlayerController _controller;
 
 //getmoviebyid
   
-  MovieResponseById? movieResponseById;
+  // MovieResponseById? movieResponseById;
+  // Future<void> getMoviedetailes(int id ) async {
+  //   emit(Detailesloadingstate());
+  //   try  {
+  //     movieResponseById =
+  //         await GetIt.I.get<GetMovieallinfoRepo>().getmoviedetailse(id);
+  //     if (movieResponseById!.message == 'Session Is Done') {
+              
+  //             DataStore.instance.deleateRefreshToken();
+  //               DataStore.instance.deleateToken();
+  //       emit(DetailEerorstate(message: movieResponseById!.message!));
+  //     } else if (movieResponseById?.data != null) {
+  //       emit(DetailesAcceptstate());
+  //     } else if (movieResponseById!.message == 'Internet is Week') {
+  //       emit(DetailEerorstate(message: movieResponseById!.message!));
+  //     } else {
+  //       emit(DetailEerorstate(message: movieResponseById!.message!));
+  //     }
+  //   } catch (ex) {
+  //     if (movieResponseById!.message == 'Session Is Done') {
+       
+  //       emit(DetailEerorstate(message: movieResponseById!.message!));
+  //     } else {
+  //       emit(DetailEerorstate(message: movieResponseById!.message!));
+  //     }
+  //   }
+  // }
+   MovieResponseById? movieResponseById;
   Future<void> getMoviedetailes(int id ) async {
     emit(Detailesloadingstate());
     try  {

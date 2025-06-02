@@ -37,6 +37,17 @@ class SeeAllShowingNow extends StatelessWidget {
               AppConstants.showToast(context, state.message);
             }
           }
+          
+          if (state is MovieallErrortstate) {
+            if (state.message == "Session Is Done") {
+              AppConstants.showToast(context, state.message);
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                  (route) => false);
+            } else {
+              AppConstants.showToast(context, state.message);
+            }
+          }
         },
         child: Scaffold(
           backgroundColor: Kbackground,

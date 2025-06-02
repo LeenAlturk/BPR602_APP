@@ -107,6 +107,7 @@ class DetailesPage extends StatelessWidget {
                           padding: EdgeInsets.all(size.height * 0.002),
                           child: FadeInDown(
                             child: SeeallMovieCard(
+                              status: cubit.movieResponseById!.data!.status,
                               subtitle: cubit.movieResponseById!.data!
                                           .movieSubtitles !=
                                       null
@@ -140,7 +141,7 @@ class DetailesPage extends StatelessWidget {
                               director: cubit.movieResponseById!.data!.director!
                                   .firstName!,
                               duration:
-                                  90, // Consider getting this from API as well
+                                  cubit.movieResponseById!.data!.durationInMinutes!, // Consider getting this from API as well
                               ar: cubit.movieResponseById!.data!
                                   .movieClassification!.englishName!,
                             ),
@@ -472,6 +473,7 @@ class DetailesPage extends StatelessWidget {
                                 NavigationWidget.pushPage(
                                   context,
                                   TimeAndDateScreen(
+                                    id: id,
                                       // You might want to pass more details to TimeAndDateScreen
                                       ),
                                 );

@@ -34,13 +34,13 @@ class TimeHaleIMAX extends TimaAndDateScreenState {
   TimeHaleIMAX(this.selectedIMAXTime);
 }
 class TimaAndDateScreenSubtitleSelected extends TimaAndDateScreenState {
-  final String selectedSubtitle;
+  final Movie selectedSubtitle;
 
 
   TimaAndDateScreenSubtitleSelected(this.selectedSubtitle);
 }
 class TimaAndDateScreenlangSelected extends TimaAndDateScreenState {
-  final String selectedlang;
+  final Movie selectedlang;
 
 
   TimaAndDateScreenlangSelected(this.selectedlang);
@@ -52,4 +52,12 @@ class TimaAndDateScreenHale extends TimaAndDateScreenState {
 class TimaAndDateScreenTech extends TimaAndDateScreenState {
   final bool is3D;
   TimaAndDateScreenTech(this.is3D);
+}
+
+class TimeAndDateLoading extends TimaAndDateScreenState{}
+class TimeAndDateAcceptState extends TimaAndDateScreenState{}
+class TimeAndDateEroorSttae extends TimaAndDateScreenState{
+  final String message;
+
+  TimeAndDateEroorSttae({required this.message});
 }
