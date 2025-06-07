@@ -486,7 +486,8 @@ class SearchScreen extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => LoginScreen()),
                   (route) => false);
             } else {
-              AppConstants.showToast(context, state.message);
+              //AppConstants.showToast(context, state.message);
+              print("nothing");
             }
           }
         },
@@ -530,6 +531,7 @@ class SearchScreen extends StatelessWidget {
                                   context.read<MycubitCubit>().searchController.clear();
                                   context.read<MycubitCubit>().searchFocusNode.unfocus();
                                   context.read<MycubitCubit>().clearSearch();
+                                  context.read<MycubitCubit>().clearFilter();
                                 },
                               )
                             : null,
@@ -554,7 +556,9 @@ class SearchScreen extends StatelessWidget {
               // عرض الفلتر المختار (إذا وجد)
               BlocBuilder<MycubitCubit, MycubitState>(
                 builder: (context, state) {
-                  if (state is FilterSelected) {
+                  if (state is FilterSelected || 
+        (state is Searching && context.read<MycubitCubit>().selectedMovieTypeId != null) ||
+        (state is SearchLoaded && context.read<MycubitCubit>().selectedMovieTypeId != null)) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: Column(
@@ -563,7 +567,11 @@ class SearchScreen extends StatelessWidget {
                             children: [
                               Chip(
                                 label: Text(
-                                  state.filterName,
+                                  //state.filterName,
+                                   state is FilterSelected ? state.filterName : 
+                    context.read<MycubitCubit>().getMovieTypemodel!.data!
+                      .firstWhere((type) => type.id == context.read<MycubitCubit>().selectedMovieTypeId).englishName!,
+
                                   style: TextStyle(color: Colors.white),
                                 ),
                                 backgroundColor: kbutton,
@@ -571,22 +579,23 @@ class SearchScreen extends StatelessWidget {
                               IconButton(
                                 icon: Icon(Icons.close, color: Colors.white),
                                 onPressed: () {
+                                  context.read<MycubitCubit>().searchController.clear();
                                   context.read<MycubitCubit>().clearFilter();
                                 },
                               ),
                             ],
                           ),
-                          SizedBox(height: size.height *0.3,),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text("Start Typing To Search  ", style: TextStyle(
-                                color: Ktext , fontSize: 15.sp , fontWeight: FontWeight.bold
-                              ),),
-                              SizedBox(height: size.height *0.01,),
-                               Icon(Icons.search , color:  Ktext, size: 15.sp,)
-                            ],
-                          )
+                          // SizedBox(height: size.height *0.3,),
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.center,
+                          //   children: [
+                          //     Text("Start Typing To Search  ", style: TextStyle(
+                          //       color: Ktext , fontSize: 15.sp , fontWeight: FontWeight.bold
+                          //     ),),
+                          //     SizedBox(height: size.height *0.01,),
+                          //      Icon(Icons.search , color:  Ktext, size: 15.sp,)
+                          //   ],
+                          // )
                         ],
                       ),
                     );
@@ -733,7 +742,7 @@ class SearchScreen extends StatelessWidget {
                           .join(', ')
                       : '',
                   director: movie.director!.firstName!,
-                  duration: 50,
+                  duration: movie.durationInMinutes!,
                   ar: movie.movieClassification!.englishName!,
                   Language: movie.movieLanguages != null
                       ? movie.movieLanguages!

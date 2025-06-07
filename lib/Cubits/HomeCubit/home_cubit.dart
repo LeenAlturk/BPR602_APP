@@ -10,7 +10,8 @@ part 'home_state.dart';
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit() : super(HomeInitial());
   TextEditingController SearchController = TextEditingController();
-  
+  final  String comingStatus = "Coming Soon";
+   final  String showingStatus = "Now Showing";
   MovieResponse? movieResponse ; 
    Future <void> getmovie () async{
       emit(Movieloading());

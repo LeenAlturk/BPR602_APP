@@ -37,7 +37,7 @@ class SeeAllShowingNow extends StatelessWidget {
               AppConstants.showToast(context, state.message);
             }
           }
-          
+
           if (state is MovieallErrortstate) {
             if (state.message == "Session Is Done") {
               AppConstants.showToast(context, state.message);
@@ -53,8 +53,8 @@ class SeeAllShowingNow extends StatelessWidget {
           backgroundColor: Kbackground,
           appBar: AppBar(
             backgroundColor: Kbackground,
-            title: const Text(
-              'Showing Now',
+            title: Text(
+              statustype,
               style: TextStyle(color: Ktext),
             ),
             leading: IconButton(
@@ -72,7 +72,8 @@ class SeeAllShowingNow extends StatelessWidget {
                 padding: EdgeInsets.all(size.height * 0.01),
                 child: Builder(
                   builder: (searchContext) {
-                          searchController.text = BlocProvider.of<SeeallCubit>(searchContext).searchQuery;
+                    searchController.text =
+                        BlocProvider.of<SeeallCubit>(searchContext).searchQuery;
                     return MySearchBar(
                       controller: searchController,
                       hintText: 'Search movies...',
@@ -84,12 +85,10 @@ class SeeAllShowingNow extends StatelessWidget {
                         IconButton(
                           icon: const Icon(Icons.clear),
                           onPressed: () {
-                            
                             BlocProvider.of<SeeallCubit>(searchContext)
                                 .searchMovies('');
-                                
-                                searchController.clear();
-                                
+
+                            searchController.clear();
                           },
                         ),
                       ],
@@ -178,17 +177,41 @@ class SeeAllShowingNow extends StatelessWidget {
                       .toList();
 
                   // التحقق من أن القائمة المصفاة فارغة، وليس هناك جلب للبيانات حالياً
-                  if (filteredMovies.isEmpty && !cubit.isFetching) {
-                    return Center(
-                      child: Text(
-                        'No Movies available',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                        ),
-                      ),
-                    );
-                  }
+                  // if (filteredMovies.isEmpty && !cubit.isFetching) {
+                  //   return Center(
+                  //     child: Text(
+                  //       'No Movies available',
+                  //       style: TextStyle(
+                  //         color: Colors.white,
+                  //         fontSize: 18,
+                  //       ),
+                  //     ),
+                  //   );
+                  // }
+                       
+
+                    if (state is Movieallloading && cubit.movies.isEmpty) {
+      // عرض مؤشر تحميل عند الدخول لأول مرة أو أثناء تحميل الصفحة الأولى
+      return const Expanded(
+        child: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    if (filteredMovies.isEmpty && cubit.loadedOnce && !cubit.isFetching) {
+      return Expanded(
+        child: Center(
+          child: Text(
+            cubit.searchQuery.isNotEmpty
+                ? 'No result found'
+                : 'No Movie Available',
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+            ),
+          ),
+        ),
+      );
+    }
 
                   return Expanded(
                     child: ListView.builder(
@@ -197,32 +220,43 @@ class SeeAllShowingNow extends StatelessWidget {
                       itemBuilder: (context, index) {
                         if (index < filteredMovies.length) {
                           final movie = filteredMovies[index];
-                          return 
-                          SeeallMovieCard(
-                            status: movie.status,
-                            subtitle:  movie.movieSubtitles != null
-                                ? movie.movieLanguages!
-                                    .map((type) => type.englishName ?? '')
-                                    .join(', ')
-                                : '', 
-                            rating: movie.rate! ,
-                            imgurl: movie.image != null
-                                ? '${LinksUrl.baseUrl}${movie.image!.url}'
-                                : 'https://ina.iq/eng/uploads/posts/2021-05/thumbs/upload_1621342522_427621977.png',
-                            title: movie.name!,
-                            genre: movie.movieTypes != null
-                                ? movie.movieTypes!
-                                    .map((type) => type.englishName ?? '')
-                                    .join(', ')
-                                : '',
-                            director: movie.director!.firstName!,
-                            duration: movie.durationInMinutes!,
-                            ar: movie.movieClassification!.englishName!,
-                            Language: movie.movieLanguages != null
-                                ? movie.movieLanguages!
-                                    .map((type) => type.englishName ?? '')
-                                    .join(', ')
-                                : '',
+                          return GestureDetector(
+                            onTap: () {
+                              NavigationWidget.pushPage(
+                                context,
+                                DetailesPage(
+                                  Isshowing: movie.status!.contains(
+                                      "Showing"), // true إذا كانت تحتوي على "Showing"
+                                  id: movie.id!,
+                                ),
+                              );
+                            },
+                            child: SeeallMovieCard(
+                              status: movie.status,
+                              subtitle: movie.movieSubtitles != null
+                                  ? movie.movieLanguages!
+                                      .map((type) => type.englishName ?? '')
+                                      .join(', ')
+                                  : '',
+                              rating: movie.rate!,
+                              imgurl: movie.image != null
+                                  ? '${LinksUrl.baseUrl}${movie.image!.url}'
+                                  : 'https://ina.iq/eng/uploads/posts/2021-05/thumbs/upload_1621342522_427621977.png',
+                              title: movie.name!,
+                              genre: movie.movieTypes != null
+                                  ? movie.movieTypes!
+                                      .map((type) => type.englishName ?? '')
+                                      .join(', ')
+                                  : '',
+                              director: movie.director!.firstName!,
+                              duration: movie.durationInMinutes!,
+                              ar: movie.movieClassification!.englishName!,
+                              Language: movie.movieLanguages != null
+                                  ? movie.movieLanguages!
+                                      .map((type) => type.englishName ?? '')
+                                      .join(', ')
+                                  : '',
+                            ),
                           );
                         } else if (cubit.hasMore) {
                           cubit.getmovie();

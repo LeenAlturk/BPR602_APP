@@ -17,6 +17,7 @@ class SeeallCubit extends Cubit<SeeallState> {
   int currentPage = 0;
   bool isFetching = false;
   bool hasMore = true;
+  bool loadedOnce = false;
   int? selectedMovieTypeID;
   List<MovieDatum> movies = [];
   
@@ -106,12 +107,15 @@ class SeeallCubit extends Cubit<SeeallState> {
 
         hasMore = response.data!.length == 10;
         currentPage++;
+          loadedOnce = true; // ✅ أول تحميل ناجح (حتى لو كانت فارغة)
         emit(MovieallAcceptstate(movies: movies));
+        
       } else {
         emit(MovieallErrortstate(message: response.message ?? 'Unknown error'));
       }
     } catch (e) {
       emit(MovieallErrortstate(message: 'Error: ${e.toString()}'));
+        loadedOnce = true; // حتى لو فشل
     } finally {
       isFetching = false;
     }

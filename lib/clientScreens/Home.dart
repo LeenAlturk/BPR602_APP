@@ -288,7 +288,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             cubit.movieResponse?.data != null) {
                           // Filter only "Now Showing" movies
                           final nowShowingMovies = cubit.movieResponse!.data!
-                              .where((movie) => movie.status!.contains("Showing"))
+                              .where((movie) => movie.status! =="Now Showing")
                               .toList();
               // == "Now Showing"
                           return SizedBox(
@@ -352,7 +352,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               NavigationWidget.pushPage(
                                   context,
                                   const SeeAllShowingNow(
-                                    statustype: "Coming Soon",
+                                    statustype: "Coming Soon",
                                   ));
                             },
                             child: Text(
@@ -415,7 +415,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             cubit.movieResponse?.data != null) {
                           // Filter only "Coming Soon" movies
                           final comingSoonMovies = cubit.movieResponse!.data!
-                              .where((movie) => movie.status!.contains( "Coming"))
+                              .where((movie) => movie.status! == "Coming Soon")
                               .toList();
               // == "Coming Soon"
                           return SizedBox(
