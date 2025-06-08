@@ -132,6 +132,42 @@ Movie? selectedSubtitle;
   DateTime? endDate;
 // Update the getMoviedetailesTAndD method:
  MovieResponseById? movieResponseById;
+
+// Future<void> getMoviedetailesTAndD(int id) async {
+//   emit(TimeAndDateLoading());
+//   try {
+//     movieResponseById = await GetIt.I.get<GetMovieallinfoRepo>().getmoviedetailse(id);
+
+//     if (movieResponseById!.message == 'Session Is Done') {
+//       DataStore.instance.deleateRefreshToken();
+//       DataStore.instance.deleateToken();
+//       emit(TimeAndDateEroorSttae(message: movieResponseById!.message!));
+//     } else if (movieResponseById?.data != null) {
+//       // Get data from API
+//       availableLanguages = movieResponseById!.data!.movieLanguages ?? [];
+//       availableSubtitles = movieResponseById!.data!.movieSubtitles ?? [];
+      
+//       // Set default selections if available
+//       if (availableLanguages.isNotEmpty) {
+//         selectedLanguage = availableLanguages.first;
+//       }
+//       if (availableSubtitles.isNotEmpty) {
+//         selectedSubtitle = availableSubtitles.first;
+//       }
+
+//       // Set date range
+//       startDate = movieResponseById!.data!.fromDate ?? DateTime.now();
+//       endDate = movieResponseById!.data!.toDate ?? DateTime.now().add(Duration(days: 30));
+
+//       emit(TimeAndDateAcceptState());
+//     } else {
+//       emit(TimeAndDateEroorSttae(message: movieResponseById!.message!));
+//     }
+//   } catch (ex) {
+//     emit(TimeAndDateEroorSttae(message: movieResponseById?.message ?? 'Unknown error'));
+//   }
+// }
+// تأكد أن هذه الدالة موجودة في الكيوبت
 Future<void> getMoviedetailesTAndD(int id) async {
   emit(TimeAndDateLoading());
   try {
@@ -142,11 +178,9 @@ Future<void> getMoviedetailesTAndD(int id) async {
       DataStore.instance.deleateToken();
       emit(TimeAndDateEroorSttae(message: movieResponseById!.message!));
     } else if (movieResponseById?.data != null) {
-      // Get data from API
       availableLanguages = movieResponseById!.data!.movieLanguages ?? [];
       availableSubtitles = movieResponseById!.data!.movieSubtitles ?? [];
       
-      // Set default selections if available
       if (availableLanguages.isNotEmpty) {
         selectedLanguage = availableLanguages.first;
       }
@@ -154,9 +188,16 @@ Future<void> getMoviedetailesTAndD(int id) async {
         selectedSubtitle = availableSubtitles.first;
       }
 
-      // Set date range
+      // هنا التعديل المهم
       startDate = movieResponseById!.data!.fromDate ?? DateTime.now();
       endDate = movieResponseById!.data!.toDate ?? DateTime.now().add(Duration(days: 30));
+      
+      // ضبط today ليكون أول يوم متاح إذا كان التاريخ الحالي قبل startDate
+      if (DateTime.now().isBefore(startDate!)) {
+        today = startDate!;
+      } else {
+        today = DateTime.now();
+      }
 
       emit(TimeAndDateAcceptState());
     } else {

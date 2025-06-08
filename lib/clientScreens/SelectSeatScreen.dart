@@ -87,6 +87,7 @@ class _SelectSeatScreenState extends State<SelectSeatScreen> {
         },
         builder: (context, state) {
           return Scaffold(
+          
             backgroundColor: Kbackground,
             appBar: AppBar(
               backgroundColor: Kbackground,
@@ -102,15 +103,41 @@ class _SelectSeatScreenState extends State<SelectSeatScreen> {
                 onPressed: () => Navigator.of(context).pop(),
               ),
               automaticallyImplyLeading: true,
+               actions: [
+                Padding(
+                    padding: EdgeInsets.all(size.width * 0.01),
+                    child: IconButton(
+                        onPressed: () {
+                          selectedSeats = [];
+                          context.read<SeatcubitCubit>().getMoviehall(9);
+                        },
+                        icon: Icon(
+                          Icons.refresh,
+                          color: kbutton,
+                        )))
+              ],
             ),
             body: Column(
               children: [
                 Image.asset(
                   "assets/scre cenima.png",
-                  width: size.width,
-                  height: size.height * 0.2,
+                  width: size.width ,
+                  height: size.height * 0.12,
                 ),
 
+                SizedBox(height: size.height * 0.01,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.swipe_right, color: const Color.fromARGB(255, 236, 198, 45)),
+                    Icon(Icons.swipe_down, color: const Color.fromARGB(255, 236, 198, 45)),
+                    Text(
+                    ' You can Scroll Cinema Hall ',
+                    style: TextStyle(color: const Color.fromARGB(255, 236, 198, 45), fontSize: 12.sp),
+                                  ),
+                  ],
+                ),
+                   SizedBox(height: size.height * 0.01,),
                 // Expanded(
                 //   child: ListView.builder(
                 //     scrollDirection: Axis.vertical,
@@ -153,7 +180,92 @@ class _SelectSeatScreenState extends State<SelectSeatScreen> {
                 //     },
                 //   ),
                 // ),
-        Expanded(
+//         Expanded(
+//   child: Builder(
+//     builder: (context) {
+//       if (state is GetHallAwaitState) {
+//         return const Center(child: CircularProgressIndicator());
+//       } else if (state is GetHallErrorState) {
+//         return Center(
+//           child: Text(
+//             'Error: ${state.message}',
+//             style: const TextStyle(color: Colors.red),
+//           ),
+//         );
+//       } else if (state is GetHallAcceptState) {
+//         final data = context.read<SeatcubitCubit>().gethallid!.data!;
+//         final chairs = data.hallChairs;
+
+//         return GridView.builder(
+//           padding: const EdgeInsets.all(8.0),
+//           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+//             crossAxisCount: data.columnCount,
+//             crossAxisSpacing: 2,
+//             mainAxisSpacing: 2,
+//           ),
+//           itemCount: chairs.length,
+//           itemBuilder: (context, index) {
+//             final seat = chairs[index];
+//             if (!seat.isValid) {
+//               return const SizedBox.shrink();
+//             }
+        
+//             final isSelected = selectedSeats.any((s) => s.id == seat.code);
+        
+//             return GestureDetector(
+//               onTap: () {
+//                 toggleSeatSelection(Seat(
+//                   seat.code,
+//                   isSelected ? SeatStatus.selected : SeatStatus.available,
+//                 ));
+//               },
+//               child: AspectRatio(
+//                 aspectRatio: 1, // يجعل كل خلية مربعة
+//                 child: LayoutBuilder(
+//                   builder: (context, constraints) {
+//                     double iconSize = constraints.maxWidth * 0.55;
+//                     double fontSize = constraints.maxWidth * 0.23;
+             
+        
+//                     return Container(
+//                       alignment: Alignment.center,
+//                       decoration: BoxDecoration(
+//                         color: isSelected ? Colors.green : Colors.grey,
+//                         borderRadius: BorderRadius.circular(4),
+//                       ),
+//                       child: Column(
+//                         mainAxisAlignment: MainAxisAlignment.center,
+//                         children: [
+//                           Icon(
+//                             Icons.chair_sharp,
+//                             color: Colors.white,
+//                             size: iconSize,
+//                           ),
+//                           const SizedBox(height: 4),
+//                           Text(
+//                             seat.code,
+//                             style: TextStyle(
+//                               color: Colors.white,
+//                               fontSize: fontSize,
+//                               fontWeight: FontWeight.bold,
+//                             ),
+//                           ),
+//                         ],
+//                       ),
+//                     );
+//                   },
+//                 ),
+//               ),
+//             );
+//           },
+//         );
+//       } else {
+//         return const SizedBox();
+//       }
+//     },
+//   ),
+// ),
+Expanded(
   child: Builder(
     builder: (context) {
       if (state is GetHallAwaitState) {
@@ -169,68 +281,82 @@ class _SelectSeatScreenState extends State<SelectSeatScreen> {
         final data = context.read<SeatcubitCubit>().gethallid!.data!;
         final chairs = data.hallChairs;
 
-        return GridView.builder(
-          padding: const EdgeInsets.all(8.0),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: data.columnCount,
-            crossAxisSpacing: 2,
-            mainAxisSpacing: 2,
-          ),
-          itemCount: chairs.length,
-          itemBuilder: (context, index) {
-            final seat = chairs[index];
-            if (!seat.isValid) {
-              return const SizedBox.shrink();
-            }
-
-            final isSelected = selectedSeats.any((s) => s.id == seat.code);
-
-            return GestureDetector(
-              onTap: () {
-                toggleSeatSelection(Seat(
-                  seat.code,
-                  isSelected ? SeatStatus.selected : SeatStatus.available,
-                ));
-              },
-              child: AspectRatio(
-                aspectRatio: 1, // يجعل كل خلية مربعة
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    double iconSize = constraints.maxWidth * 0.55;
-                    double fontSize = constraints.maxWidth * 0.23;
-             
-
-                    return Container(
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: isSelected ? Colors.green : Colors.grey,
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.chair_sharp,
-                            color: Colors.white,
-                            size: iconSize,
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            seat.code,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: fontSize,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
+        return Center(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+             physics: const ClampingScrollPhysics(),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+               physics: const ClampingScrollPhysics(),
+              child: SizedBox(
+                width: data.columnCount * 41.0, // عرض ثابت لكل خلية (60 هو مثال)
+                child: GridView.builder(
+                  physics: const NeverScrollableScrollPhysics(), // تعطيل التمرير الداخلي
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.all(8.0),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: data.columnCount,
+                    crossAxisSpacing: 2,
+                    mainAxisSpacing: 2,
+                  ),
+                  itemCount: chairs.length,
+                  itemBuilder: (context, index) {
+                    final seat = chairs[index];
+                    if (!seat.isValid) {
+                      return const SizedBox.shrink();
+                    }
+                
+                    final isSelected = selectedSeats.any((s) => s.id == seat.code);
+                
+                    return GestureDetector(
+                      onTap: () {
+                        toggleSeatSelection(Seat(
+                          seat.code,
+                          isSelected ? SeatStatus.selected : SeatStatus.available,
+                        ));
+                      },
+                      child: AspectRatio(
+                        aspectRatio: 1,
+                        child: LayoutBuilder(
+                          builder: (context, constraints) {
+                            double iconSize = constraints.maxWidth * 0.55;
+                            double fontSize = constraints.maxWidth * 0.23;
+                     
+                            return Container(
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: isSelected ? Colors.green : Colors.grey,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.chair_sharp,
+                                    color: Colors.white,
+                                    size: iconSize,
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    seat.code,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: fontSize,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     );
                   },
                 ),
               ),
-            );
-          },
+            ),
+          ),
         );
       } else {
         return const SizedBox();
@@ -328,7 +454,7 @@ class _SelectSeatScreenState extends State<SelectSeatScreen> {
                   ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(15.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: Column(
                     //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

@@ -96,17 +96,21 @@ class _TimeAndDateScreenState extends State<TimeAndDateScreen> {
                               color: ksmallActionColor,
                             ),
                             child: TableCalendar(
+                              
                               calendarStyle: const CalendarStyle(
+                                
                                 selectedDecoration: BoxDecoration(
-                                  color: Colors.blue,
+                                color: kbutton,
                                   shape: BoxShape.circle,
                                 ),
                                 todayDecoration: BoxDecoration(
-                                  color: kbutton,
+                                  //color: kbutton,
+                                   color: Color.fromARGB(255, 28, 58, 82),
                                   shape: BoxShape.circle,
                                 ),
+                                weekendTextStyle:TextStyle(color: Colors.amber) ,
                                 defaultTextStyle:
-                                    TextStyle(color: Colors.white),
+                                    TextStyle(color: Colors.amber),
                                 selectedTextStyle:
                                     TextStyle(color: Colors.white),
                                 todayTextStyle: TextStyle(color: Colors.white),
@@ -148,6 +152,7 @@ class _TimeAndDateScreenState extends State<TimeAndDateScreen> {
                                     .read<TimaAndDateScreenCubit>()
                                     .onDateSelected(day, focusedDay);
                               },
+                              
                             ),
                           );
                         },

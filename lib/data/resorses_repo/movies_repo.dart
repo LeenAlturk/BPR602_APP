@@ -89,7 +89,7 @@ class GetMovieallinfoRepo extends BaseClient {
   Future<MovieResponse> getallmovies({
   String searchQuery = '',
   int pageIndex = 0,
-  int pageSize = 30,
+  int pageSize = 10,
   int ?movieTypeID ,
   String? status,
 }
