@@ -22,7 +22,9 @@ class SeatcubitCubit extends Cubit<SeatcubitState> {
               DataStore.instance.deleateRefreshToken();
                 DataStore.instance.deleateToken();
         emit(GetHallErrorState(message: gethallid!.message!));
-      } else if (gethallid!.data != null) {
+      }else if(gethallid!.message == 'No Internet Connection'){
+         emit(GetHallErrorState(message: gethallid!.message!));
+      }  else if (gethallid!.data != null) {
         emit(GetHallAcceptState());
       } else if (gethallid!.message == 'Internet is Week') {
         emit(GetHallErrorState(message: gethallid!.message!));

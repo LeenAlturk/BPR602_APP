@@ -148,6 +148,8 @@ class MycubitCubit extends Cubit<MycubitState> {
         DataStore.instance.deleateToken();
         DataStore.instance.deleateRoalUser();
         emit(MovietypsearchErrorstate(message: getMovieTypemodel!.message!));
+      }else if (getMovieTypemodel!.message == 'No Internet Connection'){
+               emit(MovietypsearchErrorstate(message: getMovieTypemodel!.message!));
       } else if (getMovieTypemodel!.data != null) {
         emit(MycubitInitial());
       } else if (getMovieTypemodel!.message == 'Internet is Week') {
@@ -159,6 +161,7 @@ class MycubitCubit extends Cubit<MycubitState> {
       emit(MovietypsearchErrorstate(message: 'Something went wrong'));
     }
   }
+  //No Internet Connection
 
   // void selectFilter(String filter, int movieTypeId) {
   //   selectedMovieTypeId = movieTypeId;
@@ -236,6 +239,8 @@ class MycubitCubit extends Cubit<MycubitState> {
         DataStore.instance.deleateToken();
         DataStore.instance.deleateRoalUser();
         emit(MoviesearchErrortstate(message: newResponse.message!));
+      }else if(newResponse.message == "No Internet Connection"){
+          emit(MoviesearchErrortstate(message: newResponse.message!));
       } else if (newResponse.data != null) {
         hasMore = newResponse.data!.length >= pageSize;
         

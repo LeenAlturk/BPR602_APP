@@ -46,7 +46,9 @@ class LoginCubit extends Cubit<LoginState> {
           emailAddress: emailValidatorLogin.controller.text,
           password: passwordValidatorLogin.controller.text));
       // if(responseLogInModel.success!==false)
-
+      //      if(responseLogInModel!.message == 'No Internet Connection'){
+      //     emit(LogInErrorState(message: responseLogInModel!.message!));
+      // }
       DataStore.instance.setToken(responseLogInModel!.data!.accessToken!);
       DataStore.instance
           .setRefreshToken(responseLogInModel!.data!.refreshToken!);
@@ -61,8 +63,10 @@ class LoginCubit extends Cubit<LoginState> {
       } else {
         emit(LogInscannerAcceptState());
       }
+
+    
     } catch (ex) {
-      emit(LogInErrorState(responseLogInModel!.message!));
+      emit(LogInErrorState(message: responseLogInModel!.message!));
     }
   }
 }

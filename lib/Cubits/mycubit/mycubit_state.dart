@@ -69,7 +69,7 @@ class SearchLoaded extends MycubitState {
 
 class SearchError extends MycubitState {
   final String message;
-  SearchError(this.message);
+  SearchError( this.message);
 }
 
 class MovietypsearchErrorstate extends MycubitState {

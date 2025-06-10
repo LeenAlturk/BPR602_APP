@@ -14,7 +14,7 @@ class LogInAcceptStateEmp extends LoginState {}
 class LogInErrorState extends LoginState {
   final String message;
 
-  LogInErrorState(this.message);
+  LogInErrorState( {required this.message});
 }
 
 final class Loginpasswordvisibility extends LoginState {

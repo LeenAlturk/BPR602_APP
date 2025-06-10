@@ -1,4 +1,6 @@
 
+import 'dart:io';
+
 import 'package:bpr602_cinema/controller/app_store.dart';
 import 'package:bpr602_cinema/data/api_client.dart';
 import 'package:bpr602_cinema/data/link.dart';
@@ -21,59 +23,61 @@ class GeHallRepo extends BaseClient {
           options: Options(headers: headers));
       print(response.data);
       return GetHallId.fromJson(response.data);
-    } catch (ex) {
-      if (ex is DioException) {
-        if (ex.response!.statusCode == 401) {
-          try {
-            RefreshRequest refreshTokenModel = RefreshRequest(
-              accessToken: DataStore.instance.token,
-              refreshToken: DataStore.instance.getrefreshToken,
-            );
-            var refreshToken = await client.post(LinksUrl.refreshToken,
-                data: refreshTokenModel.toJson());
-            RefreshResponse reafreshTokenModel =
-                RefreshResponse.fromJson(refreshToken.data);
-            DataStore.instance.setToken(reafreshTokenModel.data.accessToken);
-            DataStore.instance
-                .setRefreshToken(reafreshTokenModel.data.refreshToken);
+    }catch (ex) {
+    if (ex is DioException) {
+      if (ex.response?.statusCode == 401) {
+        try {
+          RefreshRequest refreshTokenModel = RefreshRequest(
+            accessToken: DataStore.instance.token,
+            refreshToken: DataStore.instance.getrefreshToken,
+          );
+          var refreshToken = await client.post(
+            LinksUrl.refreshToken,
+            data: refreshTokenModel.toJson(),
+          );
+          RefreshResponse reafreshTokenModel =
+              RefreshResponse.fromJson(refreshToken.data);
+          DataStore.instance.setToken(reafreshTokenModel.data.accessToken);
+          DataStore.instance.setRefreshToken(reafreshTokenModel.data.refreshToken);
 
-            return getHall(hallid);
-          } catch (ex) {
-            if (ex is DioException) {
-              if (ex.response!.statusCode == 401) {
-             
-                return GetHallId(message: 'Session Is Done' , success: false);
-                
-              }
-              if (ex.type == DioExceptionType.connectionTimeout) {
-                return GetHallId(message: 'Internet is Week' , success: false);
-              }
-              if (ex.type == DioExceptionType.receiveTimeout) {
-                return GetHallId(message: 'Internet is Week');
-              }
-              if (ex.type == DioExceptionType.unknown) {
-                return GetHallId(message: 'Some Things Error');
-              } else {
-                return GetHallId(message: 'Some Things Error');
-              }
+          return getHall(hallid);
+        } catch (ex) {
+          if (ex is DioException) {
+            if (ex.response?.statusCode == 401) {
+              return GetHallId(message: 'Session Is Done', success: false);
             }
+            if (ex.type == DioExceptionType.connectionTimeout) {
+              return GetHallId(message: 'Internet is Weak', success: false);
+            }
+            if (ex.type == DioExceptionType.receiveTimeout) {
+              return GetHallId(message: 'Internet is Weak');
+            }
+            if (ex.type == DioExceptionType.connectionError || 
+                (ex.type == DioExceptionType.unknown && ex.error is SocketException)) {
+              return GetHallId(message: 'No Internet Connection', success: false);
+            }
+            return GetHallId(message: 'Something went wrong');
           }
+          return GetHallId(message: 'Something went wrong');
         }
-        if (ex.type == DioExceptionType.connectionTimeout) {
-          return GetHallId(message: 'Internet is Week' , success: false);
-        }
-        if (ex.type == DioExceptionType.receiveTimeout) {
-          return GetHallId(message: 'Internet is Week');
-        }
-        if (ex.type == DioExceptionType.unknown) {
-          return GetHallId(message: 'Some Things Error');
-        } else {
-          return GetHallId(message: 'Some Things Error');
-        }
-      } else {
-        return GetHallId(message: 'Some Things Error');
       }
+
+      // هذا الجزء بعد محاولة تجديد التوكن
+      if (ex.type == DioExceptionType.connectionTimeout) {
+        return GetHallId(message: 'Internet is Weak', success: false);
+      }
+      if (ex.type == DioExceptionType.receiveTimeout) {
+        return GetHallId(message: 'Internet is Weak');
+      }
+      if (ex.type == DioExceptionType.connectionError || 
+          (ex.type == DioExceptionType.unknown && ex.error is SocketException)) {
+        return GetHallId(message: 'No Internet Connection', success: false);
+      }
+      return GetHallId(message: 'Something went wrong');
+    } else {
+      return GetHallId(message: 'Something went wrong');
     }
+  }
   }
 }
 

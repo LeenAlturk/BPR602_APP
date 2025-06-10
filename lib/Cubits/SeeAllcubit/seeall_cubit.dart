@@ -98,6 +98,8 @@ class SeeallCubit extends Cubit<SeeallState> {
         DataStore.instance.deleateToken();
         DataStore.instance.deleateRoalUser();
         emit(MovieallErrortstate(message: response.message!));
+      }else if(response.message == 'No Internet Connection'){
+          emit(MovieallErrortstate(message: response.message!));
       } else if (response.data != null) {
         if (currentPage == 0) {
           movies = response.data!;

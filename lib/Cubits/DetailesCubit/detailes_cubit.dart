@@ -45,7 +45,7 @@ late YoutubePlayerController _controller;
       _controller = YoutubePlayerController(
         initialVideoId: videoId,
         flags: const YoutubePlayerFlags(
-         
+          
           autoPlay: false),
       );
       
@@ -100,6 +100,8 @@ late YoutubePlayerController _controller;
               DataStore.instance.deleateRefreshToken();
                 DataStore.instance.deleateToken();
         emit(DetailEerorstate(message: movieResponseById!.message!));
+      }else if(movieResponseById!.message == 'No Internet Connection'){
+         emit(DetailEerorstate(message: movieResponseById!.message!));
       } else if (movieResponseById?.data != null) {
         emit(DetailesAcceptstate());
       } else if (movieResponseById!.message == 'Internet is Week') {
@@ -116,7 +118,8 @@ late YoutubePlayerController _controller;
       }
     }
   }
-}
+   
+//No Internet Connection
   // void play() {
   //   if (_controller != null && _controller!.value.isInitialized) {
   //     _controller!.play();
@@ -137,3 +140,4 @@ late YoutubePlayerController _controller;
   //   return super.close();
   // }
 
+}

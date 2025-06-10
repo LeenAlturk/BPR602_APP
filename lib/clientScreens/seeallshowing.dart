@@ -1,4 +1,5 @@
 import 'package:bpr602_cinema/AllUserScreens/Login.dart';
+import 'package:bpr602_cinema/AllUserScreens/NointernetScreen.dart';
 import 'package:bpr602_cinema/Constants/colors.dart';
 import 'package:bpr602_cinema/Constants/sizer.dart';
 import 'package:bpr602_cinema/Cubits/SeeAllcubit/seeall_cubit.dart';
@@ -33,6 +34,11 @@ class SeeAllShowingNow extends StatelessWidget {
               Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(builder: (context) => LoginScreen()),
                   (route) => false);
+            }else if(state.message == "No Internet Connection"){
+                   AppConstants.showToast(context, state.message);
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => NoInternetScreen()),
+                  (route) => false);
             } else {
               AppConstants.showToast(context, state.message);
             }
@@ -43,6 +49,11 @@ class SeeAllShowingNow extends StatelessWidget {
               AppConstants.showToast(context, state.message);
               Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(builder: (context) => LoginScreen()),
+                  (route) => false);
+            }else if(state.message == "No Internet Connection"){
+                   AppConstants.showToast(context, state.message);
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => NoInternetScreen()),
                   (route) => false);
             } else {
               AppConstants.showToast(context, state.message);

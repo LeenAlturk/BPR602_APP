@@ -445,6 +445,7 @@
 //   }
 // }
 import 'package:bpr602_cinema/AllUserScreens/Login.dart';
+import 'package:bpr602_cinema/AllUserScreens/NointernetScreen.dart';
 import 'package:bpr602_cinema/Constants/colors.dart';
 import 'package:bpr602_cinema/Constants/sizer.dart';
 import 'package:bpr602_cinema/Cubits/Searchcubit/search_cubit.dart';
@@ -475,15 +476,25 @@ class SearchScreen extends StatelessWidget {
               Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(builder: (context) => LoginScreen()),
                   (route) => false);
+            }if (state.message == "No Internet Connection") {
+              AppConstants.showToast(context, state.message);
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => NoInternetScreen()),
+                  (route) => false);
             } else {
               AppConstants.showToast(context, state.message);
             }
           }
-            if (state is SearchError) {
+            if (state is MoviesearchErrortstate) {
             if (state.message == "Session Is Done") {
               AppConstants.showToast(context, state.message);
               Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(builder: (context) => LoginScreen()),
+                  (route) => false);
+            }if (state.message == "No Internet Connection") {
+              AppConstants.showToast(context, state.message);
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => NoInternetScreen()),
                   (route) => false);
             } else {
               //AppConstants.showToast(context, state.message);

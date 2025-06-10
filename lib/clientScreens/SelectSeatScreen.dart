@@ -1,4 +1,5 @@
 import 'package:bpr602_cinema/AllUserScreens/Login.dart';
+import 'package:bpr602_cinema/AllUserScreens/NointernetScreen.dart';
 import 'package:bpr602_cinema/Constants/colors.dart';
 import 'package:bpr602_cinema/Constants/sizer.dart';
 import 'package:bpr602_cinema/Cubits/Seatcubit/seatcubit_cubit.dart';
@@ -80,7 +81,12 @@ class _SelectSeatScreenState extends State<SelectSeatScreen> {
               Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(builder: (context) => LoginScreen()),
                   (route) => false);
-            } else {
+            }else if(state.message == 'No Internet Connection') {
+                 AppConstants.showToast(context, state.message);
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => NoInternetScreen()),
+                    (route) => false);
+              } else {
               AppConstants.showToast(context, state.message);
             }
           }

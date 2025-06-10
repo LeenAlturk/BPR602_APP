@@ -1,4 +1,5 @@
 import 'package:bpr602_cinema/AllUserScreens/Login.dart';
+import 'package:bpr602_cinema/AllUserScreens/NointernetScreen.dart';
 import 'package:bpr602_cinema/Animation/Fadeinfadeout.dart';
 import 'package:bpr602_cinema/Constants/colors.dart';
 import 'package:bpr602_cinema/Constants/sizer.dart';
@@ -498,8 +499,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(builder: (context) => LoginScreen()),
                     (route) => false);
-              } else {
-                AppConstants.showToast(context, state.message);
+              } else if(state.message == "No Internet Connection") {
+                 AppConstants.showToast(context, state.message);
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => NoInternetScreen()),
+                    (route) => false);
+              }else{
+                        AppConstants.showToast(context, state.message);
               }
             }
           },
@@ -580,7 +586,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     // Now Showing List
                     _buildSectionHeader(
                       size,
-                      'Showing Now',
+                      'Now Showing',
                       () {
                         NavigationWidget.pushPage(
                           context,

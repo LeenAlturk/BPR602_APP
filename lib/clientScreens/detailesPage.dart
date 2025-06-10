@@ -1,4 +1,5 @@
 import 'package:bpr602_cinema/AllUserScreens/Login.dart';
+import 'package:bpr602_cinema/AllUserScreens/NointernetScreen.dart';
 import 'package:bpr602_cinema/Animation/Fadeinfadeout.dart';
 import 'package:bpr602_cinema/Constants/colors.dart';
 import 'package:bpr602_cinema/Constants/sizer.dart';
@@ -40,7 +41,12 @@ class DetailesPage extends StatelessWidget {
               Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(builder: (context) => LoginScreen()),
                   (route) => false);
-            } else {
+            }else if(state.message == 'No Internet Connection') {
+                 AppConstants.showToast(context, state.message);
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => NoInternetScreen()),
+                    (route) => false);
+              } else {
               AppConstants.showToast(context, state.message);
             }
           }
@@ -74,7 +80,7 @@ class DetailesPage extends StatelessWidget {
                 cubit.movieResponseById?.data == null) {
               return const Scaffold(
                 backgroundColor: Kbackground,
-                body: Center(child: CircularProgressIndicator()),
+                body: Center(child: CircularProgressIndicator( color: kbutton,)),
               );
             }
 
@@ -193,6 +199,8 @@ class DetailesPage extends StatelessWidget {
                                       controller: state.controller,
                                       showVideoProgressIndicator: true,
                                       onReady: () {
+    //                                        state.controller.unMute();
+    // state.controller.play();
                                         print("YouTube Player Ready");
                                       },
                                     ),
