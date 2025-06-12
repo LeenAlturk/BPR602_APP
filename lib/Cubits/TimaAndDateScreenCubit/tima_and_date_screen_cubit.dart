@@ -177,7 +177,9 @@ Future<void> getMoviedetailesTAndD(int id) async {
       DataStore.instance.deleateRefreshToken();
       DataStore.instance.deleateToken();
       emit(TimeAndDateEroorSttae(message: movieResponseById!.message!));
-    } else if (movieResponseById?.data != null) {
+    }else if(movieResponseById!.message == 'No Internet Connection'){
+         emit(TimeAndDateEroorSttae(message: movieResponseById!.message!));
+      } else if (movieResponseById?.data != null) {
       availableLanguages = movieResponseById!.data!.movieLanguages ?? [];
       availableSubtitles = movieResponseById!.data!.movieSubtitles ?? [];
       

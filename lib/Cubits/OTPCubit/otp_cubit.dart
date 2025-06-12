@@ -45,14 +45,21 @@ class OtpCubit extends Cubit<OtpState> {
 
  ResendResponse? resendResponse;
   Future<void> resendCode(String email) async {
-    emit(ReSendCodeAcceptState());
+    emit(ReSendCodeAwaitState());
     try {
       resendResponse = await GetIt.I
           .get<Authrepo>()
           .resendCode(ReSendOtpModel(email: email));
       resendSuc = true;
  
+      //emit(ReSendCodeAcceptState());
+       if (resendResponse != null &&
+        resendResponse!.success == false) {
+   
+      emit(ReSendCodeErrorState(resendResponse!.message ?? "An error occurred"));
+    } else {
       emit(ReSendCodeAcceptState());
+    }
     } catch (ex) {
       emit(ReSendCodeErrorState(resendResponse!.message!));
     }

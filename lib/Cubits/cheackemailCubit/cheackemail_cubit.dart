@@ -41,7 +41,8 @@ class CheackemailCubit extends Cubit<CheackemailState> {
     }
      // emit(CheackemailAcceptState(email: emailValidatorcheack.controller.text));
     } catch (ex) {
-     emit(CheackemailErrorState("Something went wrong, please try again."));
+     //emit(CheackemailErrorState("Something went wrong, please try again."));
+      emit(CheackemailErrorState(cheakemailResponse!.message! ));
     }
   }
 }

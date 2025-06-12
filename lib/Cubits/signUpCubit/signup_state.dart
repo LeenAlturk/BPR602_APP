@@ -26,5 +26,5 @@ class SignupAcceptState extends SignupState {
 class SignupErrorState extends SignupState {
   final String message;
 
-  SignupErrorState(this.message);
+  SignupErrorState( {required this.message});
 }

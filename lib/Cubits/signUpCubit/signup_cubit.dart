@@ -91,12 +91,13 @@ Future<void> register() async {
     if (customerRegisterresp != null &&
         customerRegisterresp!.success == false) {
       // assuming 'status' is false when there is an error
-      emit(SignupErrorState(customerRegisterresp!.message ?? "An error occurred"));
+      emit(SignupErrorState(message:  customerRegisterresp!.message ?? "An error occurred"));
     } else {
       emit(SignupAcceptState(emailValidator.controller.text));
     }
   } catch (ex) {
-    emit(SignupErrorState("Registration failed. Please try again later."));
+    // emit(SignupErrorState("Registration failed. Please try again later."));
+    emit(SignupErrorState(message: customerRegisterresp!.message!));
   }
 }
 

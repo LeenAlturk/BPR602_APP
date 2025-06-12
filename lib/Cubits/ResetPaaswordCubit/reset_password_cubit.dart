@@ -31,22 +31,24 @@ class ResetPasswordCubit extends Cubit<ResetPasswordState> {
   );
 
    final GlobalKey<FormState> formKey3 = GlobalKey<FormState>();
+    ResetpasswordResponse ? resetmodel;
     Future<void> resetpassword(String email , String otp ) async {
     emit(ResetpasswordAwaitState());
     try {
-      ResetpasswordResponse resetmodel = await GetIt.I
+       resetmodel = await GetIt.I
           .get<Authrepo>()
           .resetpassword(ResetpasswordRequest(
               email: email,
               passWord: newpasswordValidator.controller.text,
               otpCode: otp));
-      if (resetmodel.success == false) {
-        emit(ResetpasswordErrorState(message: resetmodel.message!));
+      if (resetmodel!.success == false) {
+        emit(ResetpasswordErrorState(message: resetmodel!.message!));
       } else {
         emit(ResetpasswordAcceptState());
       }
     } catch (ex) {
-      emit(ResetpasswordErrorState(message: 'Some Thing Error'));
+      //emit(ResetpasswordErrorState(message: 'Some Thing Error'));
+         emit(ResetpasswordErrorState(message: resetmodel!.message!));
     }
   }
 }

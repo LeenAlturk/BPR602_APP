@@ -27,7 +27,10 @@ class OtpScreen extends StatelessWidget {
           if (state is SendCodeErrorState) {
             AppConstants.showToast(context, state.message);
           }
-
+         
+         if(state is ReSendCodeErrorState){
+            AppConstants.showToast(context, state.message);
+         }
           if (state is SendCodeAcceptState) {
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => LoginScreen()),

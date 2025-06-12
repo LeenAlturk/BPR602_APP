@@ -1,8 +1,10 @@
 import 'package:bpr602_cinema/AllUserScreens/Login.dart';
+import 'package:bpr602_cinema/AllUserScreens/NointernetScreen.dart';
 import 'package:bpr602_cinema/Constants/colors.dart';
 import 'package:bpr602_cinema/Constants/sizer.dart';
 import 'package:bpr602_cinema/Cubits/TimaAndDateScreenCubit/tima_and_date_screen_cubit.dart';
 import 'package:bpr602_cinema/clientScreens/SelectSeatScreen.dart';
+import 'package:bpr602_cinema/clientScreens/halle_select.dart';
 import 'package:bpr602_cinema/models/response/movie_respone_id.dart';
 import 'package:bpr602_cinema/wedgets/Navigating.dart';
 import 'package:bpr602_cinema/wedgets/elevatedbtn.dart';
@@ -49,12 +51,17 @@ class _TimeAndDateScreenState extends State<TimeAndDateScreen> {
         listener: (context, state) {
         
            if (state is TimeAndDateEroorSttae) {
-            if (state.message == "Session Is Done") {
+               if (state.message == "Session Is Done") {
               AppConstants.showToast(context, state.message);
               Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(builder: (context) => LoginScreen()),
                   (route) => false);
-            } else {
+            }else if(state.message == 'No Internet Connection') {
+                 AppConstants.showToast(context, state.message);
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => NoInternetScreen()),
+                    (route) => false);
+              } else {
               AppConstants.showToast(context, state.message);
             }
           }
@@ -392,123 +399,142 @@ class _TimeAndDateScreenState extends State<TimeAndDateScreen> {
                       textColor: ksmallActionColor,
                       buttonText: "Submet",
                       onPressed: () {
-                        showModalBottomSheet(
-                          backgroundColor: Kbackground,
-                          context: context,
-                          builder: (BuildContext context) {
-                            return BlocProvider(
-                              create: (context) => TimaAndDateScreenCubit(),
-                              child: SizedBox(
-                                width: 400,
-                                height: 200,
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      SizedBox(
-                                        height: 20,
-                                      ),
-                                      Text(
-                                        "Avalible Time",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      // IMAX Time Chips Section at the start of the Column
-                                      Padding(
-                                        padding:
-                                            EdgeInsets.all(size.width * 0.01),
-                                        child: BlocBuilder<
-                                            TimaAndDateScreenCubit,
-                                            TimaAndDateScreenState>(
-                                          buildWhen: (previous, current) =>
-                                              current is TimeHaleIMAX ||
-                                              current is TimeHaleStandard,
-                                          builder: (context, state) {
-                                            final imaxTimes = context
-                                                .read<TimaAndDateScreenCubit>()
-                                                .imaxTimes;
-                                            final selectedIMAXTime = context
-                                                .read<TimaAndDateScreenCubit>()
-                                                .selectedIMAXTime;
-
-                                            return SizedBox(
-                                              height:
-                                                  100, // Adjust the height to fit the ChoiceChip
-                                              child: ListView.builder(
-                                                scrollDirection:
-                                                    Axis.horizontal,
-                                                itemCount: imaxTimes.length,
-                                                itemBuilder: (context, index) {
-                                                  final isSelected =
-                                                      imaxTimes[index] ==
-                                                          selectedIMAXTime;
-                                                  return Padding(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 4.0),
-                                                    child: ChoiceChip(
-                                                      backgroundColor:
-                                                          ksmallActionColor,
-                                                      selectedColor: kbutton,
-                                                      label: Text(
-                                                        imaxTimes[index],
-                                                        style: TextStyle(
-                                                          color: isSelected
-                                                              ? Colors.black
-                                                              : Colors.white,
-                                                        ),
-                                                      ),
-                                                      selected: isSelected,
-                                                      onSelected:
-                                                          (bool selected) {
-                                                        context
-                                                            .read<
-                                                                TimaAndDateScreenCubit>()
-                                                            .selectIMAXTime(
-                                                                selected
-                                                                    ? index
-                                                                    : null);
-                                                      },
-                                                    ),
-                                                  );
-                                                },
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                      // Continue button below the IMAX Time Chips section
-                                      ElevatedBtn(
-                                        backgroundColor: kbutton,
-                                        textColor: ksmallActionColor,
-                                        buttonText: "continue",
-                                        onPressed: () {
-                                          NavigationWidget.pushPage(
+    //                         int? selectedLanguageId = context.read<TimaAndDateScreenCubit>().selectedLanguage?.id;
+    
+    // // الحصول على الـ id الخاص بالترجمة المحددة
+    // int? selectedSubtitleId = context.read<TimaAndDateScreenCubit>().selectedSubtitle?.id;
+    //   final cubit = context.read<TimaAndDateScreenCubit>();
+    
+    // // الحصول على البيانات المطلوبة
+    // DateTime selectedDate = cubit.today;
+    // int? languageId = cubit.selectedLanguage?.id;
+    // int? subtitleId = cubit.selectedSubtitle?.id;
+    // bool isVip = cubit.isVip;
+    // bool is3D = cubit.is3D;
+                        NavigationWidget.pushPage(
                                             context,
-                                            SelectSeatScreen(
-                                                // title: widget.title,
-                                                // syn: widget.syn,
-                                                // imgurl: widget.imgurl,
-                                                // duration: widget.duration,
-                                                // director: "DIRECTOR",
-                                                // ar: widget.ar,
-                                                // genre: widget.genre,
+                                            HallSelect(
+                                              
                                                 ),
                                           );
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        );
+                        // showModalBottomSheet(
+                        //   backgroundColor: Kbackground,
+                        //   context: context,
+                        //   builder: (BuildContext context) {
+                        //     return BlocProvider(
+                        //       create: (context) => TimaAndDateScreenCubit(),
+                        //       child: SizedBox(
+                        //         width: 400,
+                        //         height: 200,
+                        //         child: SingleChildScrollView(
+                        //           child: Column(
+                        //             crossAxisAlignment:
+                        //                 CrossAxisAlignment.center,
+                        //             mainAxisAlignment: MainAxisAlignment.center,
+                        //             children: [
+                        //               SizedBox(
+                        //                 height: 20,
+                        //               ),
+                        //               Text(
+                        //                 "Avalible Time",
+                        //                 style: TextStyle(
+                        //                   color: Colors.white,
+                        //                   fontSize: 14.sp,
+                        //                   fontWeight: FontWeight.bold,
+                        //                 ),
+                        //               ),
+                        //               // IMAX Time Chips Section at the start of the Column
+                        //               Padding(
+                        //                 padding:
+                        //                     EdgeInsets.all(size.width * 0.01),
+                        //                 child: BlocBuilder<
+                        //                     TimaAndDateScreenCubit,
+                        //                     TimaAndDateScreenState>(
+                        //                   buildWhen: (previous, current) =>
+                        //                       current is TimeHaleIMAX ||
+                        //                       current is TimeHaleStandard,
+                        //                   builder: (context, state) {
+                        //                     final imaxTimes = context
+                        //                         .read<TimaAndDateScreenCubit>()
+                        //                         .imaxTimes;
+                        //                     final selectedIMAXTime = context
+                        //                         .read<TimaAndDateScreenCubit>()
+                        //                         .selectedIMAXTime;
+
+                        //                     return SizedBox(
+                        //                       height:
+                        //                           100, // Adjust the height to fit the ChoiceChip
+                        //                       child: ListView.builder(
+                        //                         scrollDirection:
+                        //                             Axis.horizontal,
+                        //                         itemCount: imaxTimes.length,
+                        //                         itemBuilder: (context, index) {
+                        //                           final isSelected =
+                        //                               imaxTimes[index] ==
+                        //                                   selectedIMAXTime;
+                        //                           return Padding(
+                        //                             padding: const EdgeInsets
+                        //                                 .symmetric(
+                        //                                 horizontal: 4.0),
+                        //                             child: ChoiceChip(
+                        //                               backgroundColor:
+                        //                                   ksmallActionColor,
+                        //                               selectedColor: kbutton,
+                        //                               label: Text(
+                        //                                 imaxTimes[index],
+                        //                                 style: TextStyle(
+                        //                                   color: isSelected
+                        //                                       ? Colors.black
+                        //                                       : Colors.white,
+                        //                                 ),
+                        //                               ),
+                        //                               selected: isSelected,
+                        //                               onSelected:
+                        //                                   (bool selected) {
+                        //                                 context
+                        //                                     .read<
+                        //                                         TimaAndDateScreenCubit>()
+                        //                                     .selectIMAXTime(
+                        //                                         selected
+                        //                                             ? index
+                        //                                             : null);
+                        //                               },
+                        //                             ),
+                        //                           );
+                        //                         },
+                        //                       ),
+                        //                     );
+                        //                   },
+                        //                 ),
+                        //               ),
+                        //               // Continue button below the IMAX Time Chips section
+                        //               ElevatedBtn(
+                        //                 backgroundColor: kbutton,
+                        //                 textColor: ksmallActionColor,
+                        //                 buttonText: "continue",
+                        //                 onPressed: () {
+                        //                   NavigationWidget.pushPage(
+                        //                     context,
+                        //                     SelectSeatScreen(
+                        //                         // title: widget.title,
+                        //                         // syn: widget.syn,
+                        //                         // imgurl: widget.imgurl,
+                        //                         // duration: widget.duration,
+                        //                         // director: "DIRECTOR",
+                        //                         // ar: widget.ar,
+                        //                         // genre: widget.genre,
+                        //                         ),
+                        //                   );
+                        //                 },
+                        //               ),
+                        //             ],
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     );
+                        //   },
+                        // );
+
                       },
                     ),
                   ],
