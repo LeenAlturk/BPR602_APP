@@ -1,6 +1,7 @@
 
 import 'package:bpr602_cinema/Constants/colors.dart';
 import 'package:bpr602_cinema/Constants/sizer.dart';
+import 'package:bpr602_cinema/Cubits/Cartcubit/shopping_cart_cubit.dart';
 import 'package:bpr602_cinema/Cubits/snackcubit/snackcubit_cubit.dart';
 import 'package:bpr602_cinema/clientScreens/seeallshowing.dart';
 import 'package:bpr602_cinema/clientScreens/seeallsnacks.dart';
@@ -43,21 +44,74 @@ class _SnackScreenState extends State<SnackScreen> {
                 ),
                 onPressed: () => Navigator.of(context).pop(),
               ),
-              actions:  [
-                Padding(
-                  padding: EdgeInsets.all(size.width * 0.01),
-                  child: IconButton(onPressed: (){
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const CartScreen()),
-                    );
-                  }, icon: Icon(
-                    Icons.shopping_cart,
-                    color: Colors.white,
-                  ),)
-                )
-              ],
+              // actions:  [
+              //   Padding(
+              //     padding: EdgeInsets.all(size.width * 0.01),
+              //     child: IconButton(onPressed: (){
+              //       Navigator.push(
+              //         context,
+              //         MaterialPageRoute(
+              //             builder: (context) => const CartScreen()),
+              //       );
+              //     }, icon: Icon(
+              //       Icons.shopping_cart,
+              //       color: Colors.white,
+              //     ),)
+              //   )
+              // ],
+              actions: [
+  Padding(
+    padding: EdgeInsets.all(size.width * 0.01),
+    child: BlocBuilder<ShoppingCartCubit, ShoppingCartState>(
+      builder: (context, state) {
+        final cartItems = context.read<ShoppingCartCubit>().listOfCartItem;
+        final itemCount = cartItems.fold(0, (sum, item) => sum + item.quantity);
+        
+        return Stack(
+          clipBehavior: Clip.none, // مهم لعدم قص الجزء الزائد
+          children: [
+            IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const CartScreen()),
+                );
+              },
+              icon: Icon(Icons.shopping_cart, color: Colors.white),
+            ),
+            if (itemCount > 0)
+              Positioned(
+                right: -2, // تعديل الموضع أفقيًا
+                top: -2,  // تعديل الموضع رأسيًا
+                child: Container(
+                  padding: EdgeInsets.all(2),
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 210, 26, 13),
+                    shape: BoxShape.circle,
+                  ),
+                  constraints: BoxConstraints(
+                    minWidth: 16,
+                    minHeight: 16,
+                  ),
+                  child: Center(
+                    child: Text(
+                      itemCount.toString(),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        );
+      },
+    ),
+  )
+],
               automaticallyImplyLeading: true,
             ),
             body: ListView(

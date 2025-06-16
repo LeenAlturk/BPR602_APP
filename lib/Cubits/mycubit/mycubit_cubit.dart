@@ -136,6 +136,8 @@ class MycubitCubit extends Cubit<MycubitState> {
   bool hasMore = true;
   String? searchQuery;
   int? selectedMovieTypeId;
+  bool isLoadingMore = false;
+
   String? selectedStatus;
  final TextEditingController searchController = TextEditingController();
  final FocusNode searchFocusNode = FocusNode();
@@ -208,10 +210,13 @@ class MycubitCubit extends Cubit<MycubitState> {
 
   Future<void> loadMoreMovies() async {
     if (!hasMore) return;
+        isLoadingMore = true;
     
     currentPage++;
     await fetchMovies(loadMore: true);
+     isLoadingMore = false;
   }
+ 
 
   Future<void> resetAndFetchMovies() async {
     currentPage = 0;
@@ -221,6 +226,8 @@ class MycubitCubit extends Cubit<MycubitState> {
   }
 
   Future<void> fetchMovies({bool loadMore = false}) async {
+    if (state is Searching && !loadMore) return;
+
     if (!loadMore) {
       emit(Searching());
     }
@@ -242,6 +249,11 @@ class MycubitCubit extends Cubit<MycubitState> {
       }else if(newResponse.message == "No Internet Connection"){
           emit(MoviesearchErrortstate(message: newResponse.message!));
       } else if (newResponse.data != null) {
+          // ✅ أضف هذا هنا
+      if (newResponse.data!.isEmpty && loadMore) {
+        hasMore = false;
+        return;
+      }
         hasMore = newResponse.data!.length >= pageSize;
         
         if (loadMore && movieResponse != null) {
@@ -264,6 +276,7 @@ class MycubitCubit extends Cubit<MycubitState> {
       emit(MoviesearchErrortstate(message: 'Something went wrong'));
     }
   }
+  
 }
 
 

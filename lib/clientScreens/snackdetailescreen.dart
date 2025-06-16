@@ -79,6 +79,59 @@ class SnackDetails extends StatelessWidget {
             //     ),
             //   )
             // ],
+            actions: [
+  Padding(
+    padding: EdgeInsets.all(size.width * 0.01),
+    child: BlocBuilder<ShoppingCartCubit, ShoppingCartState>(
+      builder: (context, state) {
+        final cartItems = context.read<ShoppingCartCubit>().listOfCartItem;
+        final itemCount = cartItems.fold(0, (sum, item) => sum + item.quantity);
+        
+        return Stack(
+          clipBehavior: Clip.none, // مهم لعدم قص الجزء الزائد
+          children: [
+            IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const CartScreen()),
+                );
+              },
+              icon: Icon(Icons.shopping_cart, color: Colors.white),
+            ),
+            if (itemCount > 0)
+              Positioned(
+                right: -2, // تعديل الموضع أفقيًا
+                top: -2,  // تعديل الموضع رأسيًا
+                child: Container(
+                  padding: EdgeInsets.all(2),
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 210, 26, 13),
+                    shape: BoxShape.circle,
+                  ),
+                  constraints: BoxConstraints(
+                    minWidth: 16,
+                    minHeight: 16,
+                  ),
+                  child: Center(
+                    child: Text(
+                      itemCount.toString(),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        );
+      },
+    ),
+  )
+],
           ),
           body: ListView(
             children: [
@@ -249,7 +302,7 @@ class SnackDetails extends StatelessWidget {
                       cartCubit.addToCart(snackItem);
                       AppConstants.showToast(
                                               context,
-                                              'added');
+                                              'Snack added to cart ' , icon: Icons.done , iconcolor: Colors.green );
                     },
                   ),
                 ],

@@ -564,58 +564,99 @@ class SearchScreen extends StatelessWidget {
                 ),
               ),
 
-              // عرض الفلتر المختار (إذا وجد)
-              BlocBuilder<MycubitCubit, MycubitState>(
-                builder: (context, state) {
-                  if (state is FilterSelected || 
-        (state is Searching && context.read<MycubitCubit>().selectedMovieTypeId != null) ||
-        (state is SearchLoaded && context.read<MycubitCubit>().selectedMovieTypeId != null)) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Chip(
-                                label: Text(
-                                  //state.filterName,
-                                   state is FilterSelected ? state.filterName : 
-                    context.read<MycubitCubit>().getMovieTypemodel!.data!
-                      .firstWhere((type) => type.id == context.read<MycubitCubit>().selectedMovieTypeId).englishName!,
+        //       // عرض الفلتر المختار (إذا وجد)
+        //       BlocBuilder<MycubitCubit, MycubitState>(
+        //         builder: (context, state) {
+        //           if (state is FilterSelected || 
+        // (state is Searching && context.read<MycubitCubit>().selectedMovieTypeId != null) ||
+        // (state is SearchLoaded && context.read<MycubitCubit>().selectedMovieTypeId != null )|| context.read<MycubitCubit>().selectedMovieTypeId != null) {
+        //             return Padding(
+        //               padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        //               child: Column(
+        //                 children: [
+        //                   Row(
+        //                     children: [
+        //                       Chip(
+        //                         label: Text(
+        //                           //state.filterName,
+        //                            state is FilterSelected ? state.filterName : 
+        //             context.read<MycubitCubit>().getMovieTypemodel!.data!
+        //               .firstWhere((type) => type.id == context.read<MycubitCubit>().selectedMovieTypeId).englishName!,
 
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                backgroundColor: kbutton,
-                              ),
-                              IconButton(
-                                icon: Icon(Icons.close, color: Colors.white),
-                                onPressed: () {
-                                  context.read<MycubitCubit>().searchController.clear();
-                                  context.read<MycubitCubit>().clearFilter();
-                                },
-                              ),
-                            ],
-                          ),
-                          // SizedBox(height: size.height *0.3,),
-                          // Row(
-                          //   mainAxisAlignment: MainAxisAlignment.center,
-                          //   children: [
-                          //     Text("Start Typing To Search  ", style: TextStyle(
-                          //       color: Ktext , fontSize: 15.sp , fontWeight: FontWeight.bold
-                          //     ),),
-                          //     SizedBox(height: size.height *0.01,),
-                          //      Icon(Icons.search , color:  Ktext, size: 15.sp,)
-                          //   ],
-                          // )
-                        ],
-                      ),
-                    );
-                  }
-                  return SizedBox.shrink();
-                },
-              ),
+        //                           style: TextStyle(color: Colors.white),
+        //                         ),
+        //                         backgroundColor: kbutton,
+        //                       ),
+        //                       IconButton(
+        //                         icon: Icon(Icons.close, color: Colors.white),
+        //                         onPressed: () {
+        //                           context.read<MycubitCubit>().searchController.clear();
+        //                           context.read<MycubitCubit>().clearFilter();
+        //                         },
+        //                       ),
+        //                     ],
+        //                   ),
+        //                   // SizedBox(height: size.height *0.3,),
+        //                   // Row(
+        //                   //   mainAxisAlignment: MainAxisAlignment.center,
+        //                   //   children: [
+        //                   //     Text("Start Typing To Search  ", style: TextStyle(
+        //                   //       color: Ktext , fontSize: 15.sp , fontWeight: FontWeight.bold
+        //                   //     ),),
+        //                   //     SizedBox(height: size.height *0.01,),
+        //                   //      Icon(Icons.search , color:  Ktext, size: 15.sp,)
+        //                   //   ],
+        //                   // )
+        //                 ],
+        //               ),
+        //             );
+        //           }
+        //           return SizedBox.shrink();
+        //         },
+        //       ),
+        //new
+        // عرض الفلتر المختار (إذا وجد)
+BlocBuilder<MycubitCubit, MycubitState>(
+  builder: (context, state) {
+    final cubit = context.read<MycubitCubit>();
+    
+    // عرض الفلتر إذا كان هناك فلتر محدد، بغض النظر عن حالة البحث
+    if (cubit.selectedMovieTypeId != null) {
+      final movieType = cubit.getMovieTypemodel!.data!
+          .firstWhere((type) => type.id == cubit.selectedMovieTypeId);
+      
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Chip(
+                  label: Text(
+                    movieType.englishName!,
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  backgroundColor: kbutton,
+                ),
+                IconButton(
+                  icon: Icon(Icons.close, color: Colors.white),
+                  onPressed: () {
+                    cubit.searchController.clear();
+                    cubit.clearFilter();
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+    }
+    return SizedBox.shrink();
+  },
+),
 
-              // الجزء الرئيسي من الواجهة
+              //  الجزء الرئيسي من الواجهة
+              //قديم
               Expanded(
                 child: BlocBuilder<MycubitCubit, MycubitState>(
                   builder: (context, state) {
@@ -626,7 +667,8 @@ class SearchScreen extends StatelessWidget {
                     }
 
                     // عرض أزرار الفلتر في الحالة الأولية
-                    if (state is MycubitInitial || state is FilterCleared) {
+                    if ((state is MycubitInitial || state is FilterCleared) && 
+          cubit.selectedMovieTypeId == null) {
                       return GridView.builder(
                         padding: const EdgeInsets.all(8.0),
                         gridDelegate:
@@ -708,14 +750,24 @@ class SearchScreen extends StatelessWidget {
   }
 
   Widget _buildMovieList(MycubitCubit cubit) {
+    // return NotificationListener<ScrollNotification>(
+    //   onNotification: (ScrollNotification scrollInfo) {
+    //     if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent &&
+    //         cubit.hasMore) {
+    //       cubit.loadMoreMovies();
+    //     }
+    //     return false;
+    //   },
     return NotificationListener<ScrollNotification>(
-      onNotification: (ScrollNotification scrollInfo) {
-        if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent &&
-            cubit.hasMore) {
-          cubit.loadMoreMovies();
-        }
-        return false;
-      },
+  onNotification: (ScrollNotification scrollInfo) {
+    if (scrollInfo.metrics.pixels >= scrollInfo.metrics.maxScrollExtent - 100 &&
+        cubit.hasMore &&
+        !cubit.isLoadingMore) {
+      cubit.loadMoreMovies();
+    }
+    return false;
+  },
+  
       child: ListView.builder(
         controller: _scrollController,
         itemCount: (cubit.movieResponse?.data?.length ?? 0) + (cubit.hasMore ? 1 : 0),

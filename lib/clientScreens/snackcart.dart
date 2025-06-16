@@ -1,6 +1,7 @@
 import 'package:bpr602_cinema/Constants/colors.dart';
 import 'package:bpr602_cinema/Constants/sizer.dart';
 import 'package:bpr602_cinema/Cubits/Cartcubit/shopping_cart_cubit.dart';
+import 'package:bpr602_cinema/clientScreens/Bill.dart';
 import 'package:bpr602_cinema/clientScreens/BookingDetailes.dart';
 import 'package:bpr602_cinema/clientScreens/snackscreen.dart';
 import 'package:bpr602_cinema/models/snackModel.dart';
@@ -176,12 +177,19 @@ class CartScreen extends StatelessWidget {
                   onPressed: () {
                   AppConstants.showToast(
                                               context,
-                                              'Snacks booking ready');
-                  NavigationWidget.popPage(
-    context,
-    SnackScreen(
+                                              'Snacks booking ready' , icon: Icons.done , iconcolor: Colors.green);
+    //               NavigationWidget.popPage(
+    // context,
+    // SnackScreen(
        
-    ));
+    // )
+    // );
+       NavigationWidget.pushPage(
+                                            context,
+                                            Bill(
+                                              
+                                                ),
+                                          );
 
                   })
             ],
