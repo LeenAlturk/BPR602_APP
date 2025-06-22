@@ -42,6 +42,7 @@ import 'dart:developer';
 import 'package:bpr602_cinema/AllUserScreens/spalshscreen.dart';
 import 'package:bpr602_cinema/Cubits/Cartcubit/shopping_cart_cubit.dart';
 import 'package:bpr602_cinema/Cubits/SeeAllcubit/seeall_cubit.dart';
+import 'package:bpr602_cinema/Cubits/bookingCubit/booking_cubit.dart';
 import 'package:bpr602_cinema/controller/app_store.dart';
 import 'package:bpr602_cinema/data/resorses_repo/auth_repo.dart';
 import 'package:bpr602_cinema/data/resorses_repo/hall_repo.dart';
@@ -85,9 +86,9 @@ void main() async {
     GetIt.I.registerSingleton<Authrepo>(Authrepo());
     GetIt.I.registerSingleton<Imagerepo>(Imagerepo());
     GetIt.I.registerSingleton<ShoppingCartCubit>(ShoppingCartCubit());
-      
+
     GetIt.I.registerSingleton<GeHallRepo>(GeHallRepo());
-      GetIt.I.registerSingleton<GetMovieallinfoRepo>(GetMovieallinfoRepo());
+    GetIt.I.registerSingleton<GetMovieallinfoRepo>(GetMovieallinfoRepo());
     //gemovietype
     if (DataStore.instance.hasToken) {
       log('user token is : ${DataStore.instance.token}');
@@ -101,18 +102,22 @@ void main() async {
     ]).then((value) {
       Future.delayed(const Duration(seconds: 1), () {
         runApp(
-          BlocProvider(
-            create: (context) => GetIt.I<ShoppingCartCubit>(),
+          MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (context) => GetIt.I<ShoppingCartCubit>(),
+              ),
+              BlocProvider(
+                create: (context) => BookingCubit(),
+              ),
+            ],
             child: const MyApp(),
           ),
-         
         );
       });
     });
   }
 }
-
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -130,4 +135,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

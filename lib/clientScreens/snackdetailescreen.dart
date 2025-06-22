@@ -2,7 +2,9 @@ import 'package:bpr602_cinema/Constants/colors.dart';
 import 'package:bpr602_cinema/Constants/sizer.dart';
 import 'package:bpr602_cinema/Cubits/Cartcubit/shopping_cart_cubit.dart';
 import 'package:bpr602_cinema/clientScreens/snackcart.dart';
+import 'package:bpr602_cinema/clientScreens/snackscreen.dart';
 import 'package:bpr602_cinema/models/snackModel.dart';
+import 'package:bpr602_cinema/wedgets/Navigating.dart';
 import 'package:bpr602_cinema/wedgets/elevatedbtn.dart';
 import 'package:bpr602_cinema/wedgets/toast.dart';
 import 'package:flutter/material.dart';
@@ -80,64 +82,67 @@ class SnackDetails extends StatelessWidget {
             //   )
             // ],
             actions: [
-  Padding(
-    padding: EdgeInsets.all(size.width * 0.01),
-    child: BlocBuilder<ShoppingCartCubit, ShoppingCartState>(
-      builder: (context, state) {
-        final cartItems = context.read<ShoppingCartCubit>().listOfCartItem;
-        final itemCount = cartItems.fold(0, (sum, item) => sum + item.quantity);
-        
-        return Stack(
-          clipBehavior: Clip.none, // مهم لعدم قص الجزء الزائد
-          children: [
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const CartScreen()),
-                );
-              },
-              icon: Icon(Icons.shopping_cart, color: Colors.white),
-            ),
-            if (itemCount > 0)
-              Positioned(
-                right: -2, // تعديل الموضع أفقيًا
-                top: -2,  // تعديل الموضع رأسيًا
-                child: Container(
-                  padding: EdgeInsets.all(2),
-                  decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 210, 26, 13),
-                    shape: BoxShape.circle,
-                  ),
-                  constraints: BoxConstraints(
-                    minWidth: 16,
-                    minHeight: 16,
-                  ),
-                  child: Center(
-                    child: Text(
-                      itemCount.toString(),
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
+              Padding(
+                padding: EdgeInsets.all(size.width * 0.01),
+                child: BlocBuilder<ShoppingCartCubit, ShoppingCartState>(
+                  builder: (context, state) {
+                    final cartItems =
+                        context.read<ShoppingCartCubit>().listOfCartItem;
+                    final itemCount =
+                        cartItems.fold(0, (sum, item) => sum + item.quantity);
+
+                    return Stack(
+                      clipBehavior: Clip.none, // مهم لعدم قص الجزء الزائد
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const CartScreen()),
+                            );
+                          },
+                          icon: Icon(Icons.shopping_cart, color: Colors.white),
+                        ),
+                        if (itemCount > 0)
+                          Positioned(
+                            right: -2, // تعديل الموضع أفقيًا
+                            top: -2, // تعديل الموضع رأسيًا
+                            child: Container(
+                              padding: EdgeInsets.all(2),
+                              decoration: BoxDecoration(
+                                color: const Color.fromARGB(255, 210, 26, 13),
+                                shape: BoxShape.circle,
+                              ),
+                              constraints: BoxConstraints(
+                                minWidth: 16,
+                                minHeight: 16,
+                              ),
+                              child: Center(
+                                child: Text(
+                                  itemCount.toString(),
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                          ),
+                      ],
+                    );
+                  },
                 ),
-              ),
-          ],
-        );
-      },
-    ),
-  )
-],
+              )
+            ],
           ),
           body: ListView(
             children: [
               Column(
                 children: [
-                   SizedBox(height: size.height * 0.02),
+                  SizedBox(height: size.height * 0.02),
                   Center(
                     child: Column(
                       children: [
@@ -168,7 +173,7 @@ class SnackDetails extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding:  EdgeInsets.all(size.width * 0.04),
+                    padding: EdgeInsets.all(size.width * 0.04),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -183,9 +188,10 @@ class SnackDetails extends StatelessWidget {
                       ],
                     ),
                   ),
-                  
+
                   Padding(
-                    padding:  EdgeInsets.symmetric(horizontal: size.width * 0.04 , vertical:  0),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: size.width * 0.04, vertical: 0),
                     child: Text(
                       description,
                       style: const TextStyle(
@@ -198,7 +204,7 @@ class SnackDetails extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Padding(
-                         padding:  EdgeInsets.all(size.width * 0.04),
+                        padding: EdgeInsets.all(size.width * 0.04),
                         child: Text("Select Size  :",
                             style: TextStyle(
                                 fontSize: 16.sp,
@@ -209,7 +215,7 @@ class SnackDetails extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: ["M", "L", "XL"].map((size) {
                           return Padding(
-                            padding:  EdgeInsets.all(8.0),
+                            padding: EdgeInsets.all(8.0),
                             child: GestureDetector(
                               onTap: () {
                                 cartCubit.updateSize(snackItem, size);
@@ -257,7 +263,7 @@ class SnackDetails extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                        padding:  EdgeInsets.all(size.width * 0.04),
+                        padding: EdgeInsets.all(size.width * 0.04),
                         child: Text(
                           snackItem.quantity.toString(),
                           style: TextStyle(
@@ -296,13 +302,14 @@ class SnackDetails extends StatelessWidget {
                   //   style: TextStyle(color: Colors.white, fontSize: 20.sp),
                   // ),
                   ElevatedBtn(
-                    buttonText: "Add to Cart Total  ${(snackItem.quantity * (price + cartCubit.sizePriceMap[snackItem.size]!))}.IQD", // Change text based on isItemAdded
+                    buttonText:
+                        "Add to Cart Total  ${(snackItem.quantity * (price + cartCubit.sizePriceMap[snackItem.size]!))}.IQD", // Change text based on isItemAdded
                     backgroundColor: kbutton,
                     onPressed: () {
                       cartCubit.addToCart(snackItem);
-                      AppConstants.showToast(
-                                              context,
-                                              'Snack added to cart ' , icon: Icons.done , iconcolor: Colors.green );
+                      AppConstants.showToast(context, 'Snack added to cart ',
+                          icon: Icons.done, iconcolor: Colors.green);
+                      NavigationWidget.popPage(context, SnackScreen());
                     },
                   ),
                 ],

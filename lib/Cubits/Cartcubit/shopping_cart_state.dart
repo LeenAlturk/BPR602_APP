@@ -22,3 +22,4 @@ class ItemQuantityUpdated extends ShoppingCartState {
   final snacks productItem;
   ItemQuantityUpdated(this.productName, this.productItem);
 }
+class CartCleared extends ShoppingCartState {}

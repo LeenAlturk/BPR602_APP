@@ -252,6 +252,7 @@ class MycubitCubit extends Cubit<MycubitState> {
           // ✅ أضف هذا هنا
       if (newResponse.data!.isEmpty && loadMore) {
         hasMore = false;
+         emit(SearchLoaded(movieResponse?.data ?? [])); // إعادة إصدار نفس البيانات
         return;
       }
         hasMore = newResponse.data!.length >= pageSize;

@@ -54,7 +54,13 @@ late YoutubePlayerController _controller;
       emit(VideoError("Failed to load video"));
     }
   }
-
+  
+ void pauseVideo() {
+  if (_controller != null) {
+    _controller.pause();
+    emit(VideoLoaded(_controller, isPlaying: false));
+  }
+}
   // Dispose of the controller
   void disposeController() {
     _controller.dispose();

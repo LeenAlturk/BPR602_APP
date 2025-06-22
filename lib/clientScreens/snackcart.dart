@@ -1,6 +1,7 @@
 import 'package:bpr602_cinema/Constants/colors.dart';
 import 'package:bpr602_cinema/Constants/sizer.dart';
 import 'package:bpr602_cinema/Cubits/Cartcubit/shopping_cart_cubit.dart';
+import 'package:bpr602_cinema/Cubits/bookingCubit/booking_cubit.dart';
 import 'package:bpr602_cinema/clientScreens/Bill.dart';
 import 'package:bpr602_cinema/clientScreens/BookingDetailes.dart';
 import 'package:bpr602_cinema/clientScreens/snackscreen.dart';
@@ -175,6 +176,13 @@ class CartScreen extends StatelessWidget {
                   textColor: ksmallActionColor,
                   buttonText: "Checkout",
                   onPressed: () {
+                    final listofcart = context.read<ShoppingCartCubit>().listOfCartItem;
+                    context.read<BookingCubit>().selectSnacks(listofcart);
+                      final booking = context.read<BookingCubit>().state as BookingDataState;
+    print("Snacks saved to BookingCubit:");
+    for (var snack in booking.selectedSnacks) {
+      print(" - ${snack.title}, price: ${snack.price}");
+    }
                   AppConstants.showToast(
                                               context,
                                               'Snacks booking ready' , icon: Icons.done , iconcolor: Colors.green);

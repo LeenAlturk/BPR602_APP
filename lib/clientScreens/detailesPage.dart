@@ -3,7 +3,9 @@ import 'package:bpr602_cinema/AllUserScreens/NointernetScreen.dart';
 import 'package:bpr602_cinema/Animation/Fadeinfadeout.dart';
 import 'package:bpr602_cinema/Constants/colors.dart';
 import 'package:bpr602_cinema/Constants/sizer.dart';
+import 'package:bpr602_cinema/Cubits/Cartcubit/shopping_cart_cubit.dart';
 import 'package:bpr602_cinema/Cubits/DetailesCubit/detailes_cubit.dart';
+import 'package:bpr602_cinema/Cubits/bookingCubit/booking_cubit.dart';
 import 'package:bpr602_cinema/clientScreens/TimaAndDateScreen.dart';
 import 'package:bpr602_cinema/data/link.dart';
 import 'package:bpr602_cinema/wedgets/Navigating.dart';
@@ -478,6 +480,10 @@ class DetailesPage extends StatelessWidget {
                               textColor: ksmallActionColor,
                               buttonText: "Booking Now",
                               onPressed: () {
+                                  final movie = context.read<DetailesCubit>().movieResponseById!.data!;
+  context.read<BookingCubit>().selectMovie(movie);
+                                cubit.pauseVideo();
+                                  context.read<ShoppingCartCubit>().clearCart();
                                 NavigationWidget.pushPage(
                                   context,
                                   TimeAndDateScreen(

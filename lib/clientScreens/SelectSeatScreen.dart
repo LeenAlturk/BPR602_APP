@@ -3,6 +3,7 @@ import 'package:bpr602_cinema/AllUserScreens/NointernetScreen.dart';
 import 'package:bpr602_cinema/Constants/colors.dart';
 import 'package:bpr602_cinema/Constants/sizer.dart';
 import 'package:bpr602_cinema/Cubits/Seatcubit/seatcubit_cubit.dart';
+import 'package:bpr602_cinema/Cubits/bookingCubit/booking_cubit.dart';
 import 'package:bpr602_cinema/clientScreens/BookingDetailes.dart';
 import 'package:bpr602_cinema/wedgets/Navigating.dart';
 import 'package:bpr602_cinema/wedgets/elevatedbtn.dart';
@@ -45,7 +46,7 @@ class Seat {
 
 class _SelectSeatScreenState extends State<SelectSeatScreen> {
   List<Seat> selectedSeats = [];
-
+   
   // void toggleSeatSelection(Seat seat) {
   //   setState(() {
   //     if (seat.status == SeatStatus.available) {
@@ -71,6 +72,7 @@ class _SelectSeatScreenState extends State<SelectSeatScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+     double totalPrice = selectedSeats.length * 100.00;
     return BlocProvider(
       create: (context) => SeatcubitCubit()..getMoviehall(9),
       child: BlocConsumer<SeatcubitCubit, SeatcubitState>(
@@ -474,7 +476,8 @@ Expanded(
                           ),
                           SizedBox(height: size.height * 0.01),
                           Text(
-                            '${selectedSeats.length * 100}.00 SAR',
+                            
+                            '$totalPrice.00 SAR',
                             style: TextStyle(
                                 fontSize: 20.sp,
                                 color: Colors.white,
@@ -495,6 +498,8 @@ Expanded(
                   buttonText: "Continue",
                   onPressed: selectedSeats.isNotEmpty
                       ? () {
+                        
+  
                           NavigationWidget.pushPage(
                               context,
                               BookingDetailes(

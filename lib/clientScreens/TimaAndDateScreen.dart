@@ -3,6 +3,7 @@ import 'package:bpr602_cinema/AllUserScreens/NointernetScreen.dart';
 import 'package:bpr602_cinema/Constants/colors.dart';
 import 'package:bpr602_cinema/Constants/sizer.dart';
 import 'package:bpr602_cinema/Cubits/TimaAndDateScreenCubit/tima_and_date_screen_cubit.dart';
+import 'package:bpr602_cinema/Cubits/bookingCubit/booking_cubit.dart';
 import 'package:bpr602_cinema/clientScreens/SelectSeatScreen.dart';
 import 'package:bpr602_cinema/clientScreens/halle_select.dart';
 import 'package:bpr602_cinema/models/response/movie_respone_id.dart';
@@ -12,25 +13,14 @@ import 'package:bpr602_cinema/wedgets/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:bpr602_cinema/Constants/sizer.dart';
 
 class TimeAndDateScreen extends StatefulWidget {
-  // final String title;
-  // final String syn;
-  // final String imgurl;
-  // final int duration;
-  // final String director;
-  // final String ar;
-  // final String genre;
+
   final int id;
 
   const TimeAndDateScreen({super.key, required this.id
-      // required this.title,
-      // required this.syn,
-      // required this.imgurl,
-      // required this.duration,
-      // required this.director,
-      // required this.ar,
-      // required this.genre,
+   
       });
 
   @override
@@ -40,6 +30,15 @@ class TimeAndDateScreen extends StatefulWidget {
 class _TimeAndDateScreenState extends State<TimeAndDateScreen> {
   bool isVip = true; // Default: VIP
   bool is3D = true; // Default: 3D
+  DateTime _getValidFocusedDay(
+      DateTime preferredDay, DateTime firstDay, DateTime lastDay) {
+    if (preferredDay.isBefore(firstDay)) {
+      return firstDay;
+    } else if (preferredDay.isAfter(lastDay)) {
+      return lastDay;
+    }
+    return preferredDay;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,19 +48,18 @@ class _TimeAndDateScreenState extends State<TimeAndDateScreen> {
           TimaAndDateScreenCubit()..getMoviedetailesTAndD(widget.id),
       child: BlocConsumer<TimaAndDateScreenCubit, TimaAndDateScreenState>(
         listener: (context, state) {
-        
-           if (state is TimeAndDateEroorSttae) {
-               if (state.message == "Session Is Done") {
+          if (state is TimeAndDateEroorSttae) {
+            if (state.message == "Session Is Done") {
               AppConstants.showToast(context, state.message);
               Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(builder: (context) => LoginScreen()),
                   (route) => false);
-            }else if(state.message == 'No Internet Connection') {
-                 AppConstants.showToast(context, state.message);
-                Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) => NoInternetScreen()),
-                    (route) => false);
-              } else {
+            } else if (state.message == 'No Internet Connection') {
+              AppConstants.showToast(context, state.message);
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => NoInternetScreen()),
+                  (route) => false);
+            } else {
               AppConstants.showToast(context, state.message);
             }
           }
@@ -72,7 +70,7 @@ class _TimeAndDateScreenState extends State<TimeAndDateScreen> {
             appBar: AppBar(
               backgroundColor: Kbackground,
               title: Text(
-                'Film time & subtitle ',
+                'Booking settings ',
                 style: TextStyle(color: Ktext, fontSize: 14.sp),
               ),
               leading: IconButton(
@@ -87,6 +85,13 @@ class _TimeAndDateScreenState extends State<TimeAndDateScreen> {
               children: [
                 Column(
                   children: [
+                    SizedBox(
+                      height: size.height * 0.02,
+                    ),
+                    Text(
+                      'Select your favorate booking settings',
+                      style: TextStyle(color: Ktext, fontSize: 16.sp),
+                    ),
                     // Calendar Section
                     Padding(
                       padding: EdgeInsets.all(size.width * 0.05),
@@ -103,19 +108,17 @@ class _TimeAndDateScreenState extends State<TimeAndDateScreen> {
                               color: ksmallActionColor,
                             ),
                             child: TableCalendar(
-                              
                               calendarStyle: const CalendarStyle(
-                                
                                 selectedDecoration: BoxDecoration(
-                                color: kbutton,
+                                  color: kbutton,
                                   shape: BoxShape.circle,
                                 ),
                                 todayDecoration: BoxDecoration(
-                                  //color: kbutton,
-                                   color: Color.fromARGB(255, 28, 58, 82),
+                                  color: Color.fromARGB(255, 28, 58, 82),
                                   shape: BoxShape.circle,
                                 ),
-                                weekendTextStyle:TextStyle(color: Colors.amber) ,
+                                weekendTextStyle:
+                                    TextStyle(color: Colors.amber),
                                 defaultTextStyle:
                                     TextStyle(color: Colors.amber),
                                 selectedTextStyle:
@@ -138,10 +141,18 @@ class _TimeAndDateScreenState extends State<TimeAndDateScreen> {
                               ),
                               selectedDayPredicate: (day) => isSameDay(day,
                                   context.read<TimaAndDateScreenCubit>().today),
-                              focusedDay:
-                                  context.read<TimaAndDateScreenCubit>().today,
-                              // firstDay: DateTime.utc(2025, 4, 16),
-                              // lastDay: DateTime.utc(2025, 7, 1),
+                              // Ensure focusedDay is within the range
+                              focusedDay: _getValidFocusedDay(
+                                context.read<TimaAndDateScreenCubit>().today,
+                                context
+                                        .read<TimaAndDateScreenCubit>()
+                                        .startDate ??
+                                    DateTime.utc(2025, 4, 16),
+                                context
+                                        .read<TimaAndDateScreenCubit>()
+                                        .endDate ??
+                                    DateTime.utc(2025, 7, 1),
+                              ),
                               firstDay: context
                                       .read<TimaAndDateScreenCubit>()
                                       .startDate ??
@@ -150,7 +161,6 @@ class _TimeAndDateScreenState extends State<TimeAndDateScreen> {
                                       .read<TimaAndDateScreenCubit>()
                                       .endDate ??
                                   DateTime.utc(2025, 7, 1),
-
                               availableGestures: AvailableGestures.all,
                               locale: "en_US",
                               rowHeight: 35,
@@ -159,7 +169,6 @@ class _TimeAndDateScreenState extends State<TimeAndDateScreen> {
                                     .read<TimaAndDateScreenCubit>()
                                     .onDateSelected(day, focusedDay);
                               },
-                              
                             ),
                           );
                         },
@@ -167,88 +176,88 @@ class _TimeAndDateScreenState extends State<TimeAndDateScreen> {
                     ),
 
                     //choose Hale
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: size.height * 0.01,
-                        horizontal: size.width * 0.03,
-                      ),
-                      child: BlocBuilder<TimaAndDateScreenCubit,
-                          TimaAndDateScreenState>(
-                        builder: (context, state) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  "Hall Type: ${context.read<TimaAndDateScreenCubit>().isVip ? "VIP" : "Standard"}"),
-                              Switch(
-                                activeColor: kbutton,
-                                inactiveThumbColor: kbutton,
-                                // ignore: deprecated_member_use
-                                activeTrackColor: kbutton.withOpacity(
-                                    0.5), // Border-like effect when active
-                                inactiveTrackColor: Colors.grey
-                                    .shade400, // Border-like effect when inactive
+                    // Padding(
+                    //   padding: EdgeInsets.symmetric(
+                    //     vertical: size.height * 0.01,
+                    //     horizontal: size.width * 0.03,
+                    //   ),
+                    //   child: BlocBuilder<TimaAndDateScreenCubit,
+                    //       TimaAndDateScreenState>(
+                    //     builder: (context, state) {
+                    //       return Row(
+                    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //         children: [
+                    //           Text(
+                    //               style: TextStyle(
+                    //                 color: Colors.white,
+                    //                 fontSize: 14.sp,
+                    //                 fontWeight: FontWeight.bold,
+                    //               ),
+                    //               "Hall Type: ${context.read<TimaAndDateScreenCubit>().isVip ? "VIP" : "Standard"}"),
+                    //           Switch(
+                    //             activeColor: kbutton,
+                    //             inactiveThumbColor: kbutton,
+                    //             // ignore: deprecated_member_use
+                    //             activeTrackColor: kbutton.withOpacity(
+                    //                 0.5), // Border-like effect when active
+                    //             inactiveTrackColor: Colors.grey
+                    //                 .shade400, // Border-like effect when inactive
 
-                                value: context
-                                    .read<TimaAndDateScreenCubit>()
-                                    .isVip,
-                                onChanged: (value) {
-                                  context
-                                      .read<TimaAndDateScreenCubit>()
-                                      .SwitchHale(value);
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-                    ),
+                    //             value: context
+                    //                 .read<TimaAndDateScreenCubit>()
+                    //                 .isVip,
+                    //             onChanged: (value) {
+                    //               context
+                    //                   .read<TimaAndDateScreenCubit>()
+                    //                   .SwitchHale(value);
+                    //             },
+                    //           ),
+                    //         ],
+                    //       );
+                    //     },
+                    //   ),
+                    // ),
                     //choose technology
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: size.height * 0.01,
-                        horizontal: size.width * 0.03,
-                      ),
-                      child: BlocBuilder<TimaAndDateScreenCubit,
-                          TimaAndDateScreenState>(
-                        builder: (context, state) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  "Technology Type: ${context.read<TimaAndDateScreenCubit>().is3D ? "3D" : "2D"}"),
-                              Switch(
-                                activeColor: kbutton,
-                                inactiveThumbColor: kbutton,
-                                // ignore: deprecated_member_use
-                                activeTrackColor: kbutton.withOpacity(
-                                    0.5), // Border-like effect when active
-                                inactiveTrackColor: Colors.grey
-                                    .shade400, // Border-like effect when inactive
+                    // Padding(
+                    //   padding: EdgeInsets.symmetric(
+                    //     vertical: size.height * 0.01,
+                    //     horizontal: size.width * 0.03,
+                    //   ),
+                    //   child: BlocBuilder<TimaAndDateScreenCubit,
+                    //       TimaAndDateScreenState>(
+                    //     builder: (context, state) {
+                    //       return Row(
+                    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //         children: [
+                    //           Text(
+                    //               style: TextStyle(
+                    //                 color: Colors.white,
+                    //                 fontSize: 14.sp,
+                    //                 fontWeight: FontWeight.bold,
+                    //               ),
+                    //               "Technology Type: ${context.read<TimaAndDateScreenCubit>().is3D ? "3D" : "2D"}"),
+                    //           Switch(
+                    //             activeColor: kbutton,
+                    //             inactiveThumbColor: kbutton,
+                    //             // ignore: deprecated_member_use
+                    //             activeTrackColor: kbutton.withOpacity(
+                    //                 0.5), // Border-like effect when active
+                    //             inactiveTrackColor: Colors.grey
+                    //                 .shade400, // Border-like effect when inactive
 
-                                value:
-                                    context.read<TimaAndDateScreenCubit>().is3D,
-                                onChanged: (value) {
-                                  context
-                                      .read<TimaAndDateScreenCubit>()
-                                      .SwitchTech(value);
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-                    ),
+                    //             value:
+                    //                 context.read<TimaAndDateScreenCubit>().is3D,
+                    //             onChanged: (value) {
+                    //               context
+                    //                   .read<TimaAndDateScreenCubit>()
+                    //                   .SwitchTech(value);
+                    //             },
+                    //           ),
+                    //         ],
+                    //       );
+                    //     },
+                    //   ),
+                    // ),
                     // Subtitle Dropdown Section
                     Padding(
                       padding: EdgeInsets.symmetric(
@@ -399,24 +408,25 @@ class _TimeAndDateScreenState extends State<TimeAndDateScreen> {
                       textColor: ksmallActionColor,
                       buttonText: "Submet",
                       onPressed: () {
-    //                         int? selectedLanguageId = context.read<TimaAndDateScreenCubit>().selectedLanguage?.id;
-    
-    // // الحصول على الـ id الخاص بالترجمة المحددة
-    // int? selectedSubtitleId = context.read<TimaAndDateScreenCubit>().selectedSubtitle?.id;
-    //   final cubit = context.read<TimaAndDateScreenCubit>();
-    
-    // // الحصول على البيانات المطلوبة
-    // DateTime selectedDate = cubit.today;
-    // int? languageId = cubit.selectedLanguage?.id;
-    // int? subtitleId = cubit.selectedSubtitle?.id;
-    // bool isVip = cubit.isVip;
-    // bool is3D = cubit.is3D;
+                        //                         int? selectedLanguageId = context.read<TimaAndDateScreenCubit>().selectedLanguage?.id;
+
+                        // // الحصول على الـ id الخاص بالترجمة المحددة
+                        // int? selectedSubtitleId = context.read<TimaAndDateScreenCubit>().selectedSubtitle?.id;
+                         final cubit = context.read<TimaAndDateScreenCubit>();
+
+                        // // الحصول على البيانات المطلوبة
+                         DateTime selectedDate = cubit.today;
+                        Movie language = cubit.selectedLanguage!;
+                         //int? subtitleId = cubit.selectedSubtitle?.id;
+                        // bool isVip = cubit.isVip;
+                        // bool is3D = cubit.is3D;
+                         
+  context.read<BookingCubit>().selectDate(selectedDate);
+  context.read<BookingCubit>().selectLangmo(language);
                         NavigationWidget.pushPage(
-                                            context,
-                                            HallSelect(
-                                              
-                                                ),
-                                          );
+                          context,
+                          HallSelect(),
+                        );
                         // showModalBottomSheet(
                         //   backgroundColor: Kbackground,
                         //   context: context,
@@ -534,7 +544,6 @@ class _TimeAndDateScreenState extends State<TimeAndDateScreen> {
                         //     );
                         //   },
                         // );
-
                       },
                     ),
                   ],

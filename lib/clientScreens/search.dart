@@ -526,10 +526,12 @@ class SearchScreen extends StatelessWidget {
                       controller: context.read<MycubitCubit>().searchController,
                       style: TextStyle(color: Colors.white),
                       onChanged: (query) {
-                        if (query.isEmpty) {
+                        //for spaces
+                         final trimmed = query.trim();
+                        if (trimmed.isEmpty) {
                           context.read<MycubitCubit>().clearSearch();
                         } else {
-                          context.read<MycubitCubit>().search(query);
+                          context.read<MycubitCubit>().search(trimmed);
                         }
                       },
                       decoration: InputDecoration(

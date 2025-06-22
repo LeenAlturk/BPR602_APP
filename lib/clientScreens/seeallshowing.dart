@@ -92,24 +92,40 @@ class SeeAllShowingNow extends StatelessWidget {
                         Icons.search,
                         color: Colors.white,
                       ),
-                      trailing: [
-                        IconButton(
-                          icon: const Icon(Icons.clear),
-                          onPressed: () {
-                            BlocProvider.of<SeeallCubit>(searchContext)
-                                .searchMovies('');
+                      // trailing: [
+                      //   IconButton(
+                      //     icon: const Icon(Icons.clear),
+                      //     onPressed: () {
+                      //       BlocProvider.of<SeeallCubit>(searchContext)
+                      //           .searchMovies('');
 
-                            searchController.clear();
-                          },
-                        ),
-                      ],
+                      //       searchController.clear();
+                      //     },
+                      //   ),
+                      // ],
+                      trailing: [
+  BlocBuilder<SeeallCubit, SeeallState>(
+    builder: (context, state) {
+      final cubit = context.read<SeeallCubit>();
+      return cubit.searchQuery.isNotEmpty
+          ? IconButton(
+              icon: const Icon(Icons.clear),
+              onPressed: () {
+                cubit.searchMovies('');
+                searchController.clear();
+              },
+            )
+          : const SizedBox.shrink();
+    },
+  ),
+],
                       onChanged: (value) {
                         BlocProvider.of<SeeallCubit>(searchContext)
-                            .searchMovies(value);
+                            .searchMovies(value.trim());
                       },
                       onSubmitted: (value) {
                         BlocProvider.of<SeeallCubit>(searchContext)
-                            .searchMovies(value);
+                            .searchMovies(value.trim());
                       },
                     );
                   },

@@ -249,7 +249,7 @@ class SeeallMovieCard extends StatelessWidget {
                    SizedBox(
                     height: size.height * 0.01,
                   ),
-                  _buildDetailRow("Subtitles:", Language),
+                  _buildDetailRow("Subtitles:", subtitle),
                 ],
               ),
             ),

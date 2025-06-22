@@ -313,6 +313,7 @@ class _TimerContainerState extends State<TimerContainer> {
                           if (widget.isresendsuc) {
                             resendpressed();
                           }
+                          resendpressed();
                         }
                       : null,
                   style: ButtonStyle(

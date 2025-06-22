@@ -1,8 +1,10 @@
 import 'package:bpr602_cinema/Constants/colors.dart';
 import 'package:bpr602_cinema/Constants/sizer.dart';
 import 'package:bpr602_cinema/Cubits/Billcubit/bill_cubit.dart';
+import 'package:bpr602_cinema/Cubits/bookingCubit/booking_cubit.dart';
 import 'package:bpr602_cinema/clientScreens/indexedstackclientnav.dart';
 import 'package:bpr602_cinema/clientScreens/payment.dart';
+import 'package:bpr602_cinema/data/link.dart';
 import 'package:bpr602_cinema/wedgets/Navigating.dart';
 import 'package:bpr602_cinema/wedgets/itembill.dart';
 import 'package:bpr602_cinema/wedgets/itembillassets.dart';
@@ -20,12 +22,12 @@ class Bill extends StatelessWidget {
 
   const Bill({
     super.key,
-  
   });
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    final booking = context.watch<BookingCubit>().state as BookingDataState;
 
     return BlocProvider(
       create: (_) => BillCubit(),
@@ -51,14 +53,32 @@ class Bill extends StatelessWidget {
           children: [
             Column(
               children: [
+                // itemBookingSeatbill(
+                //   size: size,
+                //   imgurl: "https://m.media-amazon.com/images/M/MV5BMTQxNzY1MjI5NF5BMl5BanBnXkFtZTcwNTI0MDY1OQ@@._V1_QL75_UX380_CR0,20,380,562_.jpg",
+                //   title: "Minions",
+                //   price: 100,
+                //   date: '12-10-2024',
+                //   Seat: 'C7 , C8 , C9 ,',
+                // ),
+
                 itemBookingSeatbill(
                   size: size,
-                  imgurl: "https://m.media-amazon.com/images/M/MV5BMTQxNzY1MjI5NF5BMl5BanBnXkFtZTcwNTI0MDY1OQ@@._V1_QL75_UX380_CR0,20,380,562_.jpg",
-                  title: "Minions",
-                  price: 100,
-                  date: '12-10-2024',
-                  Seat: 'C7 , C8 , C9 ,',
+                  imgurl: booking.selectedMovie?.image?.url != null
+                      ? '${LinksUrl.baseUrl}${booking.selectedMovie!.image!.url}'
+                      : 'https://ina.iq/eng/uploads/posts/2021-05/thumbs/upload_1621342522_427621977.png',
+
+                  title: booking.selectedMovie?.name ?? 'No Movie Selected',
+                  price: booking.selectedMovie?.id ?? 88,
+                  date: booking.selectedDate
+                          ?.toIso8601String()
+                          .split("T")
+                          .first ??
+                      '',
+                  Seat:
+                      'C7 , C8 , C9 ,', // يمكن لاحقًا تخزينها أيضًا داخل BookingCubit
                 ),
+
                 SizedBox(
                   height: 15,
                 ),
@@ -90,26 +110,25 @@ class Bill extends StatelessWidget {
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    
                       children: [
                         Text(
-                      '${100 + 100} .IQD',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(width: size.width * 0.03),
-                    PhosphorIcon(
-                      Icons.price_check_rounded,
-                      color: Colors.green,
-                    )
+                          '${100 + 100} .IQD',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(width: size.width * 0.03),
+                        PhosphorIcon(
+                          Icons.price_check_rounded,
+                          color: Colors.green,
+                        )
                       ],
                     ),
                   ],
                 ),
-                
+
                 _buildPaymentOptions(size),
               ],
             ),
@@ -193,7 +212,6 @@ class Bill extends StatelessWidget {
                     " Move to payments",
                     style: TextStyle(
                       color: Colors.black,
-                      
                       fontSize: 12.sp,
                     ),
                   ),

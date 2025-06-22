@@ -6,17 +6,23 @@ import 'package:flutter/material.dart';
 
 class itembillassets extends StatelessWidget {
   const itembillassets({
-    super.key,
+     super.key,
     required this.size,
     required this.imgurl,
     required this.title,
     required this.price,
+    this.quantity,
+    this.date,
+    this.Seat,
   });
 
   final Size size;
   final String imgurl;
   final String title;
   final int price;
+  final String? date;
+  final String? Seat;
+  final String? quantity;
 
   @override
   Widget build(BuildContext context) {
@@ -24,53 +30,77 @@ class itembillassets extends StatelessWidget {
       padding: EdgeInsets.all(size.height * 0.02),
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(color: Whitconst, width: 0.3),
+          border: Border.all(color: border, width:2),
           color: Kbackground,
           borderRadius: BorderRadius.circular(20),
         ),
         width: size.width * 0.9,
         height: size.height * 0.28,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Row(
               children: [
                 Padding(
-                  padding: EdgeInsets.all(size.height * 0.007),
-                  child: Image.asset(
-                    imgurl,
-                    width: size.width * 0.3,
-                    height: size.height * 0.15,
+                  padding: EdgeInsets.all(size.width * 0.01),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Image.network(
+                      imgurl,
+                      width: size.width * 0.3,
+                      height: size.height * 0.15,
+                    ),
                   ),
                 ),
-                Padding(
-                  padding:  EdgeInsets.all(size.height * 0.007),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        title,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 9.sp,
-                          fontWeight: FontWeight.bold,
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.all(size.height * 0.02),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Title : $title',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
                         ),
-                      ),
-                      Text(
-                        '$price.00 SAR',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.bold,
+                        Text(
+                          'Price : $price.00 SAR',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                    ],
+                        Text(
+                          'Date : $date',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          'Seats : $Seat',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
             ),
             Padding(
-              padding: EdgeInsets.all(size.height * 0.007),
+              padding: EdgeInsets.all(size.height * 0.0007),
               child: Divider(
                 thickness: 1,
               ),
@@ -79,14 +109,14 @@ class itembillassets extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Text(
-                  "To cancel remind me 30 minutes ago",
+                  "Cancel your selection",
                   style: TextStyle(fontSize: 12.sp, color: Whitconst),
                 ),
                 IconButton(
                   onPressed: () {},
                   icon: Icon(
                     Icons.cancel_outlined,
-                    size: 20,
+                    size: 20.sp,
                     color: Colors.white,
                   ),
                 ),

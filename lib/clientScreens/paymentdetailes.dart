@@ -3,6 +3,7 @@ import 'package:bpr602_cinema/Constants/sizer.dart';
 import 'package:bpr602_cinema/wedgets/itembill.dart';
 import 'package:bpr602_cinema/wedgets/itembillassets.dart';
 import 'package:flutter/material.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class Paymentdetailes extends StatelessWidget {
   const Paymentdetailes({super.key});
@@ -33,7 +34,7 @@ class Paymentdetailes extends StatelessWidget {
         children: [
           Column(
             children: [
-              itemBookingSeatbill(
+              itembillassets(
                 size: size,
                 imgurl:
                     'https://m.media-amazon.com/images/M/MV5BMTQxNzY1MjI5NF5BMl5BanBnXkFtZTcwNTI0MDY1OQ@@._V1_QL75_UX380_CR0,20,380,562_.jpg',
@@ -52,23 +53,37 @@ class Paymentdetailes extends StatelessWidget {
                   color: Whitconst,
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.all(size.width * 0.02),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+           Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Text(
-                      'Total Price : 200',
+                      'Total :',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 15.sp,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Icon(Icons.money ,color: Colors.white , size:  20.sp,)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '${100 + 100} .IQD',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(width: size.width * 0.03),
+                        PhosphorIcon(
+                          Icons.price_check_rounded,
+                          color: Colors.green,
+                        )
+                      ],
+                    ),
                   ],
                 ),
-              ),
             ],
           ),
         ],

@@ -45,6 +45,11 @@ double total1 = 0.0;
 //     // ;
 //   }
 
+void clearCart() {
+  listOfCartItem.clear(); // مسح جميع العناصر من القائمة
+  emit(CartCleared()); // إصدار حالة جديدة للإشارة إلى أن السلة فارغة
+}
+
 void addToCart(snacks item) {
   // البحث عن العنصر في السلة (بنفس الاسم والحجم)
   final existingItemIndex = listOfCartItem.indexWhere(

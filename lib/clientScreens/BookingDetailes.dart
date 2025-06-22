@@ -1,12 +1,16 @@
 
 import 'package:bpr602_cinema/Constants/colors.dart';
 import 'package:bpr602_cinema/Constants/sizer.dart';
+import 'package:bpr602_cinema/Cubits/Cartcubit/shopping_cart_cubit.dart';
+import 'package:bpr602_cinema/Cubits/bookingCubit/booking_cubit.dart';
 import 'package:bpr602_cinema/clientScreens/Bill.dart';
 import 'package:bpr602_cinema/clientScreens/snackscreen.dart';
+import 'package:bpr602_cinema/data/link.dart';
 import 'package:bpr602_cinema/wedgets/Navigating.dart';
 import 'package:bpr602_cinema/wedgets/elevatedbtn.dart';
 import 'package:bpr602_cinema/wedgets/seeallMovieCard.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BookingDetailes extends StatelessWidget {
   // final String? title;
@@ -35,12 +39,13 @@ class BookingDetailes extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     //int mytotalpriceseat = totalpriceseat!;
+    final booking = context.watch<BookingCubit>().state as BookingDataState;
     return Scaffold(
       backgroundColor: Kbackground,
       appBar: AppBar(
         backgroundColor: Kbackground,
         title: Text(
-          'Minions Detailes',
+          '${booking.selectedMovie!.name}',
           style: TextStyle(color: Ktext, fontSize: 14.sp),
         ),
         leading: IconButton(
@@ -58,17 +63,28 @@ class BookingDetailes extends StatelessWidget {
           Column(
             children: [
               Padding(
-                padding: EdgeInsets.all(size.height * 0.02),
+                padding: EdgeInsets.all(size.height * 0.002),
                 child: SeeallMovieCard(
-                  subtitle: "En",
-                  rating: 4.5,
-                  Language: "EN",
-                  title: "Minions",
-                  imgurl: "https://m.media-amazon.com/images/M/MV5BMTQxNzY1MjI5NF5BMl5BanBnXkFtZTcwNTI0MDY1OQ@@._V1_QL75_UX380_CR0,20,380,562_.jpg",
-                  genre: "Animation",
-                  director: "director",
-                  duration: 98,
-                  ar: "+18",
+                  status: "${booking.selectedMovie!.status}",
+                  subtitle: "en",
+                  rating: booking.selectedMovie!.rate!,
+                  Language: "${booking.selectlang!.code}",
+                  title: "${booking.selectedMovie!.name}",
+                  imgurl:  booking.selectedMovie?.image?.url != null
+                      ? '${LinksUrl.baseUrl}${booking.selectedMovie!.image!.url}'
+                      : 'https://ina.iq/eng/uploads/posts/2021-05/thumbs/upload_1621342522_427621977.png',
+                  genre:  booking.selectedMovie?.
+                                          movieTypes !=
+                                      null
+                                  ?  booking.selectedMovie!.movieTypes!
+                                      .map((type) => type.englishName ?? '')
+                                      .join(', ')
+                                  : '',
+                  director:booking.selectedMovie!.director!
+                                  .firstName!,
+                  duration: booking.selectedMovie!.durationInMinutes!,
+                  ar:booking.selectedMovie!
+                                  .movieClassification!.englishName!,
                 ),
               ),
               Container(
@@ -176,7 +192,11 @@ class BookingDetailes extends StatelessWidget {
                                 fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            '1/ 12 / 2025',
+                            booking.selectedDate
+                          ?.toIso8601String()
+                          .split("T")
+                          .first ??
+                      '',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 13.sp,
@@ -213,6 +233,7 @@ class BookingDetailes extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
+                  // context.read<ShoppingCartCubit>().clearCart();
                   NavigationWidget.pushPage(context, const SnackScreen());
                 },
                 child: Container(
@@ -285,8 +306,23 @@ class BookingDetailes extends StatelessWidget {
             child: ElevatedBtn(
               backgroundColor: kbutton,
               textColor: ksmallActionColor,
-              buttonText: "Continue",
+              buttonText: "Continue without snack ",
               onPressed: () {
+                 context.read<ShoppingCartCubit>().clearCart();
+                 context.read<BookingCubit>().selectSnacks(null);
+
+Future.microtask(() {
+  final booking = context.read<BookingCubit>().state as BookingDataState;
+  print("Snacks saved to BookingCubit:");
+  if (booking.selectedSnacks.isEmpty) {
+    print("=> Snack list is now empty ");
+  } else {
+    for (var snack in booking.selectedSnacks) {
+      print(" - ${snack.title}, price: ${snack.price}");
+    }
+  }
+});
+
                 NavigationWidget.pushPage(context, Bill(
                    //totalpriceseat: mytotalpriceseat , title: title!, imgurl: imgurl!,
                    ));

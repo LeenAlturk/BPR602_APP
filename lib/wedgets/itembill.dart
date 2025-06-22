@@ -33,8 +33,9 @@ class itemBookingSeatbill extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
         ),
         width: size.width * 0.9,
-        height: size.height * 0.28,
+        height: size.height * 0.20,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Row(
               children: [
@@ -57,7 +58,7 @@ class itemBookingSeatbill extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Price : $title.00 SAR',
+                          'Title : $title',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 12.sp,
@@ -96,29 +97,29 @@ class itemBookingSeatbill extends StatelessWidget {
                 ),
               ],
             ),
-            Padding(
-              padding: EdgeInsets.all(size.height * 0.0007),
-              child: Divider(
-                thickness: 1,
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text(
-                  "To cancel remind me 30 minutes ago",
-                  style: TextStyle(fontSize: 12.sp, color: Whitconst),
-                ),
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.cancel_outlined,
-                    size: 20.sp,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            )
+            // Padding(
+            //   padding: EdgeInsets.all(size.height * 0.0007),
+            //   child: Divider(
+            //     thickness: 1,
+            //   ),
+            // ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+            //   children: [
+            //     Text(
+            //       "Cancel your selection",
+            //       style: TextStyle(fontSize: 12.sp, color: Whitconst),
+            //     ),
+            //     IconButton(
+            //       onPressed: () {},
+            //       icon: Icon(
+            //         Icons.cancel_outlined,
+            //         size: 20.sp,
+            //         color: Colors.white,
+            //       ),
+            //     ),
+            //   ],
+            // )
           ],
         ),
       ),
