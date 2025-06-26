@@ -9,3 +9,17 @@ final class SeeallSnacksFilterSelected extends SeeallsnacksState {
 
   SeeallSnacksFilterSelected({required this.selectindex});
 }
+
+final class Seeallsnackloading extends SeeallsnacksState {}
+final class SeeallsnackAccept extends SeeallsnacksState {
+  final List<Datumsnack> snacks;
+
+  SeeallsnackAccept({required this.snacks});
+}
+final class Seeallsnacklerror extends SeeallsnacksState {
+  final String message;
+
+  Seeallsnacklerror({required this.message});
+
+
+}

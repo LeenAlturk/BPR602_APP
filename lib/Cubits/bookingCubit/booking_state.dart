@@ -9,18 +9,22 @@ class BookingDataState extends BookingState {
   final Data? selectedMovie;
   final DateTime? selectedDate;
   final String? selectedLanguage;
-    final List<snacks> selectedSnacks; // ✅ الآن قائمة
-  final String? selectedTime;
+  final List<snacks> selectedSnacks; 
+   final List<Seat> selectedSeats ;
+final MovieTime? selectedMovieTime;
   final Movie? selectlang;
-
+ final int? movietotalprice;
   final double totalPrice;
-
+ final List<int>  variantIds; 
   BookingDataState({
     this.selectedMovie,
     this.selectedDate,
     this.selectedLanguage,
-       this.selectedSnacks = const [],
-    this.selectedTime,
+    this.movietotalprice,
+    this.selectedSnacks = const [],
+    this.selectedSeats = const [],
+    this.variantIds = const[] ,
+    this.selectedMovieTime,
     this.selectlang,
     
     this.totalPrice = 0.0,
@@ -30,18 +34,25 @@ class BookingDataState extends BookingState {
     Data? selectedMovie,
     DateTime? selectedDate,
     String? selectedLanguage,
-    String? selectedTime,
+   MovieTime? selectedMovieTime, 
+   int ? movietotalprice,
     Movie? selectlang,
-        List<snacks>? selectedSnacks,
+   List<snacks>? selectedSnacks,
+   List<Seat> ? selectedSeats ,
+   List<int>? variantIds, 
+        
     double? totalPrice,
   }) {
     return BookingDataState(
       selectedMovie: selectedMovie ?? this.selectedMovie,
       selectedDate: selectedDate ?? this.selectedDate,
       selectedLanguage: selectedLanguage ?? this.selectedLanguage,
-      selectedTime: selectedTime ?? this.selectedTime,
+     selectedMovieTime: selectedMovieTime ?? this.selectedMovieTime,
      selectlang: selectlang ?? this.selectlang,
          selectedSnacks: selectedSnacks ?? this.selectedSnacks,
+          selectedSeats: selectedSeats ?? this.selectedSeats,
+        movietotalprice:movietotalprice ??this.movietotalprice, 
+        variantIds: variantIds ?? this.variantIds,
       totalPrice: totalPrice ?? this.totalPrice,
     );
   }

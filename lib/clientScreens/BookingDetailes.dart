@@ -1,4 +1,3 @@
-
 import 'package:bpr602_cinema/Constants/colors.dart';
 import 'package:bpr602_cinema/Constants/sizer.dart';
 import 'package:bpr602_cinema/Cubits/Cartcubit/shopping_cart_cubit.dart';
@@ -22,24 +21,26 @@ class BookingDetailes extends StatelessWidget {
   // final String? genre;
   // final int? totalpriceseat;
   // final double? totalSnackPrice;
-  const BookingDetailes(
-      {super.key,
-      //  this.syn,
-      //  this.totalpriceseat,
-      //  this.imgurl,
-      //  this.duration,
-      //  this.director,
-      //  this.ar,
-      //  this.genre,
-      //  this.totalSnackPrice ,
-      //  this.title
-       });
+  const BookingDetailes({
+    super.key,
+    //  this.syn,
+    //  this.totalpriceseat,
+    //  this.imgurl,
+    //  this.duration,
+    //  this.director,
+    //  this.ar,
+    //  this.genre,
+    //  this.totalSnackPrice ,
+    //  this.title
+  });
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
     //int mytotalpriceseat = totalpriceseat!;
     final booking = context.watch<BookingCubit>().state as BookingDataState;
+
     return Scaffold(
       backgroundColor: Kbackground,
       appBar: AppBar(
@@ -66,50 +67,47 @@ class BookingDetailes extends StatelessWidget {
                 padding: EdgeInsets.all(size.height * 0.002),
                 child: SeeallMovieCard(
                   status: "${booking.selectedMovie!.status}",
-                  subtitle: "en",
+                  subtitle:
+                      "${booking.selectedMovieTime!.subtitle!.englishName}",
                   rating: booking.selectedMovie!.rate!,
-                  Language: "${booking.selectlang!.code}",
+                  Language:
+                      "${booking.selectedMovieTime!.language!.englishName}",
                   title: "${booking.selectedMovie!.name}",
-                  imgurl:  booking.selectedMovie?.image?.url != null
+                  imgurl: booking.selectedMovie?.image?.url != null
                       ? '${LinksUrl.baseUrl}${booking.selectedMovie!.image!.url}'
                       : 'https://ina.iq/eng/uploads/posts/2021-05/thumbs/upload_1621342522_427621977.png',
-                  genre:  booking.selectedMovie?.
-                                          movieTypes !=
-                                      null
-                                  ?  booking.selectedMovie!.movieTypes!
-                                      .map((type) => type.englishName ?? '')
-                                      .join(', ')
-                                  : '',
-                  director:booking.selectedMovie!.director!
-                                  .firstName!,
+                  genre: booking.selectedMovie?.movieTypes != null
+                      ? booking.selectedMovie!.movieTypes!
+                          .map((type) => type.englishName ?? '')
+                          .join(', ')
+                      : '',
+                  director: booking.selectedMovie!.director!.firstName!,
                   duration: booking.selectedMovie!.durationInMinutes!,
-                  ar:booking.selectedMovie!
-                                  .movieClassification!.englishName!,
+                  ar: booking.selectedMovie!.movieClassification!.englishName!,
                 ),
               ),
               Container(
                 width: size.width * 0.9,
                 height: size.height * 0.4,
                 decoration: BoxDecoration(
-        color: ksmallActionColor,
-        borderRadius: BorderRadius.circular(12),
-     
-        gradient: const LinearGradient(
-          colors: [
-            Color.fromARGB(255, 28, 33, 72),
-            ksmallActionColor
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-      ),
+                  color: ksmallActionColor,
+                  borderRadius: BorderRadius.circular(12),
+                  gradient: const LinearGradient(
+                    colors: [
+                      Color.fromARGB(255, 28, 33, 72),
+                      ksmallActionColor
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
                 child: Padding(
-                  padding:  EdgeInsets.all(size.height * 0.01),
+                  padding: EdgeInsets.all(size.height * 0.01),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Padding(
-                        padding:  EdgeInsets.all(size.width * 0.0004),
+                        padding: EdgeInsets.all(size.width * 0.0004),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -123,19 +121,18 @@ class BookingDetailes extends StatelessWidget {
                           ],
                         ),
                       ),
-              
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Package',
+                            'Hall Type',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            'Standard',
+                            "${booking.selectedMovieTime!.hall?.isVip == true ? 'VIP' : 'Standard'}",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 13.sp,
@@ -147,14 +144,33 @@ class BookingDetailes extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Hail',
+                            'tecnology ',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            'Hall1',
+                            ' ${booking.selectedMovieTime!.is3d == true ? '3D' : '2D'}',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 13.sp,
+                                fontWeight: FontWeight.normal),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Hall',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            "${booking.selectedMovieTime!.hall!.name}",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 13.sp,
@@ -172,12 +188,19 @@ class BookingDetailes extends StatelessWidget {
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.bold),
                           ),
-                          Text(
-                            'C1 , C3 , B5',
-                            style: TextStyle(
+                          Flexible(
+                            child: Text(
+                              booking.selectedSeats
+                                  .map((type) => type.id ?? '')
+                                  .join(', '),
+                              style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 13.sp,
-                                fontWeight: FontWeight.normal),
+                                fontWeight: FontWeight.normal,
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                         ],
                       ),
@@ -193,10 +216,10 @@ class BookingDetailes extends StatelessWidget {
                           ),
                           Text(
                             booking.selectedDate
-                          ?.toIso8601String()
-                          .split("T")
-                          .first ??
-                      '',
+                                    ?.toIso8601String()
+                                    .split("T")
+                                    .first ??
+                                '',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 13.sp,
@@ -215,13 +238,44 @@ class BookingDetailes extends StatelessWidget {
                                 fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            '12:00 AM',
+                            "${booking.selectedMovieTime!.time}",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 13.sp,
                                 fontWeight: FontWeight.normal),
                           ),
-                          
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Num OF Booking Snacks',
+                            style: TextStyle(
+                              color: Ktext,
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          BlocBuilder<ShoppingCartCubit, ShoppingCartState>(
+                            builder: (context, state) {
+                              final cartItems = context
+                                  .read<ShoppingCartCubit>()
+                                  .listOfCartItem;
+                              final itemCount = cartItems.fold(
+                                  0, (sum, item) => sum + item.quantity);
+                              return Text(
+                                itemCount == 0
+                                    ? '0 snack'
+                                    : '$itemCount snacks',
+                                style: TextStyle(
+                                  color: Ktext,
+                                  fontSize: 13.sp,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              );
+                            },
+                          ),
                         ],
                       ),
                     ],
@@ -233,57 +287,66 @@ class BookingDetailes extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  // context.read<ShoppingCartCubit>().clearCart();
                   NavigationWidget.pushPage(context, const SnackScreen());
                 },
                 child: Container(
-                    decoration: BoxDecoration(
-        color: ksmallActionColor,
-        borderRadius: BorderRadius.circular(12),
-     
-        gradient: const LinearGradient(
-          colors: [
-            Color.fromARGB(255, 28, 33, 72),
-            ksmallActionColor
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-      ),
-                  width: size.width * 0.9,
+                  decoration: BoxDecoration(
+                    color: ksmallActionColor,
+                    borderRadius: BorderRadius.circular(12),
+                    gradient: const LinearGradient(
+                      colors: [
+                        Color.fromARGB(255, 28, 33, 72),
+                        ksmallActionColor
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                  ),
+                  width: size.width * 0.968,
                   height: size.height * 0.14,
                   child: Row(
                     children: [
                       Padding(
-                        padding: EdgeInsets.all(size.width * 0.0348),
+                        padding: EdgeInsets.all(size.width * 0.0323),
                         child: Image.asset("assets/pobCorn.png"),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Book Your ',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            'Snack .......',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
+                      BlocBuilder<ShoppingCartCubit, ShoppingCartState>(
+                        builder: (context, state) {
+                          final cartItems =
+                              context.read<ShoppingCartCubit>().listOfCartItem;
+                          final itemCount = cartItems.fold(
+                              0, (sum, item) => sum + item.quantity);
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                itemCount == 0 ? 'Book Your ' : 'change Your ',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                'Snack .......',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          );
+                        },
                       ),
                       SizedBox(
                         width: size.width * 0.09,
                       ),
                       IconButton(
                         onPressed: () {
-                            NavigationWidget.pushPage(context, const SnackScreen());
+                          NavigationWidget.pushPage(
+                              context, const SnackScreen());
                         },
                         icon: const Icon(
                           Icons.arrow_forward_ios,
@@ -306,26 +369,28 @@ class BookingDetailes extends StatelessWidget {
             child: ElevatedBtn(
               backgroundColor: kbutton,
               textColor: ksmallActionColor,
-              buttonText: "Continue without snack ",
+              buttonText: "Continue",
               onPressed: () {
-                 context.read<ShoppingCartCubit>().clearCart();
-                 context.read<BookingCubit>().selectSnacks(null);
+//                  context.read<ShoppingCartCubit>().clearCart();
+//                  context.read<BookingCubit>().selectSnacks(null);
 
-Future.microtask(() {
-  final booking = context.read<BookingCubit>().state as BookingDataState;
-  print("Snacks saved to BookingCubit:");
-  if (booking.selectedSnacks.isEmpty) {
-    print("=> Snack list is now empty ");
-  } else {
-    for (var snack in booking.selectedSnacks) {
-      print(" - ${snack.title}, price: ${snack.price}");
-    }
-  }
-});
+// Future.microtask(() {
+//   final booking = context.read<BookingCubit>().state as BookingDataState;
+//   print("Snacks saved to BookingCubit:");
+//   if (booking.selectedSnacks.isEmpty) {
+//     print("=> Snack list is now empty ");
+//   } else {
+//     for (var snack in booking.selectedSnacks) {
+//       print(" - ${snack.title}, price: ${snack.price}");
+//     }
+//   }
+// });
 
-                NavigationWidget.pushPage(context, Bill(
-                   //totalpriceseat: mytotalpriceseat , title: title!, imgurl: imgurl!,
-                   ));
+                NavigationWidget.pushPage(
+                    context,
+                    Bill(
+                        //totalpriceseat: mytotalpriceseat , title: title!, imgurl: imgurl!,
+                        ));
               },
             ),
           )

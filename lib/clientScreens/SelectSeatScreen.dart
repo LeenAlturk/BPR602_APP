@@ -14,6 +14,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 
 class SelectSeatScreen extends StatefulWidget {
+  final int haleid;
   // final String syn;
   // final String title;
   // final String imgurl;
@@ -22,7 +23,7 @@ class SelectSeatScreen extends StatefulWidget {
   // final String ar;
   // final String genre;
   const SelectSeatScreen(
-      {super.key,
+      {super.key, required this.haleid,
       // required this.syn,
       // required this.imgurl,
       // required this.duration,
@@ -72,9 +73,11 @@ class _SelectSeatScreenState extends State<SelectSeatScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-     double totalPrice = selectedSeats.length * 100.00;
+     
+     final booking = context.read<BookingCubit>().state as BookingDataState;
+     int totalPrice = selectedSeats.length * booking.selectedMovieTime!.price!;
     return BlocProvider(
-      create: (context) => SeatcubitCubit()..getMoviehall(9),
+      create: (context) => SeatcubitCubit()..getMoviehall(widget.haleid),
       child: BlocConsumer<SeatcubitCubit, SeatcubitState>(
         listener: (context, state) {
           if (state is GetHallErrorState) {
@@ -297,7 +300,7 @@ Expanded(
               scrollDirection: Axis.vertical,
                physics: const ClampingScrollPhysics(),
               child: SizedBox(
-                width: data.columnCount * 41.0, // عرض ثابت لكل خلية (60 هو مثال)
+                width: data.columnCount * 42.0, // عرض ثابت لكل خلية (60 هو مثال)
                 child: GridView.builder(
                   physics: const NeverScrollableScrollPhysics(), // تعطيل التمرير الداخلي
                   shrinkWrap: true,
@@ -477,7 +480,7 @@ Expanded(
                           SizedBox(height: size.height * 0.01),
                           Text(
                             
-                            '$totalPrice.00 SAR',
+                            '$totalPrice.00 IQD',
                             style: TextStyle(
                                 fontSize: 20.sp,
                                 color: Colors.white,
@@ -499,7 +502,8 @@ Expanded(
                   onPressed: selectedSeats.isNotEmpty
                       ? () {
                         
-  
+                         context.read<BookingCubit>().movietotalprice(totalPrice);
+                            context.read<BookingCubit>().selecthallseat(selectedSeats);
                           NavigationWidget.pushPage(
                               context,
                               BookingDetailes(

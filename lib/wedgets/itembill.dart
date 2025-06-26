@@ -57,10 +57,12 @@ class itemBookingSeatbill extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                       
+
                         Text(
                           'Title : $title',
                           style: TextStyle(
-                            color: Colors.white,
+                             color: Ktext,
                             fontSize: 12.sp,
                             fontWeight: FontWeight.bold,
                           ),
@@ -68,9 +70,9 @@ class itemBookingSeatbill extends StatelessWidget {
                           maxLines: 1,
                         ),
                         Text(
-                          'Price : $price.00 SAR',
+                          'Price : $price.00 IQR',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Ktext,
                             fontSize: 12.sp,
                             fontWeight: FontWeight.bold,
                           ),
@@ -78,7 +80,7 @@ class itemBookingSeatbill extends StatelessWidget {
                         Text(
                           'Date : $date',
                           style: TextStyle(
-                            color: Colors.white,
+                             color: Ktext,
                             fontSize: 12.sp,
                             fontWeight: FontWeight.bold,
                           ),
@@ -86,7 +88,7 @@ class itemBookingSeatbill extends StatelessWidget {
                         Text(
                           'Seats : $Seat',
                           style: TextStyle(
-                            color: Colors.white,
+                             color: Ktext,
                             fontSize: 12.sp,
                             fontWeight: FontWeight.bold,
                           ),

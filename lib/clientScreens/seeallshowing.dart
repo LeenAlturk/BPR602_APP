@@ -21,7 +21,7 @@ class SeeAllShowingNow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextEditingController searchController = TextEditingController();
-
+    
     Size size = MediaQuery.of(context).size;
 
     return BlocProvider(
@@ -34,8 +34,8 @@ class SeeAllShowingNow extends StatelessWidget {
               Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(builder: (context) => LoginScreen()),
                   (route) => false);
-            }else if(state.message == "No Internet Connection"){
-                   AppConstants.showToast(context, state.message);
+            } else if (state.message == "No Internet Connection") {
+              AppConstants.showToast(context, state.message);
               Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(builder: (context) => NoInternetScreen()),
                   (route) => false);
@@ -50,8 +50,8 @@ class SeeAllShowingNow extends StatelessWidget {
               Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(builder: (context) => LoginScreen()),
                   (route) => false);
-            }else if(state.message == "No Internet Connection"){
-                   AppConstants.showToast(context, state.message);
+            } else if (state.message == "No Internet Connection") {
+              AppConstants.showToast(context, state.message);
               Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(builder: (context) => NoInternetScreen()),
                   (route) => false);
@@ -104,21 +104,21 @@ class SeeAllShowingNow extends StatelessWidget {
                       //   ),
                       // ],
                       trailing: [
-  BlocBuilder<SeeallCubit, SeeallState>(
-    builder: (context, state) {
-      final cubit = context.read<SeeallCubit>();
-      return cubit.searchQuery.isNotEmpty
-          ? IconButton(
-              icon: const Icon(Icons.clear),
-              onPressed: () {
-                cubit.searchMovies('');
-                searchController.clear();
-              },
-            )
-          : const SizedBox.shrink();
-    },
-  ),
-],
+                        BlocBuilder<SeeallCubit, SeeallState>(
+                          builder: (context, state) {
+                            final cubit = context.read<SeeallCubit>();
+                            return cubit.searchQuery.isNotEmpty
+                                ? IconButton(
+                                    icon: const Icon(Icons.clear),
+                                    onPressed: () {
+                                      cubit.searchMovies('');
+                                      searchController.clear();
+                                    },
+                                  )
+                                : const SizedBox.shrink();
+                          },
+                        ),
+                      ],
                       onChanged: (value) {
                         BlocProvider.of<SeeallCubit>(searchContext)
                             .searchMovies(value.trim());
@@ -215,30 +215,31 @@ class SeeAllShowingNow extends StatelessWidget {
                   //     ),
                   //   );
                   // }
-                       
 
-                    if (state is Movieallloading && cubit.movies.isEmpty) {
-      // عرض مؤشر تحميل عند الدخول لأول مرة أو أثناء تحميل الصفحة الأولى
-      return const Expanded(
-        child: Center(child: CircularProgressIndicator()),
-      );
-    }
+                  if (state is Movieallloading && cubit.movies.isEmpty) {
+                    // عرض مؤشر تحميل عند الدخول لأول مرة أو أثناء تحميل الصفحة الأولى
+                    return const Expanded(
+                      child: Center(child: CircularProgressIndicator()),
+                    );
+                  }
 
-    if (filteredMovies.isEmpty && cubit.loadedOnce && !cubit.isFetching) {
-      return Expanded(
-        child: Center(
-          child: Text(
-            cubit.searchQuery.isNotEmpty
-                ? 'No result found'
-                : 'No Movie Available',
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-            ),
-          ),
-        ),
-      );
-    }
+                  if (filteredMovies.isEmpty &&
+                      cubit.loadedOnce &&
+                      !cubit.isFetching) {
+                    return Expanded(
+                      child: Center(
+                        child: Text(
+                          cubit.searchQuery.isNotEmpty
+                              ? 'No result found'
+                              : 'No Movie Available',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                    );
+                  }
 
                   return Expanded(
                     child: ListView.builder(

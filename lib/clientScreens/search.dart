@@ -530,10 +530,23 @@ class SearchScreen extends StatelessWidget {
                          final trimmed = query.trim();
                         if (trimmed.isEmpty) {
                           context.read<MycubitCubit>().clearSearch();
+                        
+                          
                         } else {
                           context.read<MycubitCubit>().search(trimmed);
                         }
                       },
+                      onSubmitted: (query) {
+                         final trimmed = query.trim();
+                        if (trimmed.isEmpty) {
+                          context.read<MycubitCubit>().clearSearch();
+                        
+                          
+                        } else {
+                          context.read<MycubitCubit>().search(trimmed);
+                        }
+                      },
+                       
                       decoration: InputDecoration(
                         hintText: 'Search',
                         prefixIcon: const Icon(Icons.search),

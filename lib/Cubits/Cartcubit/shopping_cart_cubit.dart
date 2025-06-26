@@ -1,5 +1,10 @@
 import 'package:bloc/bloc.dart';
+import 'package:bpr602_cinema/controller/app_store.dart';
+import 'package:bpr602_cinema/data/resorses_repo/movies_repo.dart';
+import 'package:bpr602_cinema/data/resorses_repo/snacks_repo.dart';
+import 'package:bpr602_cinema/models/response/snackresponse_byid.dart';
 import 'package:bpr602_cinema/models/snackModel.dart';
+import 'package:get_it/get_it.dart';
 
 import 'package:meta/meta.dart';
 
@@ -66,12 +71,20 @@ void addToCart(snacks item) {
     emit(ItemIsAdded(item.title, item));
   }
 }
+  // void removeFromCart(snacks item) {
+  //   if (listOfCartItem.contains(item)) {
+  //     listOfCartItem.remove(item);
+  //     emit(ItemIsRemoved(item.title, item));
+  //   }
+  // }
   void removeFromCart(snacks item) {
-    if (listOfCartItem.contains(item)) {
-      listOfCartItem.remove(item);
-      emit(ItemIsRemoved(item.title, item));
-    }
+  if (listOfCartItem.contains(item)) {
+    listOfCartItem.remove(item);
+    emit(ItemIsRemoved(item.title, item));
+    // إصدار حالة جديدة لتحديث الواجهة
+    emit(ItemQuantityUpdated(item.title, item));
   }
+}
 
   void incrementQuantity(snacks item) {
     item.quantity++;
@@ -86,7 +99,17 @@ void addToCart(snacks item) {
       removeFromCart(item);
     }
   }
-
+void updateSizeAndVariant(snacks snack, String newSize, int newVariantId, int newPrice) {
+  final index = listOfCartItem.indexWhere((item) => item == snack);
+  if (index != -1) {
+    listOfCartItem[index] = listOfCartItem[index].copyWith(
+      size: newSize,
+      variantId: newVariantId,
+      price: newPrice,
+    );
+    emit(ItemQuantityUpdated(snack.title, snack));
+  }
+}
 //    double calculateTotal(List<snacks> cartItems) {
 //  // double total = 0.0;
 //   for (var item in cartItems) {
@@ -95,26 +118,66 @@ void addToCart(snacks item) {
 //   }
 //   return total1;
 // }
+//TOTALESSSSS
+// double calculateTotal(List<snacks> cartItems) {
+//   double total = 0.0; // متغير مؤقت لحساب المجموع
+//   for (var item in cartItems) {
+//     final sizePriceAdjustment = sizePriceMap[item.size] ?? 0;
+//     total += (item.price + sizePriceAdjustment) * item.quantity;
+//   }
+//   return total;
+// }
 double calculateTotal(List<snacks> cartItems) {
-  double total = 0.0; // متغير مؤقت لحساب المجموع
+  double total = 0.0;
   for (var item in cartItems) {
     final sizePriceAdjustment = sizePriceMap[item.size] ?? 0;
     total += (item.price + sizePriceAdjustment) * item.quantity;
   }
   return total;
 }
-
   // double addtoservice (double fee){
   //   double  servicefee = 24.0; 
   //   double total = fee + servicefee;
   //   return total; 
   // }
   double addtoservice(double subtotal) {
-  const double servicefee = 24.0; 
+  const double servicefee = 0.0; 
   return subtotal + servicefee; 
 }
   void updateSize(snacks item, String newSize) {
     item.size = newSize;
     emit(ItemQuantityUpdated(item.title, item));
+  }
+
+
+
+  SnackResponsebyid? snackResponsebyid;
+  Future<void> getMoviedetailes(int id ) async {
+    emit(Detailessnackloading());
+    try  {
+      snackResponsebyid =
+          await GetIt.I.get<Getsnacks>().getmsnacksdetailse(id);
+      if (snackResponsebyid!.message == 'Session Is Done') {
+              
+              DataStore.instance.deleateRefreshToken();
+                DataStore.instance.deleateToken();
+        emit(DetailsnackEerorstate(message: snackResponsebyid!.message!));
+      }else if(snackResponsebyid!.message == 'No Internet Connection'){
+         emit(DetailsnackEerorstate(message: snackResponsebyid!.message!));
+      } else if (snackResponsebyid?.data != null) {
+        emit(Detailessnackloaded());
+      } else if (snackResponsebyid!.message == 'Internet is Week') {
+        emit(DetailsnackEerorstate(message: snackResponsebyid!.message!));
+      } else {
+        emit(DetailsnackEerorstate(message: snackResponsebyid!.message!));
+      }
+    } catch (ex) {
+      if (snackResponsebyid!.message == 'Session Is Done') {
+       
+        emit(DetailsnackEerorstate(message: snackResponsebyid!.message!));
+      } else {
+        emit(DetailsnackEerorstate(message: snackResponsebyid!.message!));
+      }
+    }
   }
 }

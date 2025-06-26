@@ -115,6 +115,8 @@
 //       }
 //    }
 // }
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:bpr602_cinema/controller/app_store.dart';
 import 'package:bpr602_cinema/data/resorses_repo/movies_repo.dart';
@@ -128,7 +130,7 @@ part 'mycubit_state.dart';
 
 class MycubitCubit extends Cubit<MycubitState> {
   MycubitCubit() : super(MycubitInitial());
-  
+   Timer? _debounce; // ✅ هذا المتغير جديد
   GetMovieTypemodel? getMovieTypemodel;
   MovieResponse? movieResponse;
   int currentPage = 0;
@@ -137,6 +139,7 @@ class MycubitCubit extends Cubit<MycubitState> {
   String? searchQuery;
   int? selectedMovieTypeId;
   bool isLoadingMore = false;
+  
 
   String? selectedStatus;
  final TextEditingController searchController = TextEditingController();
@@ -193,14 +196,36 @@ class MycubitCubit extends Cubit<MycubitState> {
     emit(FilterCleared()); // حالة جديدة لتنظيف الفلتر
   }
 
+  // void search(String query) {
+  //   searchQuery = query;
+  //   if (query.isNotEmpty) {
+  //     resetAndFetchMovies(); // إعادة تعيين وإجراء البحث عند كل كتابة
+  //   } else {
+  //     clearSearch();
+  //   }
+  // }
   void search(String query) {
-    searchQuery = query;
+  searchQuery = query;
+
+  // إلغاء المؤقت السابق إن وُجد
+  if (_debounce?.isActive ?? false) _debounce!.cancel();
+
+  // تعيين مؤقت جديد
+  _debounce = Timer(const Duration(milliseconds: 560), () {
     if (query.isNotEmpty) {
-      resetAndFetchMovies(); // إعادة تعيين وإجراء البحث عند كل كتابة
+      resetAndFetchMovies();
     } else {
       clearSearch();
     }
-  }
+  });
+}
+@override
+Future<void> close() {
+  _debounce?.cancel(); // تنظيف المؤقت عند التخلص من الكيوبت
+  return super.close();
+}
+
+ 
 
   void clearSearch() {
     searchQuery = null;

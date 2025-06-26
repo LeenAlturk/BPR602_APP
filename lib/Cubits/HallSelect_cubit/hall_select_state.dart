@@ -11,3 +11,12 @@ final class HallSelected extends HallSelectState {
   
   HallSelected(this.selectedIndex);
 }
+
+
+final class Movietimeloading extends HallSelectState{}
+final class MovietimeAccept extends HallSelectState{}
+final class MovietimeError extends HallSelectState{
+  final String message;
+   MovietimeError({required this.message});
+
+}

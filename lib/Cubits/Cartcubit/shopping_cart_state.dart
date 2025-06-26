@@ -22,4 +22,19 @@ class ItemQuantityUpdated extends ShoppingCartState {
   final snacks productItem;
   ItemQuantityUpdated(this.productName, this.productItem);
 }
+class ItemQuantityUpdated2 extends ShoppingCartState {
+  final String productName; // أضف هذا السطر
+  
+  ItemQuantityUpdated2({required this.productName}); // عدل المُنشئ هكذا
+}
 class CartCleared extends ShoppingCartState {}
+class Detailessnackloading extends ShoppingCartState{
+
+}
+class Detailessnackloaded extends ShoppingCartState{}
+class DetailsnackEerorstate extends ShoppingCartState{
+final String message ;
+
+  DetailsnackEerorstate({required this.message});
+
+}

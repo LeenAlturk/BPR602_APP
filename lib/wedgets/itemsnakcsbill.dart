@@ -50,7 +50,7 @@ class itemSnacksbill extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding:  EdgeInsets.all(size.height * 0.04),
+                  padding:  EdgeInsets.all(size.height * 0.03),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,

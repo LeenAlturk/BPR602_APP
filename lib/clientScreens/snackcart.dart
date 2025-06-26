@@ -116,7 +116,7 @@ class CartScreen extends StatelessWidget {
                             children: [
                               Text(
                                 "Price Detailes",
-                                style:  TextStyle(
+                                style: TextStyle(
                                     color: Colors.white, fontSize: 18.sp),
                               ),
                             ],
@@ -139,15 +139,15 @@ class CartScreen extends StatelessWidget {
                           children: [
                             Text(
                               'Subtotal: \$${context.read<ShoppingCartCubit>().calculateTotal(cartItems)}',
-                              style:  TextStyle(
+                              style: TextStyle(
                                   color: Colors.white, fontSize: 18.sp),
                             ),
                             SizedBox(
                               height: size.height * 0.02,
                             ),
                             Text(
-                              "Service fee = 24 SAR",
-                              style:  TextStyle(
+                              "Service fee = 0 IQD",
+                              style: TextStyle(
                                   color: Colors.white, fontSize: 18.sp),
                             ),
                             SizedBox(
@@ -159,11 +159,20 @@ class CartScreen extends StatelessWidget {
                                 thickness: 0.5,
                               ),
                             ),
-                            Text(
-                              'Total: \$${context.read<ShoppingCartCubit>().addtoservice(context.read<ShoppingCartCubit>().calculateTotal(cartItems))}',
-                              style:  TextStyle(
-                                  color: Colors.white, fontSize: 16.sp),
-                            ),
+                           BlocBuilder<ShoppingCartCubit, ShoppingCartState>(
+  builder: (context, state) {
+    final cartItems = context.read<ShoppingCartCubit>().listOfCartItem;
+    return Text(
+      'Total: \$${context.read<ShoppingCartCubit>().addtoservice(
+        context.read<ShoppingCartCubit>().calculateTotal(cartItems)
+      )}',
+      style: TextStyle(
+        color: Colors.white, 
+        fontSize: 16.sp
+      ),
+    );
+  },
+)
                           ],
                         ),
                       ],
@@ -171,35 +180,64 @@ class CartScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              ElevatedBtn(
-                  backgroundColor: kbutton,
-                  textColor: ksmallActionColor,
-                  buttonText: "Checkout",
-                  onPressed: () {
-                    final listofcart = context.read<ShoppingCartCubit>().listOfCartItem;
-                    context.read<BookingCubit>().selectSnacks(listofcart);
-                      final booking = context.read<BookingCubit>().state as BookingDataState;
-    print("Snacks saved to BookingCubit:");
-    for (var snack in booking.selectedSnacks) {
-      print(" - ${snack.title}, price: ${snack.price}");
-    }
-                  AppConstants.showToast(
-                                              context,
-                                              'Snacks booking ready' , icon: Icons.done , iconcolor: Colors.green);
-    //               NavigationWidget.popPage(
-    // context,
-    // SnackScreen(
-       
-    // )
-    // );
-       NavigationWidget.pushPage(
-                                            context,
-                                            Bill(
-                                              
-                                                ),
-                                          );
+              // ElevatedBtn(
+              //     backgroundColor: kbutton,
+              //     textColor: ksmallActionColor,
+              //     buttonText: "Checkout",
+              //     onPressed: () {
+              //       final listofcart =
+              //           context.read<ShoppingCartCubit>().listOfCartItem;
+              //       context.read<BookingCubit>().selectSnacks(listofcart);
+              //       final booking =
+              //           context.read<BookingCubit>().state as BookingDataState;
+              //       print("Snacks saved to BookingCubit:");
+              //       for (var snack in booking.selectedSnacks) {
+              //         print(" - ${snack.title}, price: ${snack.price}");
+              //       }
+              //       AppConstants.showToast(context, 'Snacks booking ready',
+              //           icon: Icons.done, iconcolor: Colors.green);
+              //       //               NavigationWidget.popPage(
+              //       // context,
+              //       // SnackScreen(
 
-                  })
+              //       // )
+              //       // );
+              //       NavigationWidget.pushPage(
+              //         context,
+              //         BookingDetailes(),
+              //       );
+              //     })
+              ElevatedBtn(
+  backgroundColor: kbutton,
+  textColor: ksmallActionColor,
+  buttonText: "Checkout",
+  onPressed: () {
+    final listofcart = context.read<ShoppingCartCubit>().listOfCartItem;
+    context.read<BookingCubit>().selectSnacks(listofcart);
+    
+    // طباعة البيانات للتأكد (لأغراض التصحيح)
+    final booking = context.read<BookingCubit>().state as BookingDataState;
+    print("Selected Snacks:");
+    for (var snack in booking.selectedSnacks) {
+      print(" - ${snack.title}, Quantity: ${snack.quantity}, VariantID: ${snack.variantId}, Price: ${snack.price}");
+    }
+       final cartCubit = context.read<ShoppingCartCubit>();
+        final bookingCubit = context.read<BookingCubit>();
+        bookingCubit.selectSnacks(cartCubit.listOfCartItem);
+
+        // طباعة الـ variants بعد الحفظ
+    final state = bookingCubit.state as BookingDataState;
+    print('----- After Saving Variants -----');
+    print('All Variant IDs: ${state.variantIds}');
+    state.selectedSnacks.forEach((snack) {
+      print('${snack.variantId} (${snack.size}) x${snack.quantity}');
+    });
+
+    AppConstants.showToast(context, 'Snacks booking ready',
+        icon: Icons.done, iconcolor: Colors.green);
+    NavigationWidget.pushPage(context, BookingDetailes());
+  }
+)
             ],
           ),
         );
