@@ -32,7 +32,7 @@ class _SnackScreenState extends State<SnackScreen> {
     Size size = MediaQuery.of(context).size;
 
     return BlocProvider(
-      create: (context) => SnackcubitCubit()..getsnacks(),
+      create: (context) => SnackcubitCubit()..getsnakfood()..getsnakdrinks(),
       child: Builder(
         builder: (newContext) => BlocListener<SnackcubitCubit, SnackcubitState>(
           listener: (context, state) {
@@ -128,7 +128,7 @@ class _SnackScreenState extends State<SnackScreen> {
             body: RefreshIndicator(
               color: kbutton,
               onRefresh: () async {
-                await newContext.read<SnackcubitCubit>().getsnacks();
+                await newContext.read<SnackcubitCubit>().refreshAll();
               },
               child: SingleChildScrollView(
                 physics: AlwaysScrollableScrollPhysics(),
@@ -178,14 +178,13 @@ class _SnackScreenState extends State<SnackScreen> {
                         }
 
                         if (state is Snacksloaded &&
-                            cubit.snackResponse?.data != null) {
+                            cubit.snackResponsefood?.data != null) {
                           // Filter only "Food" snacks for carousel
-                          final foodSnacks = cubit.snackResponse!.data!
-                              .where((snack) => snack.type == "Snak")
-                              .toList();
+                          final foodSnacks = cubit.snackResponsefood!.data;
+                              
 
                           return CarouselSlider(
-                            items: foodSnacks.map((snack) {
+                            items: foodSnacks!.map((snack) {
                               final imageUrl = snack.image != null
                                   ? '${LinksUrl.baseUrl}${snack.image!.url}'
                                   : null;
@@ -312,11 +311,10 @@ class _SnackScreenState extends State<SnackScreen> {
                           );
                         }
                         if (state is Snacksloaded &&
-                            cubit.snackResponse?.data != null) {
+                            cubit.snackResponsefood?.data != null) {
                           // Filter only "Food" snacks
-                          final foodSnacks = cubit.snackResponse!.data!
-                              .where((snack) => snack.type == "Snak")
-                              .toList();
+                          final foodSnacks = cubit.snackResponsefood!.data!
+                        ;
 
                           return SizedBox(
                             height: size.height * 0.36,
@@ -427,11 +425,10 @@ class _SnackScreenState extends State<SnackScreen> {
                           );
                         }
                         if (state is Snacksloaded &&
-                            cubit.snackResponse?.data != null) {
+                            cubit.snackResponsedrinks?.data != null) {
                           // Filter only "Drink" snacks
-                          final drinkSnacks = cubit.snackResponse!.data!
-                              .where((snack) => snack.type == "Drink")
-                              .toList();
+                          final drinkSnacks = cubit.snackResponsedrinks!.data;
+                             
 
                           return SizedBox(
                             height: size.height * 0.36,
@@ -439,7 +436,7 @@ class _SnackScreenState extends State<SnackScreen> {
                             child: ListView.builder(
                               shrinkWrap: true,
                               scrollDirection: Axis.horizontal,
-                              itemCount: drinkSnacks.length,
+                              itemCount: drinkSnacks!.length,
                               itemBuilder: (context, index) {
                                 final snackData = drinkSnacks[index];
                                 return Padding(

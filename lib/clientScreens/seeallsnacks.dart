@@ -292,7 +292,7 @@ class SeeAllSnacksScreen extends StatelessWidget {
                               );
                             },
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: EdgeInsets.all(size.width * 0.02),
                               child: SeeallSnacksCard(
                                 imgurl: snack.image != null
                                     ? '${LinksUrl.baseUrl}${snack.image!.url}'

@@ -143,10 +143,20 @@ class SeeallSnacksCard extends StatelessWidget {
     return Container(
       width: size.width,
       height: size.height * 0.25,
-      decoration: BoxDecoration(
-        color: Kbackground,
-        borderRadius: BorderRadius.circular(12),
-      ),
+        decoration: BoxDecoration(
+    color: Kbackground,
+    borderRadius: BorderRadius.circular(12),
+    border: Border.all(color: Colors.white24, width: 1), 
+    gradient: const LinearGradient(
+          colors: [
+            Color.fromARGB(255, 25, 21, 63), 
+            ksmallActionColor
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+  ),
+
       child: Row(
         children: [
           ClipRRect(
@@ -156,7 +166,7 @@ class SeeallSnacksCard extends StatelessWidget {
             ),
             child: Image.network(
               imgurl,
-              height: size.height * 0.32,
+              height: size.height * 0.28,
               width: size.width * 0.36,
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) => Container(
@@ -168,34 +178,36 @@ class SeeallSnacksCard extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.all(size.width * 0.03),
+            padding: EdgeInsets.all(size.width * 0.04),
             child: Column(
+              
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(height: size.height * 0.08,),
                 Text(
                   title,
                   style: TextStyle(
                     color: kbutton,
-                    fontSize: 14.sp,
+                    fontSize: 18.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 SizedBox(height: size.height * 0.01),
-                _buildRow("price range", priceText, size.width * 0.01),
+                _buildRow("price range", priceText, size.width * 0.01 , size.width* 0.2 ),
                 SizedBox(height: size.height * 0.01),
-                SizedBox(
-                  width: size.width * 0.5,
-                  child: Text(
-                    desc,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
+                // SizedBox(
+                //   width: size.width * 0.5,
+                //   child: Text(
+                //     desc,
+                //     style: TextStyle(
+                //       color: Colors.white,
+                //       fontSize: 14.sp,
+                //       fontWeight: FontWeight.bold,
+                //     ),
+                //     maxLines: 3,
+                //     overflow: TextOverflow.ellipsis,
+                //   ),
+                // ),
               ],
             ),
           ),
@@ -204,18 +216,22 @@ class SeeallSnacksCard extends StatelessWidget {
     );
   }
 
-  Widget _buildRow(String label, String value, double size) {
+  Widget _buildRow(String label, String value, double size , double sizelabel ) {
     return Row(
       children: [
         SizedBox(
-          width: 80,
-          child: Text(
-            label,
-            style: TextStyle(
-              color: Ktext,
-              fontSize: 14.sp,
-              fontWeight: FontWeight.bold,
-            ),
+          width: sizelabel,
+          child: Row(
+            children: [
+              Text(
+                label,
+                style: TextStyle(
+                  color: Ktext,
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
         ),
         SizedBox(width: size),

@@ -55,22 +55,39 @@ void clearCart() {
   emit(CartCleared()); // إصدار حالة جديدة للإشارة إلى أن السلة فارغة
 }
 
+// void addToCart(snacks item) {
+//   // البحث عن العنصر في السلة (بنفس الاسم والحجم)
+//   final existingItemIndex = listOfCartItem.indexWhere(
+//     (cartItem) => cartItem.title == item.title && cartItem.size == item.size,
+//   );
+
+//   if (existingItemIndex != -1) {
+//     // إذا كان العنصر موجودًا، نزيد الكمية فقط
+//     incrementQuantity(listOfCartItem[existingItemIndex]);
+//   } else {
+//     // إذا لم يكن موجودًا، نضيفه كعنصر جديد
+//     item.isAdd = true;
+//     listOfCartItem.add(item);
+//     emit(ItemIsAdded(item.title, item));
+//   }
+// }
 void addToCart(snacks item) {
-  // البحث عن العنصر في السلة (بنفس الاسم والحجم)
   final existingItemIndex = listOfCartItem.indexWhere(
     (cartItem) => cartItem.title == item.title && cartItem.size == item.size,
   );
 
   if (existingItemIndex != -1) {
-    // إذا كان العنصر موجودًا، نزيد الكمية فقط
-    incrementQuantity(listOfCartItem[existingItemIndex]);
+    // إذا كان موجودًا، نزيد الكمية بالقيمة الجديدة
+    final existingItem = listOfCartItem[existingItemIndex];
+    existingItem.quantity += item.quantity;
+    emit(ItemQuantityUpdated(existingItem.title, existingItem));
   } else {
-    // إذا لم يكن موجودًا، نضيفه كعنصر جديد
     item.isAdd = true;
     listOfCartItem.add(item);
     emit(ItemIsAdded(item.title, item));
   }
 }
+
   // void removeFromCart(snacks item) {
   //   if (listOfCartItem.contains(item)) {
   //     listOfCartItem.remove(item);

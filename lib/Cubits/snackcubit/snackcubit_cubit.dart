@@ -9,30 +9,97 @@ part 'snackcubit_state.dart';
 
 class SnackcubitCubit extends Cubit<SnackcubitState> {
   SnackcubitCubit() : super(SnackcubitInitial());
-    SnackResponse ? snackResponse ; 
-   Future <void> getsnacks () async{
-      emit(Snackloading());
-      try {
+  //   SnackResponse ? snackResponse ; 
+  //  Future <void> getsnacks () async{
+  //     emit(Snackloading());
+  //     try {
         
-         snackResponse = await GetIt.I.get<Getsnacks>().getalsnacks(
-          pageSize: 30
-         );
-            if (snackResponse!.message == 'Session Is Done') {
+  //        snackResponse = await GetIt.I.get<Getsnacks>().getalsnacks(
+  //         pageSize: 30
+  //        );
+  //           if (snackResponse!.message == 'Session Is Done') {
               
-              DataStore.instance.deleateRefreshToken();
-                DataStore.instance.deleateToken();
-                DataStore.instance.deleateRoalUser();
-        emit(snackerror(message: snackResponse!.message!));
-      } else if (snackResponse!.data != null) {
-        emit(Snacksloaded());
-      } else if (snackResponse!.message == 'Internet is Week') {
-        emit(snackerror(message: snackResponse!.message!));
-      } else {
-        emit(snackerror(message: snackResponse!.message!));
-      }
-      } catch (e) {
+  //             DataStore.instance.deleateRefreshToken();
+  //               DataStore.instance.deleateToken();
+  //               DataStore.instance.deleateRoalUser();
+  //       emit(snackerror(message: snackResponse!.message!));
+  //     } else if (snackResponse!.data != null) {
+  //       emit(Snacksloaded());
+  //     } else if (snackResponse!.message == 'Internet is Week') {
+  //       emit(snackerror(message: snackResponse!.message!));
+  //     } else {
+  //       emit(snackerror(message: snackResponse!.message!));
+  //     }
+  //     } catch (e) {
    
-       emit(snackerror(message: 'Something went wrong'));
+  //      emit(snackerror(message: 'Something went wrong'));
+  //     }
+  //  }
+
+    SnackResponse? snackResponsefood;
+  SnackResponse? snackResponsedrinks;
+
+  Future<void> getsnakfood() async {
+    emit(Snackloading());
+    try {
+      snackResponsefood = await GetIt.I.get<Getsnacks>().getalsnacks(
+        type: "Snak",
+         );
+      
+      if (snackResponsefood!.message == 'Session Is Done') {
+        DataStore.instance.deleateRefreshToken();
+        DataStore.instance.deleateToken();
+        DataStore.instance.deleateRoalUser();
+        emit(snackerror(message: snackResponsefood!.message!));
+      }else if(snackResponsefood!.message == 'No Internet Connection'){
+        emit(snackerror(message: snackResponsefood!.message!));
+      } else if (snackResponsefood!.data != null) {
+        emit(Snacksloaded());
+      } else {
+        emit(snackerror(message: snackResponsefood!.message ?? 'Error'));
       }
-   }
+    } catch (e) {
+      emit(snackerror(message: 'Something went wrong'));
+    }
+  }
+
+   Future<void> getsnakdrinks() async {
+    emit(Snackloading());
+    try {
+      snackResponsedrinks = await GetIt.I.get<Getsnacks>().getalsnacks(
+        type: "Drink",
+         );
+      
+      if (snackResponsedrinks!.message == 'Session Is Done') {
+        DataStore.instance.deleateRefreshToken();
+        DataStore.instance.deleateToken();
+        DataStore.instance.deleateRoalUser();
+        emit(snackerror(message: snackResponsedrinks!.message!));
+      }else if(snackResponsedrinks!.message == 'No Internet Connection'){
+        emit(snackerror(message: snackResponsedrinks!.message!));
+      } else if (snackResponsedrinks!.data != null) {
+        emit(Snacksloaded());
+      } else {
+        emit(snackerror(message: snackResponsedrinks!.message ?? 'Error'));
+      }
+    } catch (e) {
+      emit(snackerror(message: 'Something went wrong'));
+    }
+  }
+
+  // Future<void> refreshAll() async {
+  //   await getNowShowingMovies();
+  //   await getComingSoonMovies();
+  // }
+  Future<void> refreshAll() async {
+  emit(Snackloading()); // Emit loading state for all widgets
+  try {
+    await Future.wait([
+      getsnakfood(),
+      getsnakdrinks(),
+    ]);
+  } catch (e) {
+    emit(snackerror(message: 'Refresh failed'));
+  }
+}
 }
