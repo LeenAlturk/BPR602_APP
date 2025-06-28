@@ -192,7 +192,7 @@ class BookingDetailes extends StatelessWidget {
                           Flexible(
                             child: Text(
                               booking.selectedSeats
-                                  .map((type) => type.seatid ?? '')
+                                  .map((type) => type.id ?? '')
                                   .join(', '),
                               style: TextStyle(
                                 color: Colors.white,
@@ -248,37 +248,48 @@ class BookingDetailes extends StatelessWidget {
                         ],
                       ),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Num OF Booking Snacks',
-                            style: TextStyle(
-                              color: Ktext,
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          BlocBuilder<ShoppingCartCubit, ShoppingCartState>(
-                            builder: (context, state) {
-                              final cartItems = context
-                                  .read<ShoppingCartCubit>()
-                                  .listOfCartItem;
-                              final itemCount = cartItems.fold(
-                                  0, (sum, item) => sum + item.quantity);
-                              return Text(
-                                itemCount == 0
-                                    ? '0 snack'
-                                    : '$itemCount snacks',
-                                style: TextStyle(
-                                  color: Ktext,
-                                  fontSize: 13.sp,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
+  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  children: [
+    Text(
+      'Num OF Booking Snacks',
+      style: TextStyle(
+        color: Ktext,
+        fontSize: 14.sp,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+    Builder(
+      builder: (context) {
+        final bookingState = context.watch<BookingCubit>().state;
+        if (bookingState is BookingDataState) {
+          final snackCount = bookingState.selectedSnacks.fold(
+            0,
+            (sum, item) => sum + item.quantity,
+          );
+
+          return Text(
+            snackCount == 0 ? '0 snack' : '$snackCount snacks',
+            style: TextStyle(
+              color: Ktext,
+              fontSize: 13.sp,
+              fontWeight: FontWeight.bold,
+            ),
+          );
+        } else {
+          return Text(
+            '0 snack',
+            style: TextStyle(
+              color: Ktext,
+              fontSize: 13.sp,
+              fontWeight: FontWeight.bold,
+            ),
+          );
+        }
+      },
+    ),
+  ],
+),
+
                     ],
                   ),
                 ),
@@ -287,77 +298,80 @@ class BookingDetailes extends StatelessWidget {
                 height: size.height * 0.02,
               ),
               GestureDetector(
-                onTap: () {
-                  NavigationWidget.pushPage(context, const SnackScreen());
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: ksmallActionColor,
-                    borderRadius: BorderRadius.circular(12),
-                    gradient: const LinearGradient(
-                      colors: [
-                        Color.fromARGB(255, 28, 33, 72),
-                        ksmallActionColor
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                  ),
-                  width: size.width * 0.96,
-                  height: size.height * 0.14,
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.all(size.width * 0.0323),
-                        child: Image.asset("assets/pobCorn.png"),
-                      ),
-                      BlocBuilder<ShoppingCartCubit, ShoppingCartState>(
-                        builder: (context, state) {
-                          final cartItems =
-                              context.read<ShoppingCartCubit>().listOfCartItem;
-                          final itemCount = cartItems.fold(
-                              0, (sum, item) => sum + item.quantity);
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                itemCount == 0 ? 'Book Your ' : 'change Your ',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Text(
-                                'Snack .......',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-                      SizedBox(
-                        width: size.width * 0.09,
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          NavigationWidget.pushPage(
-                              context, const SnackScreen());
-                        },
-                        icon: const Icon(
-                          Icons.arrow_forward_ios,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
+  onTap: () {
+    NavigationWidget.pushPage(context, const SnackScreen());
+  },
+  child: Container(
+    decoration: BoxDecoration(
+      color: ksmallActionColor,
+      borderRadius: BorderRadius.circular(12),
+      gradient: const LinearGradient(
+        colors: [
+          Color.fromARGB(255, 28, 33, 72),
+          ksmallActionColor
+        ],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      ),
+    ),
+    width: size.width * 0.96,
+    height: size.height * 0.14,
+    child: Row(
+      children: [
+        Padding(
+          padding: EdgeInsets.all(size.width * 0.0323),
+          child: Image.asset("assets/pobCorn.png"),
+        ),
+        Builder(
+          builder: (context) {
+            final bookingState = context.watch<BookingCubit>().state;
+            int snackCount = 0;
+            if (bookingState is BookingDataState) {
+              snackCount = bookingState.selectedSnacks.fold(
+                0,
+                (sum, item) => sum + item.quantity,
+              );
+            }
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  snackCount == 0 ? 'Book Your' : 'Change Your',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-              )
+                Text(
+                  'Snack .......',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
+        const Spacer(),
+        IconButton(
+          onPressed: () {
+            NavigationWidget.pushPage(context, const SnackScreen());
+          },
+          icon: const Icon(
+            Icons.arrow_forward_ios,
+            color: Colors.white,
+          ),
+        ),
+      ],
+    ),
+  ),
+)
+
             ],
           ),
           SizedBox(

@@ -8,18 +8,20 @@ import 'package:bpr602_cinema/models/request/refreshreq.dart';
 import 'package:bpr602_cinema/models/response/hallResponse.dart';
 import 'package:bpr602_cinema/models/response/refreshresponse.dart';
 import 'package:dio/dio.dart';
+import 'package:intl/intl.dart';
 
 class GeHallRepo extends BaseClient {
-  Future<GetHallId> getHall(int hallid ) async {
+  Future<GetHallId> getHall(int hallid ,DateTime bookingDate) async {
     Map<String, dynamic> headers = {
       "Authorization": "Bearer ${DataStore.instance.token}",
       'accept': '/',
       // 'Content-Type': 'application/json',
       // 'Accept': 'application/json',
     };
+      final formattedDate = DateFormat('yyyy-MM-dd').format(bookingDate);
     try {
-      var response = await client.get('http://cinemate-001-site1.jtempurl.com/api/Hall/$hallid',
-          //queryParameters: {"id": hallid},
+      var response = await client.get('http://cinemate-001-site1.jtempurl.com/api/Bookings/$hallid/booking-hall-chairs',
+          queryParameters: {"bookingDate": formattedDate},
           options: Options(headers: headers));
       print(response.data);
       return GetHallId.fromJson(response.data);
@@ -40,7 +42,7 @@ class GeHallRepo extends BaseClient {
           DataStore.instance.setToken(reafreshTokenModel.data.accessToken);
           DataStore.instance.setRefreshToken(reafreshTokenModel.data.refreshToken);
 
-          return getHall(hallid);
+          return getHall(hallid , bookingDate);
         } catch (ex) {
           if (ex is DioException) {
             if (ex.response?.statusCode == 401) {

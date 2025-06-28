@@ -206,7 +206,7 @@ import 'package:bpr602_cinema/wedgets/Navigating.dart';
 import 'package:bpr602_cinema/wedgets/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:intl/intl.dart';
 class HallSelect extends StatelessWidget {
   
   final int id;
@@ -460,14 +460,21 @@ class HallSelect extends StatelessWidget {
                                   vertical: 12,
                                 ),
                               ),
-                              onPressed: () {
-                                context.read<BookingCubit>().selectMovieTime(item);
-                                  
-                                NavigationWidget.pushPage(
-                                  context,
-                                   SelectSeatScreen(haleid: item.hall!.id!),
-                                );
-                              },
+                         onPressed: () {
+  final booking = context.read<BookingCubit>().state as BookingDataState;
+  final date = booking.selectedDate!;
+  
+  context.read<BookingCubit>().selectMovieTime(item);
+
+  NavigationWidget.pushPage(
+    context,
+    SelectSeatScreen(
+      haleid: item.id!,
+      bookingDate: date,
+    ),
+  );
+},
+
                               child: Text(
                                 'GO',
                                 style: TextStyle(

@@ -45,6 +45,7 @@ import 'package:bpr602_cinema/Cubits/SeeAllcubit/seeall_cubit.dart';
 import 'package:bpr602_cinema/Cubits/bookingCubit/booking_cubit.dart';
 import 'package:bpr602_cinema/controller/app_store.dart';
 import 'package:bpr602_cinema/data/resorses_repo/auth_repo.dart';
+import 'package:bpr602_cinema/data/resorses_repo/booking_repo.dart';
 import 'package:bpr602_cinema/data/resorses_repo/hall_repo.dart';
 import 'package:bpr602_cinema/data/resorses_repo/image_repo.dart';
 import 'package:bpr602_cinema/data/resorses_repo/movies_repo.dart';
@@ -91,9 +92,12 @@ void main() async {
    GetIt.I.registerSingleton<Getsnacks>(Getsnacks());
     GetIt.I.registerSingleton<GeHallRepo>(GeHallRepo());
     GetIt.I.registerSingleton<GetMovieallinfoRepo>(GetMovieallinfoRepo());
+    //BookingRepo
+    GetIt.I.registerSingleton<BookingRepo>(BookingRepo());
     //gemovietype
     if (DataStore.instance.hasToken) {
       log('user token is : ${DataStore.instance.token}');
+      log('user id is : ${DataStore.instance.userID}');
     } else {
       log('there is no user');
     }

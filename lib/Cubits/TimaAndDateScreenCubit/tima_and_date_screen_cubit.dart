@@ -71,9 +71,10 @@ bool isVip = true; // Default: VIP
     "12:00 AM",
     "2:00 AM"
   ];
-
+bool? isDateSelected;
   void onDateSelected(DateTime day, DateTime focusedDate) {
     today = day;
+      isDateSelected = true;
     emit(TimaAndDateScreenDateSelected(today));
   }
 

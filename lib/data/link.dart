@@ -14,21 +14,26 @@ abstract class LinksUrl {
     return "api/Image/$imageId";  // هذا يضيف imageId في الرابط
   }
   
+  static String deletebooking(int bookingid) {
+    return "api/Bookings/$bookingid";  // هذا يضيف imageId في الرابط
+  }
+  
   static const refreshToken = "/api/Auth/refresh-token";
    static const movieType = "/api/MovieType";
    static const getmovies = "/api/Movie";
    static const getmoviesbyid = "/api/Movie";
-  
+  static const postbooking = "/api/Bookings";
+  static const getuserbooking = "/api/Bookings";
    static const getsnacks = "/api/Snak";
   static const getAllclasses = "/api/Class/get-available-student-classes";
   static const getMyclasses = "/api/Class/get-student-classes";
   static const refreshreq = "/api/Auth/refresh-token";
-  static const joinurl = "/api/Class/join-student";
-  static const profileurl = "/api/Auth/get-student-profile";
-  static const getMyexam = "/api/Exam/get-student-exams";
-  static const getexamquestion = "/api/Exam/join-exam/";
-  static const addAnswer = "/api/Exam/add-answers/";
-  static const studentOnlineResult = "/api/Exam/get-student-total";
-  static const resultDetailes = "/api/Exam/get-student-answers";
-  static const studentresult = "/api/Exam/get-totals";
+  // static const joinurl = "/api/Class/join-student";
+  // static const profileurl = "/api/Auth/get-student-profile";
+  // static const getMyexam = "/api/Exam/get-student-exams";
+  // static const getexamquestion = "/api/Exam/join-exam/";
+  // static const addAnswer = "/api/Exam/add-answers/";
+  // static const studentOnlineResult = "/api/Exam/get-student-total";
+  // static const resultDetailes = "/api/Exam/get-student-answers";
+  // static const studentresult = "/api/Exam/get-totals";
 }

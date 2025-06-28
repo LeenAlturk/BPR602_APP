@@ -15,6 +15,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SelectSeatScreen extends StatefulWidget {
   final int haleid;
+  final DateTime bookingDate;
   // final String syn;
   // final String title;
   // final String imgurl;
@@ -23,7 +24,7 @@ class SelectSeatScreen extends StatefulWidget {
   // final String ar;
   // final String genre;
   const SelectSeatScreen(
-      {super.key, required this.haleid,
+      {super.key, required this.haleid, required this.bookingDate
       // required this.syn,
       // required this.imgurl,
       // required this.duration,
@@ -78,7 +79,7 @@ class _SelectSeatScreenState extends State<SelectSeatScreen> {
      final booking = context.read<BookingCubit>().state as BookingDataState;
      int totalPrice = selectedSeats.length * booking.selectedMovieTime!.price!;
     return BlocProvider(
-      create: (context) => SeatcubitCubit()..getMoviehall(widget.haleid),
+      create: (context) => SeatcubitCubit()..getMoviehall(widget.haleid , widget.bookingDate),
       child: BlocConsumer<SeatcubitCubit, SeatcubitState>(
         listener: (context, state) {
           if (state is GetHallErrorState) {
@@ -121,7 +122,7 @@ class _SelectSeatScreenState extends State<SelectSeatScreen> {
                     child: IconButton(
                         onPressed: () {
                           selectedSeats = [];
-                          context.read<SeatcubitCubit>().getMoviehall(widget.haleid);
+                          context.read<SeatcubitCubit>().getMoviehall(widget.haleid , widget.bookingDate);
                         },
                         icon: Icon(
                           Icons.refresh,
@@ -301,71 +302,76 @@ Expanded(
               scrollDirection: Axis.vertical,
                physics: const ClampingScrollPhysics(),
               child: SizedBox(
-                width: data.columnCount * 42.0, // عرض ثابت لكل خلية (60 هو مثال)
+                width: data.hall.columnCount * 42.0, // عرض ثابت لكل خلية (60 هو مثال)
                 child: GridView.builder(
                   physics: const NeverScrollableScrollPhysics(), // تعطيل التمرير الداخلي
                   shrinkWrap: true,
                   padding: const EdgeInsets.all(8.0),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: data.columnCount,
+                    crossAxisCount: data.hall.columnCount,
                     crossAxisSpacing: 2,
                     mainAxisSpacing: 2,
                   ),
                   itemCount: chairs.length,
                   itemBuilder: (context, index) {
-                    final seat = chairs[index];
-                    if (!seat.isValid) {
-                      return const SizedBox.shrink();
-                    }
-                
-                    final isSelected = selectedSeats.any((s) => s.id == seat.code);
-                
-                    return GestureDetector(
-                      onTap: () {
-                        toggleSeatSelection(Seat(
-                          
-                          seat.code,
-                          isSelected ? SeatStatus.selected : SeatStatus.available ,
-                          seat.id
-                        ));
-                      },
-                      child: AspectRatio(
-                        aspectRatio: 1,
-                        child: LayoutBuilder(
-                          builder: (context, constraints) {
-                            double iconSize = constraints.maxWidth * 0.55;
-                            double fontSize = constraints.maxWidth * 0.23;
-                     
-                            return Container(
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: isSelected ? Colors.green : Colors.grey,
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.chair_sharp,
-                                    color: Colors.white,
-                                    size: iconSize,
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    seat.code,
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: fontSize,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    );
+                   final seat = chairs[index];
+if (!seat.isValid) return const SizedBox.shrink();
+
+final isTaken = seat.isTaken;
+final isSelected = selectedSeats.any((s) => s.id == seat.code);
+
+return GestureDetector(
+  onTap: () {
+    if (!isTaken) {
+      toggleSeatSelection(Seat(
+        seat.code,
+        isSelected ? SeatStatus.selected : SeatStatus.available,
+        seat.chairId,
+      ));
+    }
+  },
+  child: AspectRatio(
+    aspectRatio: 1,
+    child: LayoutBuilder(
+      builder: (context, constraints) {
+        double iconSize = constraints.maxWidth * 0.55;
+        double fontSize = constraints.maxWidth * 0.23;
+
+        return Container(
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: isTaken
+                ? Colors.red
+                : isSelected
+                    ? Colors.green
+                    : Colors.grey,
+            borderRadius: BorderRadius.circular(4),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.chair_sharp,
+                color: Colors.white,
+                size: iconSize,
+              ),
+              const SizedBox(height: 4),
+              Text(
+                seat.code,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: fontSize,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    ),
+  ),
+);
+
                   },
                 ),
               ),

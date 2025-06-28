@@ -12,11 +12,11 @@ class SeatcubitCubit extends Cubit<SeatcubitState> {
 
 
   GetHallId? gethallid;
-  Future<void> getMoviehall(int id ) async {
+  Future<void> getMoviehall(int id , DateTime bookingDate ) async {
     emit(GetHallAwaitState());
     try  {
       gethallid =
-          await GetIt.I.get<GeHallRepo>().getHall(id);
+          await GetIt.I.get<GeHallRepo>().getHall(id , bookingDate);
       if (gethallid!.message == 'Session Is Done') {
               
               DataStore.instance.deleateRefreshToken();

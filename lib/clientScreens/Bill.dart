@@ -339,10 +339,10 @@
 //               ),
 
 //               const SizedBox(height: 15),
-              
+
 //               // Snacks Section
 //               _buildSnacksSection(size, booking),
-              
+
 //               const Padding(
 //                 padding: EdgeInsets.all(2.0),
 //                 child: Divider(
@@ -408,7 +408,7 @@
 //             ),
 //           ),
 //           const SizedBox(height: 10),
-          
+
 //           if (booking.selectedSnacks.isNotEmpty)
 //             ConstrainedBox(
 //               constraints: BoxConstraints(
@@ -428,7 +428,7 @@
 //                       title: snack.title,
 //                       price: snack.price,
 //                       quantity: snack.quantity.toString(),
-                      
+
 //                     ),
 //                   );
 //                 },
@@ -439,9 +439,9 @@
 //               'No snacks selected',
 //               style: TextStyle(color: Colors.grey),
 //             ),
-          
+
 //           const SizedBox(height: 10),
-         
+
 //         ],
 //       ),
 //     );
@@ -498,7 +498,7 @@
 //                       print('\n----- Additional Debug Info -----');
 //                       final bookingState = bookingCubit.state as BookingDataState;
 //                       print('Full Booking State: ${bookingState.toString()}');
-                      
+
 //                       NavigationWidget.pushPage(
 //                         context,
 //                         const IndexedStackTeacherScreen(
@@ -534,15 +534,20 @@
 //     );
 //   }
 // }
+import 'package:bpr602_cinema/AllUserScreens/Login.dart';
+import 'package:bpr602_cinema/AllUserScreens/NointernetScreen.dart';
 import 'package:bpr602_cinema/Constants/colors.dart';
 import 'package:bpr602_cinema/Constants/sizer.dart';
 import 'package:bpr602_cinema/Cubits/Billcubit/bill_cubit.dart';
 import 'package:bpr602_cinema/Cubits/Cartcubit/shopping_cart_cubit.dart';
 import 'package:bpr602_cinema/Cubits/bookingCubit/booking_cubit.dart';
+import 'package:bpr602_cinema/clientScreens/BnakDetailes.dart';
 import 'package:bpr602_cinema/clientScreens/BookingDetailes.dart';
 import 'package:bpr602_cinema/clientScreens/indexedstackclientnav.dart';
+import 'package:bpr602_cinema/clientScreens/search.dart';
 import 'package:bpr602_cinema/clientScreens/snackscreen.dart';
 import 'package:bpr602_cinema/data/link.dart';
+import 'package:bpr602_cinema/models/snackModel.dart';
 import 'package:bpr602_cinema/wedgets/Navigating.dart';
 import 'package:bpr602_cinema/wedgets/itembill.dart';
 import 'package:bpr602_cinema/wedgets/itemsnakcsbill.dart';
@@ -558,7 +563,22 @@ class Bill extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     final booking = context.watch<BookingCubit>().state as BookingDataState;
-    
+  bool _areSnackListsEqual(List<snacks> list1, List<snacks> list2) {
+  if (list1.length != list2.length) return false;
+
+  for (int i = 0; i < list1.length; i++) {
+    final s1 = list1[i];
+    final s2 = list2.firstWhere(
+      (element) => element.variantId == s1.variantId,
+      orElse: () => snacks( title: '', price: 0, snackimg: '', size: '', quantity: -1, variantId: -1 , describtion: ""),
+    );
+
+    if (s1.quantity != s2.quantity) return false;
+  }
+
+  return true;
+}
+
     return BlocProvider(
       create: (_) => BillCubit(),
       child: Scaffold(
@@ -577,7 +597,6 @@ class Bill extends StatelessWidget {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios, color: kbutton),
             onPressed: () => Navigator.of(context).pop(),
-           
           ),
         ),
         body: SingleChildScrollView(
@@ -591,15 +610,21 @@ class Bill extends StatelessWidget {
                     : 'https://ina.iq/eng/uploads/posts/2021-05/thumbs/upload_1621342522_427621977.png',
                 title: booking.selectedMovie?.name ?? 'No Movie Selected',
                 price: booking.movietotalprice!,
-                date: booking.selectedDate?.toIso8601String().split("T").first ?? '',
-                Seat: booking.selectedSeats.map((type) => type.id ?? '').join(', '),
+                date: booking.selectedDate
+                        ?.toIso8601String()
+                        .split("T")
+                        .first ??
+                    '',
+                Seat: booking.selectedSeats
+                    .map((type) => type.id ?? '')
+                    .join(', '),
               ),
-
+      
               const SizedBox(height: 15),
-              
+      
               // Snacks Section
-              _buildSnacksSection(context,size, booking),
-              
+              _buildSnacksSection(context, size, booking),
+      
               const Padding(
                 padding: EdgeInsets.all(2.0),
                 child: Divider(
@@ -607,12 +632,37 @@ class Bill extends StatelessWidget {
                   color: Whitconst,
                 ),
               ),
-
+      
               // Price Breakdown
               _buildPriceBreakdown(size, booking),
+       BlocBuilder<ShoppingCartCubit, ShoppingCartState>(
+  builder: (context, state) {
+    final cartItems = context.read<ShoppingCartCubit>().listOfCartItem;
+    final bookingState = context.read<BookingCubit>().state;
 
+    if (bookingState is BookingDataState) {
+      final selectedSnacks = bookingState.selectedSnacks;
+
+      bool isDifferent = cartItems.length != selectedSnacks.length ||
+          !_areSnackListsEqual(cartItems, selectedSnacks);
+
+      if (isDifferent) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10.0),
+          child: Text(
+            "⚠️ Some snacks in your cart are not yet checked out",
+            style: TextStyle(color: Colors.orangeAccent, fontSize: 11.sp),
+          ),
+        );
+      }
+    }
+    return SizedBox.shrink();
+  },
+),
               // Payment Options
               _buildPaymentOptions(size),
+             
+
             ],
           ),
         ),
@@ -620,54 +670,49 @@ class Bill extends StatelessWidget {
     );
   }
 
-  Widget _buildSnacksSection(BuildContext context,Size size, BookingDataState booking) {
-      print('----- Building Snacks Section -----');
-  print('Current snacks in booking: ${booking.selectedSnacks.length}');
-  booking.selectedSnacks.forEach((s) => print(' - ${s.title} x${s.quantity}'));
+  Widget _buildSnacksSection(
+      BuildContext context, Size size, BookingDataState booking) {
+    print('----- Building Snacks Section -----');
+    print('Current snacks in booking: ${booking.selectedSnacks.length}');
+    booking.selectedSnacks
+        .forEach((s) => print(' - ${s.title} x${s.quantity}'));
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-       Row(
-  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  children: [
-    Text(
-      'Selected Snacks',
-      style: TextStyle(
-        color: Colors.white,
-        fontSize: 16.sp,
-        fontWeight: FontWeight.bold,
-      ),
-    ),
-    
-   
-    if ( booking.selectedSnacks.isNotEmpty 
-)
-      TextButton(
-        onPressed: () {
-        
-         NavigationWidget.pushPage(
-                          context,
-                          const SnackScreen(),
-                        );
-        },
-        child: Text(
-          'Manage Snacks',
-          style: TextStyle(
-            color: kbutton,
-            fontSize: 14.sp,
-            decoration: TextDecoration.underline,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Selected Snacks',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              if (booking.selectedSnacks.isNotEmpty)
+                TextButton(
+                  onPressed: () {
+                    NavigationWidget.pushPage(
+                      context,
+                      const SnackScreen(),
+                    );
+                  },
+                  child: Text(
+                    'Manage Snacks',
+                    style: TextStyle(
+                      color: kbutton,
+                      fontSize: 14.sp,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                ),
+            ],
           ),
-        ),
-      ),
-  ],
-),
-
           const SizedBox(height: 10),
-          
-          if ( booking.selectedSnacks.isNotEmpty 
-)
+          if (booking.selectedSnacks.isNotEmpty)
             ConstrainedBox(
               constraints: BoxConstraints(
                 maxHeight: 300,
@@ -681,7 +726,6 @@ class Bill extends StatelessWidget {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 8),
                     child: itemSnacksbill(
-                     
                       size: size,
                       imgurl: snack.snackimg,
                       title: snack.title,
@@ -697,126 +741,277 @@ class Bill extends StatelessWidget {
               'No snacks selected',
               style: TextStyle(color: Colors.grey),
             ),
-          
           const SizedBox(height: 10),
         ],
       ),
     );
   }
-Widget _buildPriceBreakdown(Size size, BookingDataState booking) {
-  final moviePrice = booking.movietotalprice ?? 0;
-  final snacksPrice = booking.totalPrice - moviePrice;
 
-  return Padding(
-    padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-    child: Column(
-      children: [
-        // Movie Price
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Movie Tickets:',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14.sp,
-                ),
-              ),
-              Text(
-                '$moviePrice IQD',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14.sp,
-                ),
-              ),
-            ],
-          ),
-        ),
-        
-        // Snacks Price
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Snacks:',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14.sp,
-                ),
-              ),
-              Text(
-                '$snacksPrice IQD',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14.sp,
-                ),
-              ),
-            ],
-          ),
-        ),
-        
-        // Divider
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: Divider(
-            color: Colors.white.withOpacity(0.3),
-            thickness: 1,
-          ),
-        ),
-        
-        // Total Price
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Total:',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text(
-                '${booking.totalPrice} IQD',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    ),
-  );
-}
+  Widget _buildPriceBreakdown(Size size, BookingDataState booking) {
+    final moviePrice = booking.movietotalprice ?? 0;
+    final snacksPrice = booking.totalPrice - moviePrice;
 
-  Widget _buildPaymentOptions(Size size) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: size.height * 0.02),
+      padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+      child: Column(
+        children: [
+          // Movie Price
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Movie Tickets:',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14.sp,
+                  ),
+                ),
+                Text(
+                  '$moviePrice IQD',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14.sp,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // Snacks Price
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Snacks:',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14.sp,
+                  ),
+                ),
+                Text(
+                  '$snacksPrice IQD',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14.sp,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // Divider
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Divider(
+              color: Colors.white.withOpacity(0.3),
+              thickness: 1,
+            ),
+          ),
+
+          // Total Price
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Total:',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  '${booking.totalPrice} IQD',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+//   Widget _buildPaymentOptions(Size size) {
+//   return Padding(
+//     padding: EdgeInsets.symmetric(vertical: size.height * 0.02),
+//     child: BlocListener<BillCubit, BillState>(
+//       listener: (context, state) {
+//         if (state is BookingAccept) {
+//           NavigationWidget.pushPage(
+//             context,
+//             const IndexedStackTeacherScreen(initialIndex: 2),
+//           );
+//         }
+//             if (state is BookingError) {
+//               if (state.message == "Session Is Done") {
+//                 AppConstants.showToast(context, state.message);
+//                 Navigator.of(context).pushAndRemoveUntil(
+//                     MaterialPageRoute(builder: (context) => LoginScreen()),
+//                     (route) => false);
+//               } else if(state.message == "No Internet Connection") {
+//                  AppConstants.showToast(context, state.message);
+//                 Navigator.of(context).pushAndRemoveUntil(
+//                     MaterialPageRoute(builder: (context) => NoInternetScreen()),
+//                     (route) => false);
+//               }else{
+//                         AppConstants.showToast(context, state.message);
+//               }
+//             }
+//       },
+//       child: BlocBuilder<BillCubit, BillState>(
+//         builder: (context, state) {
+//           final isProcessing = state is BookingAwait;
+//           final currentMethod = state is PaymentState ? state.selectedMethod : '';
+
+//           return Column(
+//             children: [
+//               // خيارات الدفع
+//               if (state is! BookingAccept) ...[
+//                 ListTile(
+//                   title: Text(
+//                     "Pay Cash",
+//                     style: TextStyle(color: Whitconst, fontSize: 12.sp),
+//                   ),
+//                   leading: Radio<String>(
+//                     value: "Cash",
+//                     groupValue: currentMethod,
+//                     onChanged: isProcessing
+//                         ? null
+//                         : (value) {
+//                             context.read<BillCubit>().selectPaymentMethod(value!);
+//                           },
+//                     activeColor: kbutton,
+//                   ),
+//                 ),
+//                 ListTile(
+//                   title: Text(
+//                     "Pay By Bank",
+//                     style: TextStyle(color: Whitconst, fontSize: 12.sp),
+//                   ),
+//                   leading: Radio<String>(
+//                     value: "Bank",
+//                     groupValue: currentMethod,
+//                     onChanged: isProcessing
+//                         ? null
+//                         : (value) {
+//                             context.read<BillCubit>().selectPaymentMethod(value!);
+//                           },
+//                     activeColor: kbutton,
+//                   ),
+//                 ),
+//               ],
+
+//               // زر الدفع
+//               ElevatedButton(
+//                 onPressed: isProcessing
+//                     ? null
+//                     : () {
+//                         final bookingCubit = context.read<BookingCubit>();
+//                         final billCubit = context.read<BillCubit>();
+
+//                         if (currentMethod.isEmpty) {
+//                           AppConstants.showToast(
+//                             context,
+//                             "You must choose a payment method",
+//                           );
+//                         } else {
+//                           bookingCubit.printBookingDetails();
+//                           billCubit.submitBooking(context);
+//                         }
+//                       },
+//                 style: ButtonStyle(
+//                   backgroundColor: MaterialStateProperty.resolveWith<Color>(
+//                     (states) {
+//                       if (states.contains(MaterialState.disabled)) {
+//                         return kbutton.withOpacity(0.5);
+//                       }
+//                       return kbutton;
+//                     },
+//                   ),
+//                   padding: MaterialStateProperty.all<EdgeInsets>(
+//                     EdgeInsets.symmetric(
+//                       vertical: size.height * 0.015,
+//                       horizontal: size.width * 0.3,
+//                     ),
+//                   ),
+//                 ),
+//                 child: isProcessing
+//                     ? const CircularProgressIndicator(color: Colors.white)
+//                     : Text(
+//                         "Move to payments",
+//                         style: TextStyle(
+//                           color: Colors.black,
+//                           fontSize: 12.sp,
+//                         ),
+//                       ),
+//               ),
+//             ],
+//           );
+//         },
+//       ),
+//     ),
+//   );
+// }
+Widget _buildPaymentOptions(Size size) {
+  return Padding(
+    padding: EdgeInsets.symmetric(vertical: size.height * 0.02),
+    child: BlocListener<BillCubit, BillState>(
+      listener: (context, state) {
+        if (state is BookingAccept) {
+          NavigationWidget.pushPage(
+            context,
+            const IndexedStackTeacherScreen(initialIndex: 2),
+          );
+        }
+        if (state is BookingError) {
+          if (state.message == "Session Is Done") {
+            AppConstants.showToast(context, state.message);
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => LoginScreen()),
+                (route) => false);
+          } else if(state.message == "No Internet Connection") {
+            AppConstants.showToast(context, state.message);
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => NoInternetScreen()),
+                (route) => false);
+          } else {
+            AppConstants.showToast(context, state.message);
+          }
+        }
+      },
       child: BlocBuilder<BillCubit, BillState>(
         builder: (context, state) {
-          if (state is PaymentState) {
-            return Column(
-              children: [
+          final isProcessing = state is BookingAwait;
+          final currentMethod = state is PaymentState ? state.selectedMethod : '';
+
+          return Column(
+            children: [
+              // Payment options
+              if (state is! BookingAccept) ...[
                 ListTile(
                   title: Text(
                     "Pay Cash",
                     style: TextStyle(color: Whitconst, fontSize: 12.sp),
                   ),
                   leading: Radio<String>(
-                    value: "Pay Cash",
-                    groupValue: state.selectedMethod,
-                    onChanged: (value) {
-                      context.read<BillCubit>().selectPaymentMethod(value!);
-                    },
+                    value: "Cash",
+                    groupValue: currentMethod,
+                    onChanged: isProcessing
+                        ? null
+                        : (value) {
+                            context.read<BillCubit>().selectPaymentMethod(value!);
+                          },
                     activeColor: kbutton,
                   ),
                 ),
@@ -826,62 +1021,76 @@ Widget _buildPriceBreakdown(Size size, BookingDataState booking) {
                     style: TextStyle(color: Whitconst, fontSize: 12.sp),
                   ),
                   leading: Radio<String>(
-                    value: "Pay By Bank",
-                    groupValue: state.selectedMethod,
-                    onChanged: (value) {
-                      context.read<BillCubit>().selectPaymentMethod(value!);
-                    },
+                    value: "Bank",
+                    groupValue: currentMethod,
+                    onChanged: isProcessing
+                        ? null
+                        : (value) {
+                            context.read<BillCubit>().selectPaymentMethod(value!);
+                          },
                     activeColor: kbutton,
                   ),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    final selectedMethod = state.selectedMethod;
-                    final bookingCubit = context.read<BookingCubit>();
+              ],
 
-                    if (selectedMethod.isEmpty) {
-                      AppConstants.showToast(
-                        context,
-                        "You must choose a payment method",
-                      );
-                    } else {
-                      bookingCubit.printBookingDetails();
-                      print('\n----- Additional Debug Info -----');
-                      final bookingState = bookingCubit.state as BookingDataState;
-                      print('Full Booking State: ${bookingState.toString()}');
-                      
-                      NavigationWidget.pushPage(
-                        context,
-                        const IndexedStackTeacherScreen(
-                          initialIndex: 2,
-                        ),
-                      );
-                    }
-                  },
+              // Payment button with adjusted size
+              SizedBox(
+                width: size.width * 0.8, // عرض مناسب للزر
+                child: ElevatedButton(
+                  onPressed: isProcessing
+                      ? null
+                      : () {
+                          final bookingCubit = context.read<BookingCubit>();
+                          final billCubit = context.read<BillCubit>();
+
+                          if (currentMethod.isEmpty) {
+                            AppConstants.showToast(
+                              context,
+                              "You must choose a payment method",
+                            );
+                          } else {
+                            bookingCubit.printBookingDetails();
+                            billCubit.submitBooking(context);
+                          }
+                        },
                   style: ButtonStyle(
-                    backgroundColor: WidgetStateProperty.all<Color>(kbutton),
-                    padding: WidgetStateProperty.all<EdgeInsets>(
+                    backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                      (states) {
+                        if (states.contains(MaterialState.disabled)) {
+                          return kbutton.withOpacity(0.5);
+                        }
+                        return kbutton;
+                      },
+                    ),
+                    padding: MaterialStateProperty.all<EdgeInsets>(
                       EdgeInsets.symmetric(
-                        vertical: size.height * 0.015,
-                        horizontal: size.width * 0.3,
+                        vertical: 16.0, // ارتفاع ثابت للزر
                       ),
                     ),
                   ),
-                  child: Text(
-                    "Move to payments",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 12.sp,
-                    ),
-                  ),
+                  child: isProcessing
+                      ? SizedBox(
+                          height: 24, // ارتفاع مناسب للتقدم الدائري
+                          width: 24, // عرض مناسب للتقدم الدائري
+                          child: CircularProgressIndicator(
+                            strokeWidth: 3, // سماكة الخط
+                            color: Colors.white,
+                          ),
+                        )
+                      : Text(
+                          "Move to payments",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14.sp,
+                          ),
+                        ),
                 ),
-              ],
-            );
-          } else {
-            return const Center(child: Text("Loading..."));
-          }
+              ),
+            ],
+          );
         },
       ),
-    );
-  }
+    ),
+  );
+}
 }

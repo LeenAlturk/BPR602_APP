@@ -6,6 +6,7 @@ import 'package:bpr602_cinema/clientScreens/payment.dart';
 import 'package:bpr602_cinema/clientScreens/profile.dart';
 import 'package:bpr602_cinema/clientScreens/search.dart';
 import 'package:bpr602_cinema/clientScreens/ticket.dart';
+import 'package:bpr602_cinema/clientScreens/userbooking.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
@@ -88,7 +89,7 @@ class _IndexedStackTeacherScreenState extends State<IndexedStackTeacherScreen> {
                       GButton(
                         iconActiveColor: Colors.black,
                         icon: Icons.payment,
-                        text: 'Payment',
+                        text: 'bookings',
                         iconColor: Colors.white,
                         textColor: Colors.black,
                         backgroundColor: kbutton,
@@ -134,7 +135,7 @@ class _IndexedStackTeacherScreenState extends State<IndexedStackTeacherScreen> {
                 children:  [
                   HomeScreen(),
                   SearchScreen(),
-                  Payments(),
+                  UserBooking(),
                   Tickets(),
                   Clientprofile()
                 ],

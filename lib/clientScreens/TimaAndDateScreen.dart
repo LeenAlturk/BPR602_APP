@@ -182,33 +182,56 @@ class _TimeAndDateScreenState extends State<TimeAndDateScreen> {
                       ),
                   
                   
-                      ElevatedBtn(
-                        backgroundColor: kbutton,
-                        textColor: ksmallActionColor,
-                        buttonText: "Submet",
-                        onPressed: () {
-                          //                         int? selectedLanguageId = context.read<TimaAndDateScreenCubit>().selectedLanguage?.id;
+                    //   ElevatedBtn(
+                    //     backgroundColor: kbutton,
+                    //     textColor: ksmallActionColor,
+                    //     buttonText: "Submet",
+                    //     onPressed: () {
+                    //       //                         int? selectedLanguageId = context.read<TimaAndDateScreenCubit>().selectedLanguage?.id;
                   
-                          // // الحصول على الـ id الخاص بالترجمة المحددة
-                          // int? selectedSubtitleId = context.read<TimaAndDateScreenCubit>().selectedSubtitle?.id;
-                           final cubit = context.read<TimaAndDateScreenCubit>();
+                    //       // // الحصول على الـ id الخاص بالترجمة المحددة
+                    //       // int? selectedSubtitleId = context.read<TimaAndDateScreenCubit>().selectedSubtitle?.id;
+                    //        final cubit = context.read<TimaAndDateScreenCubit>();
                   
-                          // // الحصول على البيانات المطلوبة
-                           DateTime selectedDate = cubit.today;
-                          //Movie language = cubit.selectedLanguage!;
-                           //int? subtitleId = cubit.selectedSubtitle?.id;
-                          // bool isVip = cubit.isVip;
-                          // bool is3D = cubit.is3D;
+                    //       // // الحصول على البيانات المطلوبة
+                    //        DateTime selectedDate = cubit.today;
+                    //       //Movie language = cubit.selectedLanguage!;
+                    //        //int? subtitleId = cubit.selectedSubtitle?.id;
+                    //       // bool isVip = cubit.isVip;
+                    //       // bool is3D = cubit.is3D;
                            
-                    context.read<BookingCubit>().selectDate(selectedDate);
-                    //context.read<BookingCubit>().selectLangmo(language);
-                          NavigationWidget.pushPage(
-                            context,
-                            HallSelect(id: widget.id,),
-                          );
+                    // context.read<BookingCubit>().selectDate(selectedDate);
+                    // //context.read<BookingCubit>().selectLangmo(language);
+                    //       NavigationWidget.pushPage(
+                    //         context,
+                    //         HallSelect(id: widget.id,),
+                    //       );
                          
-                        },
-                      ),
+                    //     },
+                    //   ),
+                    BlocBuilder<TimaAndDateScreenCubit, TimaAndDateScreenState>(
+  builder: (context, state) {
+    final cubit = context.read<TimaAndDateScreenCubit>();
+
+    return ElevatedBtn(
+      backgroundColor: cubit.isDateSelected == true ? kbutton : Colors.grey, // تغيير لون الزر
+      textColor: ksmallActionColor,
+      buttonText: "Submit",
+      onPressed: cubit.isDateSelected == true
+          ? () {
+              final selectedDate = cubit.today;
+              context.read<BookingCubit>().selectDate(selectedDate);
+
+              NavigationWidget.pushPage(
+                context,
+                HallSelect(id: widget.id),
+              );
+            }
+          : null, // تعطيل الزر
+    );
+  },
+),
+
                     ],
                   ),
                 ),
