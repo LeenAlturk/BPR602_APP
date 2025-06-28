@@ -15,6 +15,8 @@ final MovieTime? selectedMovieTime;
   final Movie? selectlang;
  final int? movietotalprice;
   final double totalPrice;
+  final bool isCheckedOut; 
+ 
  final List<int>  variantIds; 
   BookingDataState({
     this.selectedMovie,
@@ -25,6 +27,8 @@ final MovieTime? selectedMovieTime;
     this.selectedSeats = const [],
     this.variantIds = const[] ,
     this.selectedMovieTime,
+    this.isCheckedOut = false,
+    
     this.selectlang,
     
     this.totalPrice = 0.0,
@@ -37,10 +41,11 @@ final MovieTime? selectedMovieTime;
    MovieTime? selectedMovieTime, 
    int ? movietotalprice,
     Movie? selectlang,
+    
    List<snacks>? selectedSnacks,
    List<Seat> ? selectedSeats ,
    List<int>? variantIds, 
-        
+        bool? isCheckedOut,
     double? totalPrice,
   }) {
     return BookingDataState(
@@ -52,6 +57,7 @@ final MovieTime? selectedMovieTime;
          selectedSnacks: selectedSnacks ?? this.selectedSnacks,
           selectedSeats: selectedSeats ?? this.selectedSeats,
         movietotalprice:movietotalprice ??this.movietotalprice, 
+          isCheckedOut: isCheckedOut ?? this.isCheckedOut,
         variantIds: variantIds ?? this.variantIds,
       totalPrice: totalPrice ?? this.totalPrice,
     );

@@ -82,7 +82,7 @@ Future<void> register() async {
     customerRegisterresp = await GetIt.I.get<Authrepo>().registerRepo(
       CustomerRegister(
         userName: fullNameValidator.controller.text,
-        emailAddress: emailValidator.controller.text,
+        emailAddress: emailValidator.controller.text.trim(),
         password: passwordValidator.controller.text,
       ),
     );

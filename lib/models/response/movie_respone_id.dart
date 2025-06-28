@@ -650,6 +650,7 @@ class Director {
 }
 
 class MovieTime {
+  int? id; // <-- أضيفي هذا السطر
   String? time;
   bool? is3d;
   Hall? hall;
@@ -658,6 +659,7 @@ class MovieTime {
   int? price;
 
   MovieTime({
+    this.id, // <-- أضيفي هذا هنا أيضاً
     this.time,
     this.is3d,
     this.hall,
@@ -667,6 +669,7 @@ class MovieTime {
   });
 
   factory MovieTime.fromJson(Map<String, dynamic> json) => MovieTime(
+        id: json["id"], // <-- أضيفي هذا السطر
         time: json["time"],
         is3d: json["is3d"],
         hall: json["hall"] == null ? null : Hall.fromJson(json["hall"]),
@@ -680,6 +683,7 @@ class MovieTime {
       );
 
   Map<String, dynamic> toJson() => {
+        "id": id, // <-- أضيفي هذا السطر
         "time": time,
         "is3d": is3d,
         "hall": hall?.toJson(),
@@ -688,6 +692,7 @@ class MovieTime {
         "price": price,
       };
 }
+
 
 class Hall {
   int? id;

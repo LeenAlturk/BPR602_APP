@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:bpr602_cinema/Cubits/bookingCubit/booking_cubit.dart';
 import 'package:bpr602_cinema/controller/app_store.dart';
 import 'package:bpr602_cinema/data/resorses_repo/movies_repo.dart';
 import 'package:bpr602_cinema/data/resorses_repo/snacks_repo.dart';
@@ -11,6 +12,7 @@ import 'package:meta/meta.dart';
 part 'shopping_cart_state.dart';
 
 class ShoppingCartCubit extends Cubit<ShoppingCartState> {
+  
   ShoppingCartCubit() : super(ShoppingCartInitial());
   final List<snacks> listOfCartItem = [];
     bool isItemAdded = false;

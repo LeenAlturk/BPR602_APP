@@ -40,9 +40,10 @@ enum SeatStatus { available, taken, selected }
 
 class Seat {
   final String id;
+  final int seatid;
   SeatStatus status;
 
-  Seat(this.id, this.status);
+  Seat(this.id, this.status , this.seatid );
 }
 
 class _SelectSeatScreenState extends State<SelectSeatScreen> {
@@ -120,7 +121,7 @@ class _SelectSeatScreenState extends State<SelectSeatScreen> {
                     child: IconButton(
                         onPressed: () {
                           selectedSeats = [];
-                          context.read<SeatcubitCubit>().getMoviehall(9);
+                          context.read<SeatcubitCubit>().getMoviehall(widget.haleid);
                         },
                         icon: Icon(
                           Icons.refresh,
@@ -322,8 +323,10 @@ Expanded(
                     return GestureDetector(
                       onTap: () {
                         toggleSeatSelection(Seat(
+                          
                           seat.code,
-                          isSelected ? SeatStatus.selected : SeatStatus.available,
+                          isSelected ? SeatStatus.selected : SeatStatus.available ,
+                          seat.id
                         ));
                       },
                       child: AspectRatio(

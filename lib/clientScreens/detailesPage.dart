@@ -192,19 +192,22 @@ class DetailesPage extends StatelessWidget {
                               return Column(
                                 children: [
                                   FadeInDown(
-                                    child: YoutubePlayer(
-                                      bottomActions: [
-                                        CurrentPosition(),
-                                        ProgressBar(isExpanded: true),
-                                        RemainingDuration(),
-                                      ],
-                                      controller: state.controller,
-                                      showVideoProgressIndicator: true,
-                                      onReady: () {
-    //                                        state.controller.unMute();
-    // state.controller.play();
-                                        print("YouTube Player Ready");
-                                      },
+                                    child: Padding(
+                                      padding:  EdgeInsets.all(size.width * 0.03),
+                                      child: YoutubePlayer(
+                                        bottomActions: [
+                                          CurrentPosition(),
+                                          ProgressBar(isExpanded: true),
+                                          RemainingDuration(),
+                                        ],
+                                        controller: state.controller,
+                                        showVideoProgressIndicator: true,
+                                        onReady: () {
+                                          //                                        state.controller.unMute();
+                                          // state.controller.play();
+                                          print("YouTube Player Ready");
+                                        },
+                                      ),
                                     ),
                                   ),
                                 ],

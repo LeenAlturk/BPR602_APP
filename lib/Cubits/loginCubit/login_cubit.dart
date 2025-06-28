@@ -43,7 +43,7 @@ class LoginCubit extends Cubit<LoginState> {
     emit(LogInAwaitState());
     try {
       responseLogInModel = await GetIt.I.get<Authrepo>().logIn(LoginRequest(
-          emailAddress: emailValidatorLogin.controller.text,
+          emailAddress: emailValidatorLogin.controller.text.trim(),
           password: passwordValidatorLogin.controller.text));
       // if(responseLogInModel.success!==false)
       //      if(responseLogInModel!.message == 'No Internet Connection'){

@@ -41,4 +41,5 @@ class BillCubit extends Cubit<BillState> {
 //     'total_amount': state.totalPrice,
 //   };
 // }
+
 }

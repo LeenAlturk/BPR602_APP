@@ -537,8 +537,11 @@
 import 'package:bpr602_cinema/Constants/colors.dart';
 import 'package:bpr602_cinema/Constants/sizer.dart';
 import 'package:bpr602_cinema/Cubits/Billcubit/bill_cubit.dart';
+import 'package:bpr602_cinema/Cubits/Cartcubit/shopping_cart_cubit.dart';
 import 'package:bpr602_cinema/Cubits/bookingCubit/booking_cubit.dart';
+import 'package:bpr602_cinema/clientScreens/BookingDetailes.dart';
 import 'package:bpr602_cinema/clientScreens/indexedstackclientnav.dart';
+import 'package:bpr602_cinema/clientScreens/snackscreen.dart';
 import 'package:bpr602_cinema/data/link.dart';
 import 'package:bpr602_cinema/wedgets/Navigating.dart';
 import 'package:bpr602_cinema/wedgets/itembill.dart';
@@ -555,7 +558,7 @@ class Bill extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     final booking = context.watch<BookingCubit>().state as BookingDataState;
-
+    
     return BlocProvider(
       create: (_) => BillCubit(),
       child: Scaffold(
@@ -574,6 +577,7 @@ class Bill extends StatelessWidget {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios, color: kbutton),
             onPressed: () => Navigator.of(context).pop(),
+           
           ),
         ),
         body: SingleChildScrollView(
@@ -594,7 +598,7 @@ class Bill extends StatelessWidget {
               const SizedBox(height: 15),
               
               // Snacks Section
-              _buildSnacksSection(size, booking),
+              _buildSnacksSection(context,size, booking),
               
               const Padding(
                 padding: EdgeInsets.all(2.0),
@@ -616,29 +620,54 @@ class Bill extends StatelessWidget {
     );
   }
 
-  Widget _buildSnacksSection(Size size, BookingDataState booking) {
+  Widget _buildSnacksSection(BuildContext context,Size size, BookingDataState booking) {
+      print('----- Building Snacks Section -----');
+  print('Current snacks in booking: ${booking.selectedSnacks.length}');
+  booking.selectedSnacks.forEach((s) => print(' - ${s.title} x${s.quantity}'));
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-            
-              Text(
-                'Selected Snacks (${booking.selectedSnacks.length})',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
+       Row(
+  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  children: [
+    Text(
+      'Selected Snacks',
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 16.sp,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+    
+   
+    if ( booking.selectedSnacks.isNotEmpty 
+)
+      TextButton(
+        onPressed: () {
+        
+         NavigationWidget.pushPage(
+                          context,
+                          const SnackScreen(),
+                        );
+        },
+        child: Text(
+          'Manage Snacks',
+          style: TextStyle(
+            color: kbutton,
+            fontSize: 14.sp,
+            decoration: TextDecoration.underline,
           ),
+        ),
+      ),
+  ],
+),
+
           const SizedBox(height: 10),
           
-          if (booking.selectedSnacks.isNotEmpty)
+          if ( booking.selectedSnacks.isNotEmpty 
+)
             ConstrainedBox(
               constraints: BoxConstraints(
                 maxHeight: 300,
@@ -652,6 +681,7 @@ class Bill extends StatelessWidget {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 8),
                     child: itemSnacksbill(
+                     
                       size: size,
                       imgurl: snack.snackimg,
                       title: snack.title,

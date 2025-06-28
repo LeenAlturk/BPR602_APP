@@ -19,11 +19,56 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return BlocBuilder<ShoppingCartCubit, ShoppingCartState>(
-      builder: (context, state) {
-        final cartItems = context.read<ShoppingCartCubit>().listOfCartItem;
+    return BlocListener<ShoppingCartCubit, ShoppingCartState>(
+      listener: (context, state) {
+    //       final cartCubit = context.read<ShoppingCartCubit>();
+    //        final bookingCubit = context.read<BookingCubit>();
+    // bookingCubit.selectSnacks(cartCubit.listOfCartItem);
+      },
+      child: BlocBuilder<ShoppingCartCubit, ShoppingCartState>(
+        builder: (context, state) {
+          final cartItems = context.read<ShoppingCartCubit>().listOfCartItem;
 
-        if (cartItems.isEmpty) {
+          if (cartItems.isEmpty) {
+               final cartCubit = context.read<ShoppingCartCubit>();
+           final bookingCubit = context.read<BookingCubit>();
+   bookingCubit.selectSnacks([]);
+            return Scaffold(
+              backgroundColor: Kbackground,
+              appBar: AppBar(
+                title: Text('My Cart',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.bold)),
+                backgroundColor: Kbackground,
+                leading: IconButton(
+                  icon: const Icon(Icons.arrow_back_ios, color: kbutton),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              ),
+              body: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Sorry Your cart is empty.',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          color: Colors.white),
+                    ),
+                    Lottie.asset(
+                      'assets/svg/empty cart.json',
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      height: MediaQuery.of(context).size.height * 0.25,
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
+
           return Scaffold(
             backgroundColor: Kbackground,
             appBar: AppBar(
@@ -38,210 +83,152 @@ class CartScreen extends StatelessWidget {
                 onPressed: () => Navigator.of(context).pop(),
               ),
             ),
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Sorry Your cart is empty.',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                        color: Colors.white),
+            body: Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: cartItems.length,
+                    itemBuilder: (context, index) {
+                      final snack = cartItems[index];
+                      return CartItemWidget(
+                        snack: snack,
+                      );
+                    },
                   ),
-                  Lottie.asset(
-                    'assets/svg/empty cart.json',
-                    width: MediaQuery.of(context).size.width * 0.5,
-                    height: MediaQuery.of(context).size.height * 0.25,
-                  ),
-                ],
-              ),
-            ),
-          );
-        }
-
-        return Scaffold(
-          backgroundColor: Kbackground,
-          appBar: AppBar(
-            title: Text('My Cart',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15.sp,
-                    fontWeight: FontWeight.bold)),
-            backgroundColor: Kbackground,
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back_ios, color: kbutton),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-          ),
-          body: Column(
-            children: [
-              Expanded(
-                child: ListView.builder(
-                  itemCount: cartItems.length,
-                  itemBuilder: (context, index) {
-                    final snack = cartItems[index];
-                    return CartItemWidget(
-                      snack: snack,
-                    );
-                  },
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(size.width * 0.1),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: ksmallActionColor,
-                    borderRadius: BorderRadius.circular(20),
-                    gradient: LinearGradient(
-                      colors: [
-                        Color.fromARGB(255, 22, 27, 54),
-                        ksmallActionColor,
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
+                Padding(
+                  padding: EdgeInsets.all(size.width * 0.1),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: ksmallActionColor,
+                      borderRadius: BorderRadius.circular(20),
+                      gradient: LinearGradient(
+                        colors: [
+                          Color.fromARGB(255, 22, 27, 54),
+                          ksmallActionColor,
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
                     ),
-                  ),
-                  width: size.width * 0.9,
-                  height: size.height * 0.3,
-                  child: Padding(
-                    padding: EdgeInsets.all(size.width * 0.03),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.all(size.width * 0.01),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                    width: size.width * 0.9,
+                    height: size.height * 0.3,
+                    child: Padding(
+                      padding: EdgeInsets.all(size.width * 0.03),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.all(size.width * 0.01),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Price Detailes",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 18.sp),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: size.height * 0.0008,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(size.width * 0.02),
+                            child: Divider(
+                              thickness: 0.5,
+                            ),
+                          ),
+                          SizedBox(
+                            height: size.height * 0.002,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Price Detailes",
+                                'Subtotal: \$${context.read<ShoppingCartCubit>().calculateTotal(cartItems)}',
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 18.sp),
                               ),
+                              SizedBox(
+                                height: size.height * 0.02,
+                              ),
+                              Text(
+                                "Service fee = 0 IQD",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 18.sp),
+                              ),
+                              SizedBox(
+                                height: size.height * 0.02,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(size.width * 0.02),
+                                child: Divider(
+                                  thickness: 0.5,
+                                ),
+                              ),
+                              BlocBuilder<ShoppingCartCubit, ShoppingCartState>(
+                                builder: (context, state) {
+                                  final cartItems = context
+                                      .read<ShoppingCartCubit>()
+                                      .listOfCartItem;
+                                  return Text(
+                                    'Total: \$${context.read<ShoppingCartCubit>().addtoservice(context.read<ShoppingCartCubit>().calculateTotal(cartItems))}',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 16.sp),
+                                  );
+                                },
+                              )
                             ],
                           ),
-                        ),
-                        SizedBox(
-                          height: size.height * 0.0008,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(size.width * 0.02),
-                          child: Divider(
-                            thickness: 0.5,
-                          ),
-                        ),
-                        SizedBox(
-                          height: size.height * 0.002,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Subtotal: \$${context.read<ShoppingCartCubit>().calculateTotal(cartItems)}',
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 18.sp),
-                            ),
-                            SizedBox(
-                              height: size.height * 0.02,
-                            ),
-                            Text(
-                              "Service fee = 0 IQD",
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 18.sp),
-                            ),
-                            SizedBox(
-                              height: size.height * 0.02,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(size.width * 0.02),
-                              child: Divider(
-                                thickness: 0.5,
-                              ),
-                            ),
-                           BlocBuilder<ShoppingCartCubit, ShoppingCartState>(
-  builder: (context, state) {
-    final cartItems = context.read<ShoppingCartCubit>().listOfCartItem;
-    return Text(
-      'Total: \$${context.read<ShoppingCartCubit>().addtoservice(
-        context.read<ShoppingCartCubit>().calculateTotal(cartItems)
-      )}',
-      style: TextStyle(
-        color: Colors.white, 
-        fontSize: 16.sp
-      ),
-    );
-  },
-)
-                          ],
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-              // ElevatedBtn(
-              //     backgroundColor: kbutton,
-              //     textColor: ksmallActionColor,
-              //     buttonText: "Checkout",
-              //     onPressed: () {
-              //       final listofcart =
-              //           context.read<ShoppingCartCubit>().listOfCartItem;
-              //       context.read<BookingCubit>().selectSnacks(listofcart);
-              //       final booking =
-              //           context.read<BookingCubit>().state as BookingDataState;
-              //       print("Snacks saved to BookingCubit:");
-              //       for (var snack in booking.selectedSnacks) {
-              //         print(" - ${snack.title}, price: ${snack.price}");
-              //       }
-              //       AppConstants.showToast(context, 'Snacks booking ready',
-              //           icon: Icons.done, iconcolor: Colors.green);
-              //       //               NavigationWidget.popPage(
-              //       // context,
-              //       // SnackScreen(
+              
+                ElevatedBtn(
+                    backgroundColor: kbutton,
+                    textColor: ksmallActionColor,
+                    buttonText: "Checkout",
+                    onPressed: () {
+                      final listofcart =
+                          context.read<ShoppingCartCubit>().listOfCartItem;
+                      context.read<BookingCubit>().selectSnacks(listofcart);
+                      
+                      //context.read<BookingCubit>().confirmSnackCheckout();
+                      // طباعة البيانات للتأكد (لأغراض التصحيح)
+                      // final booking = context.read<BookingCubit>().state
+                      //     as BookingDataState;
+                      // print("Selected Snacks:");
+                      // for (var snack in booking.selectedSnacks) {
+                      //   print(
+                      //       " - ${snack.title}, Quantity: ${snack.quantity}, VariantID: ${snack.variantId}, Price: ${snack.price}");
+                      // }
+                      // final cartCubit = context.read<ShoppingCartCubit>();
+                      // final bookingCubit = context.read<BookingCubit>();
+                      // bookingCubit.selectSnacks(cartCubit.listOfCartItem);
 
-              //       // )
-              //       // );
-              //       NavigationWidget.pushPage(
-              //         context,
-              //         BookingDetailes(),
-              //       );
-              //     })
-              ElevatedBtn(
-  backgroundColor: kbutton,
-  textColor: ksmallActionColor,
-  buttonText: "Checkout",
-  onPressed: () {
-    final listofcart = context.read<ShoppingCartCubit>().listOfCartItem;
-    context.read<BookingCubit>().selectSnacks(listofcart);
-    
-    // طباعة البيانات للتأكد (لأغراض التصحيح)
-    final booking = context.read<BookingCubit>().state as BookingDataState;
-    print("Selected Snacks:");
-    for (var snack in booking.selectedSnacks) {
-      print(" - ${snack.title}, Quantity: ${snack.quantity}, VariantID: ${snack.variantId}, Price: ${snack.price}");
-    }
-       final cartCubit = context.read<ShoppingCartCubit>();
-        final bookingCubit = context.read<BookingCubit>();
-        bookingCubit.selectSnacks(cartCubit.listOfCartItem);
+                      // // طباعة الـ variants بعد الحفظ
+                      // final state = bookingCubit.state as BookingDataState;
+                      // print('----- After Saving Variants -----');
+                      // print('All Variant IDs: ${state.variantIds}');
+                      // state.selectedSnacks.forEach((snack) {
+                      //   print(
+                      //       '${snack.variantId} (${snack.size}) x${snack.quantity}');
+                      // });
 
-        // طباعة الـ variants بعد الحفظ
-    final state = bookingCubit.state as BookingDataState;
-    print('----- After Saving Variants -----');
-    print('All Variant IDs: ${state.variantIds}');
-    state.selectedSnacks.forEach((snack) {
-      print('${snack.variantId} (${snack.size}) x${snack.quantity}');
-    });
-
-    AppConstants.showToast(context, 'Snacks booking ready',
-        icon: Icons.done, iconcolor: Colors.green);
-    NavigationWidget.pushPage(context, BookingDetailes());
-  }
-)
-            ],
-          ),
-        );
-      },
+                      AppConstants.showToast(context, 'Snacks booking ready',
+                          icon: Icons.done, iconcolor: Colors.green);
+                      NavigationWidget.pushPage(context, BookingDetailes());
+                    })
+                
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

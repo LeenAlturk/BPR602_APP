@@ -10,6 +10,22 @@ part 'booking_state.dart';
 class BookingCubit extends Cubit<BookingState> {
   BookingCubit() : super(BookingDataState());
 
+
+
+// void confirmSnackCheckout() {
+//   _snacksConfirmed = true;
+// }
+
+ 
+void checkout(List<snacks> snacks) {
+  final current = state as BookingDataState;
+  emit(current.copyWith(
+    selectedSnacks: snacks,
+    isCheckedOut: true, // تم الضغط على Checkout
+  ));
+  recalculateTotal();
+}
+
   void selectMovie(Data movie) {
     final current = state as BookingDataState;
     emit(current.copyWith(selectedMovie: movie));
@@ -61,25 +77,79 @@ void selecthallseat( List<Seat> ? seats) {
   final current = state as BookingDataState;
   emit(current.copyWith(selectedSeats: seats ?? []));
 }
-void selectSnacks(List<snacks>? snacks) {
+
+// void selectSnacks(List<snacks>? snacks) {
+//   final current = state as BookingDataState;
+//   final variantIds = <int>[];
+  
+//   snacks?.forEach((snack) {
+//     for (int i = 0; i < snack.quantity; i++) {
+//       variantIds.add(snack.variantId!);
+//     }
+//   });
+
+//   print('----- After Saving Variants -----');
+//   print('All Variant IDs: $variantIds');
+//     // _snacksConfirmed = false;
+//   emit(current.copyWith(
+//     selectedSnacks: snacks ?? [],
+//     variantIds: variantIds,
+ 
+//   ));
+//    recalculateTotal(); 
+// }
+
+
+// void selectSnacks(List<snacks>? newSnacks) {
+//   final current = state as BookingDataState;
+//   final variantIds = <int>[];
+  
+//   // مسح السناكات القديمة تماماً واستبدالها بالجديدة
+//   final updatedSnacks = newSnacks ?? [];
+  
+//   updatedSnacks.forEach((snack) {
+//     for (int i = 0; i < snack.quantity; i++) {
+//       variantIds.add(snack.variantId!);
+//     }
+//   });
+
+//   print('----- Updating Snacks -----');
+//   print('New snacks count: ${updatedSnacks.length}');
+//   updatedSnacks.forEach((s) => print(' - ${s.title} x${s.quantity}'));
+
+//   emit(current.copyWith(
+//     selectedSnacks: List.from(updatedSnacks), // إنشاء نسخة جديدة
+//     variantIds: variantIds,
+//   ));
+  
+//   recalculateTotal();
+// }
+
+
+
+
+
+void selectSnacks(List<snacks>? newSnacks) {
   final current = state as BookingDataState;
   final variantIds = <int>[];
-  
-  snacks?.forEach((snack) {
+
+  // إنشاء نسخة جديدة من كل عنصر snack
+  final copiedSnacks = newSnacks?.map((snack) => snack.copyWith()).toList() ?? [];
+
+  copiedSnacks.forEach((snack) {
     for (int i = 0; i < snack.quantity; i++) {
       variantIds.add(snack.variantId!);
     }
   });
 
-  print('----- After Saving Variants -----');
-  print('All Variant IDs: $variantIds');
-  
   emit(current.copyWith(
-    selectedSnacks: snacks ?? [],
+    selectedSnacks: copiedSnacks, // نسخة منفصلة عن السلة
     variantIds: variantIds,
   ));
-   recalculateTotal(); 
+
+  recalculateTotal();
 }
+
   // void selectSnack(SnackModel snack) {
   //   final current = state as BookingDataState;
   //   emit(current.copyWith(selectedSnack: snack));

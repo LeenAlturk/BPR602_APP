@@ -248,42 +248,45 @@ class SeeAllShowingNow extends StatelessWidget {
                       itemBuilder: (context, index) {
                         if (index < filteredMovies.length) {
                           final movie = filteredMovies[index];
-                          return GestureDetector(
-                            onTap: () {
-                              NavigationWidget.pushPage(
-                                context,
-                                DetailesPage(
-                                  Isshowing: movie.status!.contains(
-                                      "Showing"), // true إذا كانت تحتوي على "Showing"
-                                  id: movie.id!,
-                                ),
-                              );
-                            },
-                            child: SeeallMovieCard(
-                              status: movie.status,
-                              subtitle: movie.movieSubtitles != null
-                                  ? movie.movieLanguages!
-                                      .map((type) => type.englishName ?? '')
-                                      .join(', ')
-                                  : '',
-                              rating: movie.rate!,
-                              imgurl: movie.image != null
-                                  ? '${LinksUrl.baseUrl}${movie.image!.url}'
-                                  : 'https://ina.iq/eng/uploads/posts/2021-05/thumbs/upload_1621342522_427621977.png',
-                              title: movie.name!,
-                              genre: movie.movieTypes != null
-                                  ? movie.movieTypes!
-                                      .map((type) => type.englishName ?? '')
-                                      .join(', ')
-                                  : '',
-                              director: movie.director!.firstName!,
-                              duration: movie.durationInMinutes!,
-                              ar: movie.movieClassification!.englishName!,
-                              Language: movie.movieLanguages != null
-                                  ? movie.movieLanguages!
-                                      .map((type) => type.englishName ?? '')
-                                      .join(', ')
-                                  : '',
+                          return Padding(
+                            padding:  EdgeInsets.all(size.height *0.014),
+                            child: GestureDetector(
+                              onTap: () {
+                                NavigationWidget.pushPage(
+                                  context,
+                                  DetailesPage(
+                                    Isshowing: movie.status!.contains(
+                                        "Showing"), // true إذا كانت تحتوي على "Showing"
+                                    id: movie.id!,
+                                  ),
+                                );
+                              },
+                              child: SeeallMovieCard(
+                                status: movie.status,
+                                subtitle: movie.movieSubtitles != null
+                                    ? movie.movieLanguages!
+                                        .map((type) => type.englishName ?? '')
+                                        .join(', ')
+                                    : '',
+                                rating: movie.rate!,
+                                imgurl: movie.image != null
+                                    ? '${LinksUrl.baseUrl}${movie.image!.url}'
+                                    : 'https://ina.iq/eng/uploads/posts/2021-05/thumbs/upload_1621342522_427621977.png',
+                                title: movie.name!,
+                                genre: movie.movieTypes != null
+                                    ? movie.movieTypes!
+                                        .map((type) => type.englishName ?? '')
+                                        .join(', ')
+                                    : '',
+                                director: movie.director!.firstName!,
+                                duration: movie.durationInMinutes!,
+                                ar: movie.movieClassification!.englishName!,
+                                Language: movie.movieLanguages != null
+                                    ? movie.movieLanguages!
+                                        .map((type) => type.englishName ?? '')
+                                        .join(', ')
+                                    : '',
+                              ),
                             ),
                           );
                         } else if (cubit.hasMore) {

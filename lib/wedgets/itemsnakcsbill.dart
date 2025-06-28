@@ -10,8 +10,9 @@ class itemSnacksbill extends StatelessWidget {
     required this.imgurl,
     required this.title,
     required this.price,
+    
     this.quantity,
-     
+
  
   });
 
@@ -19,6 +20,8 @@ class itemSnacksbill extends StatelessWidget {
   final String imgurl;
   final String title;
   final int price;
+ 
+
  
    final String? quantity;
 
@@ -101,7 +104,7 @@ class itemSnacksbill extends StatelessWidget {
             //       style: TextStyle(fontSize: 12.sp, color: Whitconst),
             //     ),
             //     IconButton(
-            //       onPressed: () {},
+                 
             //       icon: Icon(
             //         Icons.cancel_outlined,
             //         size: 20.sp,

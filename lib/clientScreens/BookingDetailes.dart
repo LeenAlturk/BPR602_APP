@@ -86,8 +86,9 @@ class BookingDetailes extends StatelessWidget {
                   ar: booking.selectedMovie!.movieClassification!.englishName!,
                 ),
               ),
+              SizedBox(height:  size.height * 0.01,),
               Container(
-                width: size.width * 0.9,
+                width: size.width * 0.96,
                 height: size.height * 0.4,
                 decoration: BoxDecoration(
                   color: ksmallActionColor,
@@ -191,7 +192,7 @@ class BookingDetailes extends StatelessWidget {
                           Flexible(
                             child: Text(
                               booking.selectedSeats
-                                  .map((type) => type.id ?? '')
+                                  .map((type) => type.seatid ?? '')
                                   .join(', '),
                               style: TextStyle(
                                 color: Colors.white,
@@ -302,7 +303,7 @@ class BookingDetailes extends StatelessWidget {
                       end: Alignment.bottomRight,
                     ),
                   ),
-                  width: size.width * 0.968,
+                  width: size.width * 0.96,
                   height: size.height * 0.14,
                   child: Row(
                     children: [
