@@ -278,7 +278,7 @@ class SeeAllShowingNow extends StatelessWidget {
                                         .map((type) => type.englishName ?? '')
                                         .join(', ')
                                     : '',
-                                director: movie.director!.firstName!,
+                                director: "${movie.director!.firstName!} ${movie.director!.lastName!} ",
                                 duration: movie.durationInMinutes!,
                                 ar: movie.movieClassification!.englishName!,
                                 Language: movie.movieLanguages != null

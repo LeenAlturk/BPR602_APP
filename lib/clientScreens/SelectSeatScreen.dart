@@ -16,22 +16,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class SelectSeatScreen extends StatefulWidget {
   final int haleid;
   final DateTime bookingDate;
-  // final String syn;
-  // final String title;
-  // final String imgurl;
-  // final int duration;
-  // final String director;
-  // final String ar;
-  // final String genre;
+
   const SelectSeatScreen(
       {super.key, required this.haleid, required this.bookingDate
-      // required this.syn,
-      // required this.imgurl,
-      // required this.duration,
-      // required this.director,
-      // required this.ar,
-      // required this.genre,
-      // required this.title
+  
       });
   @override
   State<SelectSeatScreen> createState() => _SelectSeatScreenState();
@@ -50,17 +38,7 @@ class Seat {
 class _SelectSeatScreenState extends State<SelectSeatScreen> {
   List<Seat> selectedSeats = [];
    
-  // void toggleSeatSelection(Seat seat) {
-  //   setState(() {
-  //     if (seat.status == SeatStatus.available) {
-  //       seat.status = SeatStatus.selected;
-  //       selectedSeats.add(seat);
-  //     } else if (seat.status == SeatStatus.selected) {
-  //       seat.status = SeatStatus.available;
-  //       selectedSeats.remove(seat);
-  //     }
-  //   });
-  // }
+
   void toggleSeatSelection(Seat seat) {
     setState(() {
       final existing = selectedSeats.indexWhere((s) => s.id == seat.id);
@@ -121,8 +99,10 @@ class _SelectSeatScreenState extends State<SelectSeatScreen> {
                     padding: EdgeInsets.all(size.width * 0.01),
                     child: IconButton(
                         onPressed: () {
-                          selectedSeats = [];
-                          context.read<SeatcubitCubit>().getMoviehall(widget.haleid , widget.bookingDate);
+                       setState(() {
+          selectedSeats = [];
+        });
+        context.read<SeatcubitCubit>().getMoviehall(widget.haleid, widget.bookingDate);
                         },
                         icon: Icon(
                           Icons.refresh,
@@ -151,133 +131,7 @@ class _SelectSeatScreenState extends State<SelectSeatScreen> {
                   ],
                 ),
                    SizedBox(height: size.height * 0.01,),
-                // Expanded(
-                //   child: ListView.builder(
-                //     scrollDirection: Axis.vertical,
-                //     itemCount: seatMatrix.length,
-                //     itemBuilder: (context, rowIndex) {
-                //       return Row(
-                //         mainAxisAlignment: MainAxisAlignment.center,
-                //         children: seatMatrix[rowIndex].map((seat) {
-                //           return GestureDetector(
-                //             onTap: () {
-                //               if (seat.status != SeatStatus.taken) {
-                //                 toggleSeatSelection(seat);
-                //               }
-                //             },
-                //             child: Container(
-                //               margin: const EdgeInsets.all(4.0),
-                //               width: size.width * 0.065,
-                //               height: size.height * 0.030,
-                //               alignment: Alignment.center,
-                //               decoration: BoxDecoration(
-                //                 color: seat.status == SeatStatus.taken
-                //                     ? Colors.red
-                //                     : seat.status == SeatStatus.selected
-                //                         ? Colors.green
-                //                         : Colors.grey,
-                //                 borderRadius: BorderRadius.circular(4),
-                //               ),
-                //               child: Text(
-                //                 seat.id,
-                //                 style: TextStyle(
-                //                   color: Colors.white,
-                //                   fontSize: 12.sp,
-                //                   fontWeight: FontWeight.bold,
-                //                 ),
-                //               ),
-                //             ),
-                //           );
-                //         }).toList(),
-                //       );
-                //     },
-                //   ),
-                // ),
-//         Expanded(
-//   child: Builder(
-//     builder: (context) {
-//       if (state is GetHallAwaitState) {
-//         return const Center(child: CircularProgressIndicator());
-//       } else if (state is GetHallErrorState) {
-//         return Center(
-//           child: Text(
-//             'Error: ${state.message}',
-//             style: const TextStyle(color: Colors.red),
-//           ),
-//         );
-//       } else if (state is GetHallAcceptState) {
-//         final data = context.read<SeatcubitCubit>().gethallid!.data!;
-//         final chairs = data.hallChairs;
-
-//         return GridView.builder(
-//           padding: const EdgeInsets.all(8.0),
-//           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-//             crossAxisCount: data.columnCount,
-//             crossAxisSpacing: 2,
-//             mainAxisSpacing: 2,
-//           ),
-//           itemCount: chairs.length,
-//           itemBuilder: (context, index) {
-//             final seat = chairs[index];
-//             if (!seat.isValid) {
-//               return const SizedBox.shrink();
-//             }
-        
-//             final isSelected = selectedSeats.any((s) => s.id == seat.code);
-        
-//             return GestureDetector(
-//               onTap: () {
-//                 toggleSeatSelection(Seat(
-//                   seat.code,
-//                   isSelected ? SeatStatus.selected : SeatStatus.available,
-//                 ));
-//               },
-//               child: AspectRatio(
-//                 aspectRatio: 1, // يجعل كل خلية مربعة
-//                 child: LayoutBuilder(
-//                   builder: (context, constraints) {
-//                     double iconSize = constraints.maxWidth * 0.55;
-//                     double fontSize = constraints.maxWidth * 0.23;
-             
-        
-//                     return Container(
-//                       alignment: Alignment.center,
-//                       decoration: BoxDecoration(
-//                         color: isSelected ? Colors.green : Colors.grey,
-//                         borderRadius: BorderRadius.circular(4),
-//                       ),
-//                       child: Column(
-//                         mainAxisAlignment: MainAxisAlignment.center,
-//                         children: [
-//                           Icon(
-//                             Icons.chair_sharp,
-//                             color: Colors.white,
-//                             size: iconSize,
-//                           ),
-//                           const SizedBox(height: 4),
-//                           Text(
-//                             seat.code,
-//                             style: TextStyle(
-//                               color: Colors.white,
-//                               fontSize: fontSize,
-//                               fontWeight: FontWeight.bold,
-//                             ),
-//                           ),
-//                         ],
-//                       ),
-//                     );
-//                   },
-//                 ),
-//               ),
-//             );
-//           },
-//         );
-//       } else {
-//         return const SizedBox();
-//       }
-//     },
-//   ),
-// ),
+                
 Expanded(
   child: Builder(
     builder: (context) {
@@ -302,9 +156,9 @@ Expanded(
               scrollDirection: Axis.vertical,
                physics: const ClampingScrollPhysics(),
               child: SizedBox(
-                width: data.hall.columnCount * 42.0, // عرض ثابت لكل خلية (60 هو مثال)
+                width: data.hall.columnCount * 42.0,
                 child: GridView.builder(
-                  physics: const NeverScrollableScrollPhysics(), // تعطيل التمرير الداخلي
+                  physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   padding: const EdgeInsets.all(8.0),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -476,9 +330,9 @@ return GestureDetector(
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
-                    //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                   
                     children: [
-                      // Total Price Section
+                   
                       Column(
                         children: [
                           Text(
@@ -489,7 +343,7 @@ return GestureDetector(
                           SizedBox(height: size.height * 0.01),
                           Text(
                             
-                            '$totalPrice.00 IQD',
+                            '$totalPrice.00 SYP',
                             style: TextStyle(
                                 fontSize: 20.sp,
                                 color: Colors.white,
@@ -516,14 +370,7 @@ return GestureDetector(
                           NavigationWidget.pushPage(
                               context,
                               BookingDetailes(
-                                // syn: widget.syn,
-                                // imgurl: widget.imgurl,
-                                // duration: widget.duration,
-                                // totalpriceseat: selectedSeats.length * 100,
-                                // director: 'Director ',
-                                // ar: widget.ar,
-                                // genre: widget.genre,
-                                // title: widget.title,
+                             
                               ));
                         }
                       : null,

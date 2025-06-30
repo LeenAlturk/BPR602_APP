@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:bpr602_cinema/controller/app_store.dart';
 import 'package:bpr602_cinema/data/resorses_repo/movies_repo.dart';
 import 'package:bpr602_cinema/models/response/movie_respone_id.dart';
+import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';
 
@@ -207,7 +210,8 @@ Future<void> getMoviedetailesTAndD(int id) async {
       emit(TimeAndDateEroorSttae(message: movieResponseById!.message!));
     }
   } catch (ex) {
-    emit(TimeAndDateEroorSttae(message: movieResponseById?.message ?? 'Unknown error'));
+     emit(TimeAndDateEroorSttae(message: movieResponseById?.message ?? 'Unknown error'));
+  
   }
 }
 

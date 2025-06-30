@@ -16,20 +16,15 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:bpr602_cinema/Constants/sizer.dart';
 
 class TimeAndDateScreen extends StatefulWidget {
-
   final int id;
 
-  const TimeAndDateScreen({super.key, required this.id
-   
-      });
+  const TimeAndDateScreen({super.key, required this.id});
 
   @override
   State<TimeAndDateScreen> createState() => _TimeAndDateScreenState();
 }
 
 class _TimeAndDateScreenState extends State<TimeAndDateScreen> {
-  bool isVip = true; // Default: VIP
-  bool is3D = true; // Default: 3D
   DateTime _getValidFocusedDay(
       DateTime preferredDay, DateTime firstDay, DateTime lastDay) {
     if (preferredDay.isBefore(firstDay)) {
@@ -70,7 +65,7 @@ class _TimeAndDateScreenState extends State<TimeAndDateScreen> {
             appBar: AppBar(
               backgroundColor: Kbackground,
               title: Text(
-                'Booking settings ',
+                'Date of Booking',
                 style: TextStyle(color: Ktext, fontSize: 14.sp),
               ),
               leading: IconButton(
@@ -80,8 +75,6 @@ class _TimeAndDateScreenState extends State<TimeAndDateScreen> {
               automaticallyImplyLeading: true,
             ),
             body: ListView(
-              //shrinkWrap: true,
-
               children: [
                 Center(
                   child: Column(
@@ -91,147 +84,141 @@ class _TimeAndDateScreenState extends State<TimeAndDateScreen> {
                       SizedBox(
                         height: size.height * 0.05,
                       ),
-                      Text(
-                        'Select your favorate booking Date',
-                        style: TextStyle(color: Colors.white, fontSize: 16.sp),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Select your favorate ',
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 16.sp),
+                          ),
+                          Text(
+                            'booking Date',
+                            style:
+                                TextStyle(color: Colors.amber, fontSize: 16.sp),
+                          ),
+                        ],
                       ),
-                        SizedBox(
+                      SizedBox(
                         height: size.height * 0.04,
                       ),
-                      // Calendar Section
-                      Padding(
-                        padding: EdgeInsets.all(size.width * 0.05),
-                        child: BlocBuilder<TimaAndDateScreenCubit,
-                            TimaAndDateScreenState>(
-                          buildWhen: (previous, current) =>
-                              current is TimaAndDateScreenDateSelected,
-                          builder: (context, state) {
-                            return Container(
-                              width: size.width,
-                              height: size.height * 0.41,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: ksmallActionColor,
-                              ),
-                              child: TableCalendar(
-                                calendarStyle: const CalendarStyle(
-                                  selectedDecoration: BoxDecoration(
-                                    color: kbutton,
-                                    shape: BoxShape.circle,
+                   Padding(
+                            padding: EdgeInsets.all(size.width * 0.05),
+                            child: BlocBuilder<TimaAndDateScreenCubit,
+                                TimaAndDateScreenState>(
+                              buildWhen: (previous, current) =>
+                                  current is TimaAndDateScreenDateSelected,
+                              builder: (context, state) {
+                                return Container(
+                                  width: size.width,
+                                  height: size.height * 0.41,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: ksmallActionColor,
                                   ),
-                                  todayDecoration: BoxDecoration(
-                                    color: Color.fromARGB(255, 28, 58, 82),
-                                    shape: BoxShape.circle,
+                                  child: TableCalendar(
+                                    calendarStyle: const CalendarStyle(
+                                      selectedDecoration: BoxDecoration(
+                                        color: kbutton,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      todayDecoration: BoxDecoration(
+                                        color: Color.fromARGB(255, 28, 58, 82),
+                                        shape: BoxShape.circle,
+                                      ),
+                                      weekendTextStyle:
+                                          TextStyle(color: Colors.amber),
+                                      defaultTextStyle:
+                                          TextStyle(color: Colors.amber),
+                                      selectedTextStyle:
+                                          TextStyle(color: Colors.white),
+                                      todayTextStyle:
+                                          TextStyle(color: Colors.white),
+                                    ),
+                                    daysOfWeekStyle: const DaysOfWeekStyle(
+                                      weekdayStyle:
+                                          TextStyle(color: Colors.white),
+                                      weekendStyle:
+                                          TextStyle(color: Colors.white),
+                                    ),
+                                    headerStyle: const HeaderStyle(
+                                      leftChevronIcon: Icon(Icons.chevron_left,
+                                          color: Colors.white),
+                                      rightChevronIcon: Icon(
+                                          Icons.chevron_right,
+                                          color: Colors.white),
+                                      formatButtonVisible: false,
+                                      titleCentered: true,
+                                      titleTextStyle: TextStyle(
+                                          color: Colors.white, fontSize: 16),
+                                    ),
+                                    selectedDayPredicate: (day) => isSameDay(
+                                        day,
+                                        context
+                                            .read<TimaAndDateScreenCubit>()
+                                            .today),
+                                    // Ensure focusedDay is within the range
+                                    focusedDay: _getValidFocusedDay(
+                                      context
+                                          .read<TimaAndDateScreenCubit>()
+                                          .today,
+                                      context
+                                              .read<TimaAndDateScreenCubit>()
+                                              .startDate ??
+                                          DateTime.utc(2025, 4, 16),
+                                      context
+                                              .read<TimaAndDateScreenCubit>()
+                                              .endDate ??
+                                          DateTime.utc(2025, 7, 1),
+                                    ),
+                                    firstDay: context
+                                            .read<TimaAndDateScreenCubit>()
+                                            .startDate ??
+                                        DateTime.utc(2025, 4, 16),
+                                    lastDay: context
+                                            .read<TimaAndDateScreenCubit>()
+                                            .endDate ??
+                                        DateTime.utc(2025, 7, 1),
+                                    availableGestures: AvailableGestures.all,
+                                    locale: "en_US",
+                                    rowHeight: 35,
+                                    onDaySelected: (day, focusedDay) {
+                                      context
+                                          .read<TimaAndDateScreenCubit>()
+                                          .onDateSelected(day, focusedDay);
+                                    },
                                   ),
-                                  weekendTextStyle:
-                                      TextStyle(color: Colors.amber),
-                                  defaultTextStyle:
-                                      TextStyle(color: Colors.amber),
-                                  selectedTextStyle:
-                                      TextStyle(color: Colors.white),
-                                  todayTextStyle: TextStyle(color: Colors.white),
-                                ),
-                                daysOfWeekStyle: const DaysOfWeekStyle(
-                                  weekdayStyle: TextStyle(color: Colors.white),
-                                  weekendStyle: TextStyle(color: Colors.white),
-                                ),
-                                headerStyle: const HeaderStyle(
-                                  leftChevronIcon: Icon(Icons.chevron_left,
-                                      color: Colors.white),
-                                  rightChevronIcon: Icon(Icons.chevron_right,
-                                      color: Colors.white),
-                                  formatButtonVisible: false,
-                                  titleCentered: true,
-                                  titleTextStyle: TextStyle(
-                                      color: Colors.white, fontSize: 16),
-                                ),
-                                selectedDayPredicate: (day) => isSameDay(day,
-                                    context.read<TimaAndDateScreenCubit>().today),
-                                // Ensure focusedDay is within the range
-                                focusedDay: _getValidFocusedDay(
-                                  context.read<TimaAndDateScreenCubit>().today,
-                                  context
-                                          .read<TimaAndDateScreenCubit>()
-                                          .startDate ??
-                                      DateTime.utc(2025, 4, 16),
-                                  context
-                                          .read<TimaAndDateScreenCubit>()
-                                          .endDate ??
-                                      DateTime.utc(2025, 7, 1),
-                                ),
-                                firstDay: context
-                                        .read<TimaAndDateScreenCubit>()
-                                        .startDate ??
-                                    DateTime.utc(2025, 4, 16),
-                                lastDay: context
-                                        .read<TimaAndDateScreenCubit>()
-                                        .endDate ??
-                                    DateTime.utc(2025, 7, 1),
-                                availableGestures: AvailableGestures.all,
-                                locale: "en_US",
-                                rowHeight: 35,
-                                onDaySelected: (day, focusedDay) {
-                                  context
-                                      .read<TimaAndDateScreenCubit>()
-                                      .onDateSelected(day, focusedDay);
-                                },
-                              ),
-                            );
-                          },
-                        ),
+                                );
+                              },
+                            ),
+                          ),
+                      BlocBuilder<TimaAndDateScreenCubit,
+                          TimaAndDateScreenState>(
+                        builder: (context, state) {
+                          final cubit = context.read<TimaAndDateScreenCubit>();
+
+                          return ElevatedBtn(
+                            backgroundColor: cubit.isDateSelected == true
+                                ? kbutton
+                                : Colors.grey,
+                            textColor: ksmallActionColor,
+                            buttonText: "Submit",
+                            onPressed: cubit.isDateSelected == true
+                                ? () {
+                                    final selectedDate = cubit.today;
+                                    context
+                                        .read<BookingCubit>()
+                                        .selectDate(selectedDate);
+
+                                    NavigationWidget.pushPage(
+                                      context,
+                                      HallSelect(id: widget.id),
+                                    );
+                                  }
+                                : null,
+                          );
+                        },
                       ),
-                  
-                  
-                    //   ElevatedBtn(
-                    //     backgroundColor: kbutton,
-                    //     textColor: ksmallActionColor,
-                    //     buttonText: "Submet",
-                    //     onPressed: () {
-                    //       //                         int? selectedLanguageId = context.read<TimaAndDateScreenCubit>().selectedLanguage?.id;
-                  
-                    //       // // الحصول على الـ id الخاص بالترجمة المحددة
-                    //       // int? selectedSubtitleId = context.read<TimaAndDateScreenCubit>().selectedSubtitle?.id;
-                    //        final cubit = context.read<TimaAndDateScreenCubit>();
-                  
-                    //       // // الحصول على البيانات المطلوبة
-                    //        DateTime selectedDate = cubit.today;
-                    //       //Movie language = cubit.selectedLanguage!;
-                    //        //int? subtitleId = cubit.selectedSubtitle?.id;
-                    //       // bool isVip = cubit.isVip;
-                    //       // bool is3D = cubit.is3D;
-                           
-                    // context.read<BookingCubit>().selectDate(selectedDate);
-                    // //context.read<BookingCubit>().selectLangmo(language);
-                    //       NavigationWidget.pushPage(
-                    //         context,
-                    //         HallSelect(id: widget.id,),
-                    //       );
-                         
-                    //     },
-                    //   ),
-                    BlocBuilder<TimaAndDateScreenCubit, TimaAndDateScreenState>(
-  builder: (context, state) {
-    final cubit = context.read<TimaAndDateScreenCubit>();
-
-    return ElevatedBtn(
-      backgroundColor: cubit.isDateSelected == true ? kbutton : Colors.grey, // تغيير لون الزر
-      textColor: ksmallActionColor,
-      buttonText: "Submit",
-      onPressed: cubit.isDateSelected == true
-          ? () {
-              final selectedDate = cubit.today;
-              context.read<BookingCubit>().selectDate(selectedDate);
-
-              NavigationWidget.pushPage(
-                context,
-                HallSelect(id: widget.id),
-              );
-            }
-          : null, // تعطيل الزر
-    );
-  },
-),
-
                     ],
                   ),
                 ),

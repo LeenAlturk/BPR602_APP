@@ -10,3 +10,30 @@ class EditProfileImagePicked extends EditProfileCubitState {
   EditProfileImagePicked({required this.image});
 }
 
+class ProfileImagePicked extends EditProfileCubitState {
+  final XFile image;
+
+  ProfileImagePicked({required this.image});
+}
+class UploadImageproInProgress extends EditProfileCubitState {}
+
+
+class UploadImageproSuccess extends EditProfileCubitState {
+  final ImageResponse response;
+  final int imageId;  // Image ID
+  UploadImageproSuccess({required this.response , required this.imageId});
+}
+
+class UploadImageproFailure extends EditProfileCubitState {
+  final String message;
+   
+  UploadImageproFailure({required this.message});
+}
+class UpdateProfileLoadingState extends EditProfileCubitState {}
+
+class UpdateProfileSuccessState extends EditProfileCubitState {}
+
+class UpdateProfileErrorState extends EditProfileCubitState {
+  final String message;
+  UpdateProfileErrorState(this.message);
+}

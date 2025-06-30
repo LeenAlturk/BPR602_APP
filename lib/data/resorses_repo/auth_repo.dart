@@ -329,62 +329,7 @@ Future<ChangePasswordResponse> changePassword(
       
       return ChangePasswordResponse.fromJson(response.data);
     } 
-//     catch (ex) {
-//       if (ex is DioException) {
-//           if (ex.response!.statusCode == 401) {
-//           try {
-//             RefreshRequest refreshTokenModel = RefreshRequest(
-//               accessToken: DataStore.instance.token,
-//               refreshToken: DataStore.instance.getrefreshToken,
-//             );
-//             var refreshToken = await client.post(LinksUrl.refreshToken,
-//                 data: refreshTokenModel.toJson());
-//             RefreshResponse reafreshTokenModel =
-//                 RefreshResponse.fromJson(refreshToken.data);
-//             DataStore.instance.setToken(reafreshTokenModel.data.accessToken);
-//             DataStore.instance
-//                 .setRefreshToken(reafreshTokenModel.data.refreshToken);
 
-//             return changePassword(changepasswordres);
-//           } catch (ex) {
-//             if (ex is DioException) {
-//               if (ex.response?.statusCode == 401) {
-//   // التوكنات منتهية تمامًا - يجب تسجيل خروج المستخدم
-//   return ChangePasswordResponse(success: false, message: 'SessionExpired');
-// }
-//               if (ex.type == DioExceptionType.connectionTimeout) {
-//                 return ChangePasswordResponse(message: 'Internet is Week');
-//               }
-//               if (ex.type == DioExceptionType.receiveTimeout) {
-//                 return ChangePasswordResponse(message: 'Internet is Week');
-//               }
-//               if (ex.type == DioExceptionType.unknown) {
-//                 return ChangePasswordResponse(message: 'Some Things Error');
-//               } else {
-//                 return ChangePasswordResponse(message: 'Some Things Error');
-//               }
-//             }
-//           }
-//         }else if (ex.response!.statusCode == 500) {
-//           return ChangePasswordResponse(
-//               success: false, message: "Internal Server Error");
-//         } else if (ex.response!.statusCode == 400) {
-//           return ChangePasswordResponse.fromJson(ex.response!.data);
-//         } else if (ex.type == DioExceptionType.connectionTimeout) {
-//           return ChangePasswordResponse(
-//               success: false, message: 'Internet is week');
-//         } else if (ex.type == DioExceptionType.receiveTimeout) {
-//           return ChangePasswordResponse(
-//               success: false, message: 'Internet is week');
-//         } else {
-//           return ChangePasswordResponse(
-//               success: false, message: "Some thing Error");
-//         }
-//       } else {
-//         return ChangePasswordResponse(success: false, message: "Try Again");
-//       }
-//     }
-//      return ChangePasswordResponse(success: false, message: "Unexpected error");
 catch (ex) {
     if (ex is DioException) {
       if (ex.response?.statusCode == 401) {

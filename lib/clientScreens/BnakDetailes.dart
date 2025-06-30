@@ -10,23 +10,34 @@ class BankDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     // Sample data for banks
-    final List<Map<String, String>> banks = [
-      {
-        'name': 'National Bank',
-        'location': '123 Main Street, City Center',
-        'account': '1234567890',
-      },
-      {
-        'name': 'Global Bank',
-        'location': '456 Elm Street, Uptown',
-        'account': '9876543210',
-      },
-      {
-        'name': 'City Bank',
-        'location': '789 Oak Avenue, Downtown',
-        'account': '1122334455',
-      },
-    ];
+  final List<Map<String, String>> banks = [
+  {
+    'name': 'BEMO Saudi Fransi Bank',
+    'location': 'Baghdad Street, Damascus',
+    'account': '0112233445',
+  },
+  {
+    'name': 'Syria International Islamic Bank',
+    'location': 'Mazzeh Highway, Damascus',
+    'account': '0223344556',
+  },
+  {
+    'name': 'Al Baraka Bank Syria',
+    'location': 'Mashrou Dummar, Damascus',
+    'account': '0334455667',
+  },
+  {
+    'name': 'Arab Bank',
+    'location': 'Hamra Street, Damascus',
+    'account': '0445566778',
+  },
+  {
+    'name': 'Bank of Syria and Gulf',
+    'location': '29 May Street, Damascus',
+    'account': '0556677889',
+  },
+];
+
 
     return Scaffold(
       backgroundColor: Kbackground,

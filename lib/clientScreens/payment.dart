@@ -30,6 +30,13 @@ class Payments extends StatelessWidget {
             'My Payments',
             style: TextStyle(color: Ktext),
           ),
+          leading: IconButton(
+                icon: const Icon(
+                  Icons.arrow_back_ios,
+                  color: kbutton,
+                ),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
           actions: [
             Padding(
                 padding: EdgeInsets.all(size.height * 0.01),
@@ -69,13 +76,13 @@ class Payments extends StatelessWidget {
                         context.read<PaymentCubit>().selectFilter(1);
                       },
                     ),
-                    CustomFilterChip(
-                      label: 'Canceled',
-                      isSelected: selectedIndex == 2,
-                      onSelected: () {
-                        context.read<PaymentCubit>().selectFilter(2);
-                      },
-                    ),
+                    // CustomFilterChip(
+                    //   label: 'Canceled',
+                    //   isSelected: selectedIndex == 2,
+                    //   onSelected: () {
+                    //     context.read<PaymentCubit>().selectFilter(2);
+                    //   },
+                    // ),
                   ],
                 ),
                 Expanded(

@@ -537,18 +537,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ],
               ),
-                            actions: [
-                Padding(
-                    padding: EdgeInsets.all(size.width * 0.01),
-                    child: IconButton(
-                        onPressed: () {
-                          NavigationWidget.pushPage(context, Notificationpage());
-                        },
-                        icon: Icon(
-                          Icons.notifications,
-                          color: Colors.white,
-                        )))
-              ],
+              //               actions: [
+              //   Padding(
+              //       padding: EdgeInsets.all(size.width * 0.01),
+              //       child: IconButton(
+              //           onPressed: () {
+              //             NavigationWidget.pushPage(context, Notificationpage());
+              //           },
+              //           icon: Icon(
+              //             Icons.notifications,
+              //             color: Colors.white,
+              //           )))
+              // ],
                        ),
             body: RefreshIndicator(
               color: kbutton,

@@ -28,14 +28,14 @@ class itemSnacksbill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(size.height * 0.02),
+      padding: EdgeInsets.all(size.height * 0.01),
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(color: border, width: 2),
           color: Kbackground,
           borderRadius: BorderRadius.circular(20),
         ),
-        width: size.width * 0.9,
+        width: size.width * 0.95,
         height: size.height * 0.20,
         child: Column(
           children: [
@@ -67,7 +67,7 @@ class itemSnacksbill extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        'Price : $price.00 SAR',
+                        'Price : $price.00 SYP ',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 12.sp,

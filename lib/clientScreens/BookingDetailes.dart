@@ -68,11 +68,15 @@ class BookingDetailes extends StatelessWidget {
                 child: SeeallMovieCard(
                   status: "${booking.selectedMovie!.status}",
                   subtitle:
-                      "${booking.selectedMovieTime!.subtitle!.englishName}",
+                      //"${booking.selectedMovieTime!.subtitle!.englishName } ",
+                      "${booking.selectedMovieTime?.subtitle?.englishName ?? "No subtitle" } ",
+
                   rating: booking.selectedMovie!.rate!,
                   Language:
-                      "${booking.selectedMovieTime!.language!.englishName}",
-                  title: "${booking.selectedMovie!.name}",
+                      //"${booking.selectedMovieTime!.language!.englishName } ",
+                      "${booking.selectedMovieTime?.language?.englishName ?? "No Language" } ",
+
+                  title: "${booking.selectedMovie?.name ?? "No title"} ",
                   imgurl: booking.selectedMovie?.image?.url != null
                       ? '${LinksUrl.baseUrl}${booking.selectedMovie!.image!.url}'
                       : 'https://ina.iq/eng/uploads/posts/2021-05/thumbs/upload_1621342522_427621977.png',
@@ -81,7 +85,7 @@ class BookingDetailes extends StatelessWidget {
                           .map((type) => type.englishName ?? '')
                           .join(', ')
                       : '',
-                  director: booking.selectedMovie!.director!.firstName!,
+                  director: "${booking.selectedMovie!.director!.firstName!} ${booking.selectedMovie!.director!.lastName!}",
                   duration: booking.selectedMovie!.durationInMinutes!,
                   ar: booking.selectedMovie!.movieClassification!.englishName!,
                 ),

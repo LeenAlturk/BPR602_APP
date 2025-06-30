@@ -157,21 +157,6 @@ class InputTextForm extends StatelessWidget {
   }
 }
 
-// class FormValidator {
-//   String? hint;
-//   RegExp? regExp;
-//   String? errorMessage;
-//   final TextEditingController controller = TextEditingController();
-
-//   FormValidator({this.hint, this.regExp, this.errorMessage});
-
-//   String? validator(String? inputText) {
-    
-//     return regExp!.hasMatch(inputText!) ? null : errorMessage;
-//   }
-
-
-// }
 class FormValidator {
   String? hint;
   RegExp? regExp;
@@ -181,13 +166,28 @@ class FormValidator {
   FormValidator({this.hint, this.regExp, this.errorMessage});
 
   String? validator(String? inputText) {
-    if (inputText == null) return errorMessage;
-
-    // 🛡️ فقط نعمل trim إذا كان الحقل Email
-    final isEmail = hint?.toLowerCase() == 'email';
-    final cleanedInput = isEmail ? inputText.trim() : inputText;
-
-    return regExp!.hasMatch(cleanedInput) ? null : errorMessage;
+    
+    return regExp!.hasMatch(inputText!) ? null : errorMessage;
   }
+
+
 }
+// class FormValidator {
+//   String? hint;
+//   RegExp? regExp;
+//   String? errorMessage;
+//   final TextEditingController controller = TextEditingController();
+
+//   FormValidator({this.hint, this.regExp, this.errorMessage});
+
+//   String? validator(String? inputText) {
+//     if (inputText == null) return errorMessage;
+
+//     // 🛡️ فقط نعمل trim إذا كان الحقل Email
+//     final isEmail = hint?.toLowerCase() == 'email';
+//     final cleanedInput = isEmail ? inputText.trim() : inputText;
+
+//     return regExp!.hasMatch(cleanedInput) ? null : errorMessage;
+//   }
+// }
 

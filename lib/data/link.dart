@@ -21,6 +21,7 @@ abstract class LinksUrl {
   static const refreshToken = "/api/Auth/refresh-token";
    static const movieType = "/api/MovieType";
    static const getmovies = "/api/Movie";
+   static const getbookingbyid = "/api/Bookings/";
    static const getmoviesbyid = "/api/Movie";
   static const postbooking = "/api/Bookings";
   static const getuserbooking = "/api/Bookings";

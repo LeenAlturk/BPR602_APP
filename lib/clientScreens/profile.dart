@@ -1,4 +1,5 @@
 import 'package:bpr602_cinema/AllUserScreens/Login.dart';
+import 'package:bpr602_cinema/AllUserScreens/NointernetScreen.dart';
 import 'package:bpr602_cinema/Animation/Fadeinfadeout.dart';
 import 'package:bpr602_cinema/Constants/colors.dart';
 import 'package:bpr602_cinema/Constants/sizer.dart';
@@ -6,6 +7,7 @@ import 'package:bpr602_cinema/Cubits/profile_custumer_cubit/profile_customer_cub
 import 'package:bpr602_cinema/clientScreens/ChangePassword.dart';
 import 'package:bpr602_cinema/clientScreens/EditProfile.dart';
 import 'package:bpr602_cinema/clientScreens/NotificationPage.dart';
+import 'package:bpr602_cinema/data/link.dart';
 import 'package:bpr602_cinema/wedgets/Navigating.dart';
 import 'package:bpr602_cinema/wedgets/toast.dart';
 import 'package:flutter/material.dart';
@@ -18,15 +20,40 @@ class Clientprofile extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return BlocProvider(
-      create: (context) => ProfileCustomerCubit(),
+      create: (context) => ProfileCustomerCubit()..getprofile(),
       child: BlocConsumer<ProfileCustomerCubit, ProfileCustomerState>(
         listener: (context, state) {
          if (state is ProfileCustomerLoggedOut){
           AppConstants.showToast(context, "We Will Miss You Dear " , icon: Icons.waving_hand , iconcolor: Colors.amber); 
          }
+         if (state is profilerrorstate) {
+              if (state.message == "Session Is Done") {
+                AppConstants.showToast(context, state.message);
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => LoginScreen()),
+                    (route) => false);
+              } else if(state.message == "No Internet Connection") {
+                 AppConstants.showToast(context, state.message);
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => NoInternetScreen()),
+                    (route) => false);
+              }else{
+                        AppConstants.showToast(context, state.message);
+              }
+            }
         },
         builder: (context, state) {
-          return Scaffold(
+        final cubit = context.read<ProfileCustomerCubit>();
+          if(state is profileloading){
+              return Scaffold(
+                backgroundColor: Kbackground,
+                body: Center(
+                  child: CircularProgressIndicator(color:kbutton,),
+                )
+              );
+          }
+          if(state is profileloaded){
+            return Scaffold(
             backgroundColor: Kbackground,
             appBar: AppBar(
               centerTitle: true,
@@ -58,11 +85,19 @@ class Clientprofile extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          CircleAvatar(
-                            radius: 23,
-                          ),
+                         CircleAvatar(
+  radius: 23,
+  backgroundColor: Colors.grey.shade800,
+  backgroundImage: (cubit.getProfileModel!.data!.image?.url != null)
+      ? NetworkImage('${LinksUrl.baseUrl}${cubit.getProfileModel!.data!.image!.url!}')
+      : null,
+  child: (cubit.getProfileModel!.data!.image?.url == null)
+      ? const Icon(Icons.person, color: Colors.white)
+      : null,
+),
+
                           SizedBox(
-                            width: size.width * 0.05,
+                            width: size.width * 0.02,
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,7 +106,8 @@ class Clientprofile extends StatelessWidget {
                                 height: size.height * 0.035,
                               ),
                               Text(
-                                "Leen",
+                               "${cubit.getProfileModel!.data!.fullName}",
+                          
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 10.sp,
@@ -81,7 +117,8 @@ class Clientprofile extends StatelessWidget {
                                 height: size.height * 0.01,
                               ),
                               Text(
-                                "Leen@gmail.com",
+                                   "${cubit.getProfileModel!.data!.email}",
+                                  
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 10.sp,
@@ -144,7 +181,8 @@ class Clientprofile extends StatelessWidget {
                                 width: size.width * 0.05,
                               ),
                               Text(
-                                "Mambers",
+                               // "${cubit.getProfileModel!.data!.role}",
+                               "jjjjj",
                                 style: TextStyle(
                                     color: Colors.white38,
                                     fontSize: 12.sp,
@@ -292,6 +330,9 @@ class Clientprofile extends StatelessWidget {
                 )
               ],
             ),
+          );
+          }
+          return SizedBox(
           );
         },
       ),

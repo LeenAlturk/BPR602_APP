@@ -88,7 +88,7 @@ class _IndexedStackTeacherScreenState extends State<IndexedStackTeacherScreen> {
                       ),
                       GButton(
                         iconActiveColor: Colors.black,
-                        icon: Icons.payment,
+                        icon: Icons.book_online,
                         text: 'bookings',
                         iconColor: Colors.white,
                         textColor: Colors.black,
@@ -97,17 +97,7 @@ class _IndexedStackTeacherScreenState extends State<IndexedStackTeacherScreen> {
                             vertical: size.height * 0.008,
                             horizontal: size.width * 0.03),
                       ),
-                      GButton(
-                        iconActiveColor: Colors.black,
-                        icon: PhosphorIconsBold.ticket,
-                        text: 'ticket',
-                        iconColor: Colors.white,
-                        textColor: Colors.black,
-                        backgroundColor: kbutton,
-                        padding: EdgeInsets.symmetric(
-                            vertical: size.height * 0.008,
-                            horizontal: size.width * 0.03),
-                      ),
+                  
                       GButton(
                         iconActiveColor: Colors.black,
                         icon: PhosphorIconsBold.user,
@@ -136,7 +126,6 @@ class _IndexedStackTeacherScreenState extends State<IndexedStackTeacherScreen> {
                   HomeScreen(),
                   SearchScreen(),
                   UserBooking(),
-                  Tickets(),
                   Clientprofile()
                 ],
               ),

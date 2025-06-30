@@ -9,6 +9,7 @@ import 'package:bpr602_cinema/models/request/refreshreq.dart';
 import 'package:bpr602_cinema/models/response/alluserbooking.dart';
 import 'package:bpr602_cinema/models/response/booking_response.dart';
 import 'package:bpr602_cinema/models/response/deletebooking.dart';
+import 'package:bpr602_cinema/models/response/getbookingbyid.dart';
 import 'package:bpr602_cinema/models/response/refreshresponse.dart';
 import 'package:dio/dio.dart';
 
@@ -144,7 +145,11 @@ Future<Bookinguserresponse> getallbookinguser({
           return Bookinguserresponse(message: 'Something went wrong');
         }
       }
-
+       if (ex.response?.data != null &&
+          ex.response?.data is Map &&
+          ex.response?.data['message'] != null) {
+        return Bookinguserresponse(message: ex.response!.data['message'], success: false);
+      }
       // هذا الجزء بعد محاولة تجديد التوكن
       if (ex.type == DioExceptionType.connectionTimeout) {
         return Bookinguserresponse(message: 'Internet is Weak', success: false);
@@ -218,7 +223,11 @@ Future<Deletebookingresponse> deletebooking(int bookingid) async {
           return Deletebookingresponse(message: 'Something went wrong');
         }
       }
-
+       if (ex.response?.data != null &&
+          ex.response?.data is Map &&
+          ex.response?.data['message'] != null) {
+        return Deletebookingresponse(message: ex.response!.data['message'], success: false);
+      }
       // هذا الجزء بعد محاولة تجديد التوكن
       if (ex.type == DioExceptionType.connectionTimeout) {
         return Deletebookingresponse(message: 'Internet is Weak', success: false);
@@ -236,4 +245,82 @@ Future<Deletebookingresponse> deletebooking(int bookingid) async {
     }
   }
 }
+//get booking id 
+//GetbookingbyidResponse
+
+
+
+Future<GetbookingbyidResponse> getticketdetailse(int userbookingid ) async {
+    Map<String, dynamic> headers = {
+      "Authorization": "Bearer ${DataStore.instance.token}",
+      'accept': '/',
+      // 'Content-Type': 'application/json',
+      // 'Accept': 'application/json',
+    };
+    try {
+      var response = await client.get('http://cinemate-001-site1.jtempurl.com/api/Bookings/$userbookingid',
+          //queryParameters: {"id": hallid},
+          options: Options(headers: headers));
+      print(response.data);
+      return GetbookingbyidResponse.fromJson(response.data);
+    }catch (ex) {
+    if (ex is DioException) {
+      if (ex.response?.statusCode == 401) {
+        try {
+          RefreshRequest refreshTokenModel = RefreshRequest(
+            accessToken: DataStore.instance.token,
+            refreshToken: DataStore.instance.getrefreshToken,
+          );
+          var refreshToken = await client.post(
+            LinksUrl.refreshToken,
+            data: refreshTokenModel.toJson(),
+          );
+          RefreshResponse reafreshTokenModel =
+              RefreshResponse.fromJson(refreshToken.data);
+          DataStore.instance.setToken(reafreshTokenModel.data.accessToken);
+          DataStore.instance.setRefreshToken(reafreshTokenModel.data.refreshToken);
+
+          return getticketdetailse(userbookingid);
+        } catch (ex) {
+          if (ex is DioException) {
+            if (ex.response?.statusCode == 401) {
+              return GetbookingbyidResponse(message: 'Session Is Done', success: false);
+            }
+            if (ex.type == DioExceptionType.connectionTimeout) {
+              return GetbookingbyidResponse(message: 'Internet is Weak', success: false);
+            }
+            if (ex.type == DioExceptionType.receiveTimeout) {
+              return GetbookingbyidResponse(message: 'Internet is Weak');
+            }
+            if (ex.type == DioExceptionType.connectionError || 
+                (ex.type == DioExceptionType.unknown && ex.error is SocketException)) {
+              return GetbookingbyidResponse(message: 'No Internet Connection', success: false);
+            }
+            return GetbookingbyidResponse(message: 'Something went wrong');
+          }
+          return GetbookingbyidResponse(message: 'Something went wrong');
+        }
+      }
+         if (ex.response?.data != null &&
+          ex.response?.data is Map &&
+          ex.response?.data['message'] != null) {
+        return GetbookingbyidResponse(message: ex.response!.data['message'], success: false);
+      }
+      // هذا الجزء بعد محاولة تجديد التوكن
+      if (ex.type == DioExceptionType.connectionTimeout) {
+        return GetbookingbyidResponse(message: 'Internet is Weak', success: false);
+      }
+      if (ex.type == DioExceptionType.receiveTimeout) {
+        return GetbookingbyidResponse(message: 'Internet is Weak');
+      }
+      if (ex.type == DioExceptionType.connectionError || 
+          (ex.type == DioExceptionType.unknown && ex.error is SocketException)) {
+        return GetbookingbyidResponse(message: 'No Internet Connection', success: false);
+      }
+      return GetbookingbyidResponse(message: 'Something went wrong');
+    } else {
+      return GetbookingbyidResponse(message: 'Something went wrong');
+    }
+  }
+  }
 }

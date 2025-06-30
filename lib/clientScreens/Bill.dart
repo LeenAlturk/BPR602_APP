@@ -596,7 +596,9 @@ class Bill extends StatelessWidget {
           backgroundColor: Kbackground,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios, color: kbutton),
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () => 
+            Navigator.of(context).pop(),
+              
           ),
         ),
         body: SingleChildScrollView(
@@ -724,7 +726,7 @@ class Bill extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final snack = booking.selectedSnacks[index];
                   return Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
+                    padding: const EdgeInsets.only(bottom: 10),
                     child: itemSnacksbill(
                       size: size,
                       imgurl: snack.snackimg,
@@ -769,7 +771,7 @@ class Bill extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '$moviePrice IQD',
+                  '$moviePrice SYP ',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 14.sp,
@@ -793,7 +795,7 @@ class Bill extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '$snacksPrice IQD',
+                  '$snacksPrice SYP',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 14.sp,
@@ -827,7 +829,7 @@ class Bill extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '${booking.totalPrice} IQD',
+                  '${booking.totalPrice} SYP ',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16.sp,

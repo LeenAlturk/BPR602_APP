@@ -146,10 +146,9 @@ class DetailesPage extends StatelessWidget {
                                       .map((type) => type.englishName ?? '')
                                       .join(', ')
                                   : '',
-                              director: cubit.movieResponseById!.data!.director!
-                                  .firstName!,
+                              director: "${cubit.movieResponseById!.data!.director!.firstName!} ${cubit.movieResponseById!.data!.director!.lastName!}  " ,
                               duration:
-                                  cubit.movieResponseById!.data!.durationInMinutes!, // Consider getting this from API as well
+                                  cubit.movieResponseById!.data!.durationInMinutes!, 
                               ar: cubit.movieResponseById!.data!
                                   .movieClassification!.englishName!,
                             ),
@@ -286,75 +285,7 @@ class DetailesPage extends StatelessWidget {
                                     ),
                                     IconButton(
                                       onPressed: () {
-                                        // showModalBottomSheet(
-                                        //     backgroundColor: Kbackground,
-                                        //     context: context,
-                                        //     builder: (BuildContext context) {
-                                        //       return SizedBox(
-                                        //         width: 400,
-                                        //         height: size.height,
-                                        //         child: SingleChildScrollView(
-                                        //           child: Column(
-                                        //             children: [
-                                        //               Padding(
-                                        //                 padding: EdgeInsets.all(size.height * 0.01),
-                                        //                 child: Text(
-                                        //                   "Movie Actor",
-                                        //                   style: TextStyle(
-                                        //                     color: beige3,
-                                        //                     fontSize: 18.sp,
-                                        //                     fontWeight: FontWeight.bold,
-                                        //                   ),
-                                        //                 ),
-                                        //               ),
-                                        //               SizedBox(
-                                        //                 height: 400,
-                                        //                 child: Padding(
-                                        //                   padding: EdgeInsets.all(size.height * 0.01),
-                                        //                   child: ListView.builder(
-                                        //                     scrollDirection: Axis.vertical,
-                                        //                     shrinkWrap: true,
-                                        //                     itemCount: castList.length,
-                                        //                     itemBuilder: (context, index) {
-                                        //                       return Padding(
-                                        //                         padding: const EdgeInsets.symmetric(
-                                        //                             vertical: 8.0, horizontal: 16.0),
-                                        //                         child: Row(
-                                        //                           children: [
-                                        //                             Row(
-                                        //                               children: [
-                                        //                                 ClipRRect(
-                                        //                                   borderRadius:
-                                        //                                       BorderRadius.circular(50),
-                                        //                                   child: Image.network(
-                                        //                                     castList[index]["photo"]!,
-                                        //                                     height: 60,
-                                        //                                     width: 60,
-                                        //                                     fit: BoxFit.cover,
-                                        //                                   ),
-                                        //                                 ),
-                                        //                                 const SizedBox(width: 16),
-                                        //                                 Text(
-                                        //                                   castList[index]["name"]!,
-                                        //                                   style: const TextStyle(
-                                        //                                     fontSize: 16,
-                                        //                                     color: Colors.white,
-                                        //                                   ),
-                                        //                                 ),
-                                        //                               ],
-                                        //                             ),
-                                        //                           ],
-                                        //                         ),
-                                        //                       );
-                                        //                     },
-                                        //                   ),
-                                        //                 ),
-                                        //               ),
-                                        //             ],
-                                        //           ),
-                                        //         ),
-                                        //       );
-                                        //     });
+                                       
                                         showModalBottomSheet(
                                           backgroundColor: Kbackground,
                                           context: context,
@@ -487,6 +418,7 @@ class DetailesPage extends StatelessWidget {
   context.read<BookingCubit>().selectMovie(movie);
                                 cubit.pauseVideo();
                                   context.read<ShoppingCartCubit>().clearCart();
+                                  context.read<BookingCubit>().selectSnacks([]);
                                 NavigationWidget.pushPage(
                                   context,
                                   TimeAndDateScreen(

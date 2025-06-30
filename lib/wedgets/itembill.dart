@@ -70,7 +70,7 @@ class itemBookingSeatbill extends StatelessWidget {
                           maxLines: 1,
                         ),
                         Text(
-                          'Price : $price.00 IQR',
+                          'Price : $price.00 SYP',
                           style: TextStyle(
                             color: Ktext,
                             fontSize: 12.sp,

@@ -147,7 +147,7 @@ class CartScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Subtotal: \$${context.read<ShoppingCartCubit>().calculateTotal(cartItems)}',
+                                'Subtotal= SYP ${context.read<ShoppingCartCubit>().calculateTotal(cartItems)}',
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 18.sp),
                               ),
@@ -155,7 +155,7 @@ class CartScreen extends StatelessWidget {
                                 height: size.height * 0.02,
                               ),
                               Text(
-                                "Service fee = 0 IQD",
+                                "Service fee = SYP 0 ",
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 18.sp),
                               ),
@@ -174,7 +174,7 @@ class CartScreen extends StatelessWidget {
                                       .read<ShoppingCartCubit>()
                                       .listOfCartItem;
                                   return Text(
-                                    'Total: \$${context.read<ShoppingCartCubit>().addtoservice(context.read<ShoppingCartCubit>().calculateTotal(cartItems))}',
+                                    'Total: SYP = ${context.read<ShoppingCartCubit>().addtoservice(context.read<ShoppingCartCubit>().calculateTotal(cartItems))}',
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 16.sp),
                                   );
@@ -280,7 +280,7 @@ class CartItemWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Price: \$${snack.price + (context.read<ShoppingCartCubit>().sizePriceMap[snack.size] ?? 0)} x ${snack.quantity}',
+                    'Price: SYP ${snack.price + (context.read<ShoppingCartCubit>().sizePriceMap[snack.size] ?? 0)} x ${snack.quantity}',
                     style: const TextStyle(color: Colors.white),
                   ),
                   Padding(

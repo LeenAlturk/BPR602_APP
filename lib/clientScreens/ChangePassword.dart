@@ -77,6 +77,18 @@ class ChangePassword extends StatelessWidget {
                                 prefIcon: Icons.password,
                                 hintText: 'Enter your Password',
                                 iconData: Icons.password,
+                                showText: !context
+                                    .read<ChangePasswordCubit>()
+                                    .isPasswordHidden,
+                                  suffixPressed: () {
+                                  context
+                                      .read<ChangePasswordCubit>()
+                                      .togglePasswordVisibility();
+                                },
+                                suffixIcon:
+                                    context.read<ChangePasswordCubit>().isPasswordHidden
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
                                 onChange: () {},
                               ),
                             ),
@@ -87,6 +99,18 @@ class ChangePassword extends StatelessWidget {
                                     .read<ChangePasswordCubit>()
                                     .newpasswordValidator,
                                 prefIcon: Icons.password,
+                                showText: !context
+                                    .read<ChangePasswordCubit>()
+                                    .isPasswordHidden,
+                               suffixPressed: () {
+                                  context
+                                      .read<ChangePasswordCubit>()
+                                      .togglePasswordVisibility();
+                                },
+                                suffixIcon:
+                                    context.read<ChangePasswordCubit>().isPasswordHidden
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
                                 hintText: 'Enter your New Password',
                                 iconData: Icons.password,
                                 onChange: () {},
@@ -100,6 +124,18 @@ class ChangePassword extends StatelessWidget {
                                     .confirmpasswordValidator,
                                 prefixIcon: Icons.password,
                                 prefIcon: Icons.password,
+                                suffixPressed: () {
+                                  context
+                                      .read<ChangePasswordCubit>()
+                                      .togglePasswordVisibility();
+                                },
+                                suffixIcon:
+                                    context.read<ChangePasswordCubit>().isPasswordHidden
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                  showText: !context
+                                    .read<ChangePasswordCubit>()
+                                    .isPasswordHidden,
                                 hintText: 'Confirm Your New Password',
                                 iconData: Icons.password,
                                 onChange: () {},
