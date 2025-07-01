@@ -79,6 +79,18 @@ class Chagepasswordemp extends StatelessWidget {
                                     .read<ChangePasswordempCubit>()
                                     .passwordValidator,
                                 prefIcon: Icons.password,
+                                 showText: !context
+                                    .read<ChangePasswordempCubit>()
+                                    .isPasswordHidden,
+                                  suffixPressed: () {
+                                  context
+                                      .read<ChangePasswordempCubit>()
+                                      .togglePasswordVisibility();
+                                },
+                                suffixIcon:
+                                    context.read<ChangePasswordempCubit>().isPasswordHidden
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
                                 hintText: 'Enter your Password',
                                 iconData: Icons.password,
                                 onChange: () {},
@@ -92,6 +104,18 @@ class Chagepasswordemp extends StatelessWidget {
                                     .newpasswordValidator,
                                 prefIcon: Icons.password,
                                 hintText: 'Enter your  New Password',
+                                 showText: !context
+                                    .read<ChangePasswordempCubit>()
+                                    .isPasswordHidden,
+                                  suffixPressed: () {
+                                  context
+                                      .read<ChangePasswordempCubit>()
+                                      .togglePasswordVisibility();
+                                },
+                                suffixIcon:
+                                    context.read<ChangePasswordempCubit>().isPasswordHidden
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
                                 iconData: Icons.password,
                                 onChange: () {},
                               ),
@@ -105,7 +129,20 @@ class Chagepasswordemp extends StatelessWidget {
                                 prefixIcon: Icons.password,
                                 prefIcon: Icons.password,
                                 hintText: 'Confirm your New Password',
+                                
                                 iconData: Icons.password,
+                                showText: !context
+                                    .read<ChangePasswordempCubit>()
+                                    .isPasswordHidden,
+                                  suffixPressed: () {
+                                  context
+                                      .read<ChangePasswordempCubit>()
+                                      .togglePasswordVisibility();
+                                },
+                                suffixIcon:
+                                    context.read<ChangePasswordempCubit>().isPasswordHidden
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
                                 onChange: () {},
                               ),
                             ),

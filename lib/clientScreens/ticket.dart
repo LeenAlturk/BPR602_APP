@@ -117,7 +117,7 @@ class Tickets extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              "HARRY POTTER",
+                             "${cubit.getbookingbyidResponse!.data!.movieTime!.movie!.name}",
                               style: TextStyle(
                                 fontSize: 24.sp,
                                 fontWeight: FontWeight.bold,

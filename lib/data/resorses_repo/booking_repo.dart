@@ -258,7 +258,8 @@ Future<GetbookingbyidResponse> getticketdetailse(int userbookingid ) async {
       // 'Accept': 'application/json',
     };
     try {
-      var response = await client.get('http://cinemate-001-site1.jtempurl.com/api/Bookings/$userbookingid',
+      
+      var response = await client.get('http://cinemate-001-site1.jtempurl.com/api/Bookings/$userbookingid/ticket',
           //queryParameters: {"id": hallid},
           options: Options(headers: headers));
       print(response.data);

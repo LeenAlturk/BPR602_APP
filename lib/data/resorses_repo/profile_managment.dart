@@ -82,6 +82,77 @@ class ProfileManagmentRepo extends BaseClient {
     }
   }
   }
+
+Future<ProfileRresponse> getProfileEmp() async {
+    Map<String, dynamic> headers = {
+      "Authorization": "Bearer ${DataStore.instance.token}",
+      'accept': '/',
+      // 'Content-Type': 'application/json',
+      // 'Accept': 'application/json',
+    };
+    try {
+      var response = await client.get('http://cinemate-001-site1.jtempurl.com/api/Auth/employees/${DataStore.instance.userID}',
+          
+          options: Options(headers: headers));
+      print(response.data);
+      return ProfileRresponse.fromJson(response.data);
+    }catch (ex) {
+    if (ex is DioException) {
+      if (ex.response?.statusCode == 401) {
+        try {
+          RefreshRequest refreshTokenModel = RefreshRequest(
+            accessToken: DataStore.instance.token,
+            refreshToken: DataStore.instance.getrefreshToken,
+          );
+          var refreshToken = await client.post(
+            LinksUrl.refreshToken,
+            data: refreshTokenModel.toJson(),
+          );
+          RefreshResponse reafreshTokenModel =
+              RefreshResponse.fromJson(refreshToken.data);
+          DataStore.instance.setToken(reafreshTokenModel.data.accessToken);
+          DataStore.instance.setRefreshToken(reafreshTokenModel.data.refreshToken);
+
+          return getProfileEmp();
+        } catch (ex) {
+          if (ex is DioException) {
+            if (ex.response?.statusCode == 401) {
+              return ProfileRresponse(message: 'Session Is Done', success: false);
+            }
+            if (ex.type == DioExceptionType.connectionTimeout) {
+              return ProfileRresponse(message: 'Internet is Weak', success: false);
+            }
+            if (ex.type == DioExceptionType.receiveTimeout) {
+              return ProfileRresponse(message: 'Internet is Weak');
+            }
+            if (ex.type == DioExceptionType.connectionError || 
+                (ex.type == DioExceptionType.unknown && ex.error is SocketException)) {
+              return ProfileRresponse(message: 'No Internet Connection', success: false);
+            }
+            return ProfileRresponse(message: 'Something went wrong');
+          }
+          return ProfileRresponse(message: 'Something went wrong');
+        }
+      }
+   
+      // هذا الجزء بعد محاولة تجديد التوكن
+      if (ex.type == DioExceptionType.connectionTimeout) {
+        return ProfileRresponse(message: 'Internet is Weak', success: false);
+      }
+      if (ex.type == DioExceptionType.receiveTimeout) {
+        return ProfileRresponse(message: 'Internet is Weak');
+      }
+      if (ex.type == DioExceptionType.connectionError || 
+          (ex.type == DioExceptionType.unknown && ex.error is SocketException)) {
+        return ProfileRresponse(message: 'No Internet Connection', success: false);
+      }
+      return ProfileRresponse(message: 'Something went wrong');
+    } else {
+      return ProfileRresponse(message: 'Something went wrong');
+    }
+  }
+  }
+
   Future<EditProfileRresponse> changeProfile(
       UpdateProfileRequest updateProfileRequest) async {
     try {

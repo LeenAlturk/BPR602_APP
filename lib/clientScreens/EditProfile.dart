@@ -208,6 +208,7 @@ import 'package:bpr602_cinema/Constants/colors.dart';
 import 'package:bpr602_cinema/Cubits/EditProfilecubit/edit_profile_cubit_cubit.dart';
 import 'package:bpr602_cinema/clientScreens/indexedstackclientnav.dart';
 import 'package:bpr602_cinema/clientScreens/profile.dart';
+import 'package:bpr602_cinema/data/link.dart';
 import 'package:bpr602_cinema/wedgets/Navigating.dart';
 import 'package:bpr602_cinema/wedgets/elevatedbtn.dart';
 import 'package:bpr602_cinema/wedgets/textform.dart';
@@ -216,20 +217,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class EditProfileScreen extends StatelessWidget {
-  const EditProfileScreen({super.key});
+  final String Name;
+    final String? imageUrl;
+  const EditProfileScreen( {super.key, required this.Name, this.imageUrl});
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
     return BlocProvider(
-      create: (context) => EditProfileCubitCubit(),
+      create: (context) => EditProfileCubitCubit()..fetchUserProfileData(Name),
       child: BlocConsumer<EditProfileCubitCubit, EditProfileCubitState>(
         listener: (context, state) {
           if (state is UploadImageproSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("Profile image uploaded successfully")),
-            );
+            // ScaffoldMessenger.of(context).showSnackBar(
+            //   const SnackBar(content: Text("Profile image uploaded successfully")),
+            // );
           } else if (state is UploadImageproFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text("Upload failed: ${state.message}")),
@@ -251,7 +254,7 @@ class EditProfileScreen extends StatelessWidget {
               }
             }
             if(state is UpdateProfileSuccessState){
-               AppConstants.showToast(context, " your profile updated succesfully ");
+               AppConstants.showToast(context, " your profile updated succesfully " , icon: Icons.done , iconcolor: Colors.green);
               NavigationWidget.pushPage(
             context,
             const IndexedStackTeacherScreen(initialIndex: 3),
@@ -283,22 +286,42 @@ class EditProfileScreen extends StatelessWidget {
               children: [
                 SizedBox(height: size.height * 0.05),
                 Center(
-                  child: GestureDetector(
-                    onTap: () => cubit.pickImage(),
-                    child: CircleAvatar(
-                      radius: 50,
-                      backgroundImage: cubit.image != null
-                          ? FileImage(File(cubit.image!.path))
-                          : null,
-                      child: cubit.image == null
-                          ? const Icon(
-                              Icons.camera_alt,
-                              size: 50,
-                              color: Colors.grey,
-                            )
-                          : null,
-                    ),
-                  ),
+                  child:
+                  //  GestureDetector(
+                  //   onTap: () => cubit.pickImage(),
+                  //   child: CircleAvatar(
+                  //     radius: 50,
+                  //     backgroundImage: cubit.image != null
+                  //         ? FileImage(File(cubit.image!.path))
+                  //         : null,
+                  //     child: cubit.image == null
+                  //         ? const Icon(
+                  //             Icons.camera_alt,
+                  //             size: 50,
+                  //             color: Colors.grey,
+                  //           )
+                  //         : null,
+                  //   ),
+                  // ),
+                  GestureDetector(
+  onTap: () => cubit.pickImage(),
+  child: CircleAvatar(
+    radius: 50,
+    backgroundImage: cubit.image != null
+        ? FileImage(File(cubit.image!.path))
+        : (imageUrl != null
+            ? NetworkImage('${LinksUrl.baseUrl}$imageUrl') // 🔹 من الـ API
+            : null),
+    child: cubit.image == null && imageUrl == null
+        ? const Icon(
+            Icons.camera_alt,
+            size: 50,
+            color: Colors.grey,
+          )
+        : null,
+  ),
+),
+
                 ),
                 const SizedBox(height: 10),
                 if (state is UploadImageproInProgress)
@@ -316,7 +339,7 @@ class EditProfileScreen extends StatelessWidget {
                                       .read<EditProfileCubitCubit>()
                                       .fullNameValidator,
                                   prefIcon: Icons.person,
-                                  hintText: 'Enter your Full Name',
+                                  hintText: 'Enter your User Name',
                                   iconData: Icons.person,
                                   onChange: () {},
                                 ),
@@ -328,11 +351,11 @@ class EditProfileScreen extends StatelessWidget {
                         
                         final cubit = context.read<EditProfileCubitCubit>();
                     
-                        // إذا المستخدم اختار صورة، نرفعها أولاً
+                       
                         if (cubit.image != null) {
                           await cubit.uploadImage();
                     
-                          // إذا فشل رفع الصورة، لا تكمل التعديل
+                         
                           if (cubit.uploadedImageId == null) {
                             return;
                           }

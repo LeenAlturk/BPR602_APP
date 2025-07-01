@@ -19,7 +19,7 @@ class EmployeeProfile extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
 
     return BlocProvider(
-      create: (context) => EmpProfileCubit()..getprofile(),
+      create: (context) => EmpProfileCubit()..getprofileEmp(),
       child: BlocConsumer<EmpProfileCubit, EmpProfileState>(
         listener: (context, state) {
            if (state is ProfileCustomerLoggedOut){
@@ -311,8 +311,8 @@ class EmployeeProfile extends StatelessWidget {
                                 width: size.width * 0.05,
                               ),
                               Text(
-                               // "${cubit.getProfileModel!.data!.role}",
-                               "jjjjj",
+                               "${cubit.getProfileModel!.data!.role}",
+                               
                                 style: TextStyle(
                                     color: Colors.white38,
                                     fontSize: 12.sp,
@@ -366,7 +366,7 @@ class EmployeeProfile extends StatelessWidget {
                       horizontal: size.height * 0.02),
                   child: Container(
                     width: size.width * 0.9,
-                    height: size.height * 0.26,
+                    height: size.height * 0.14,
                     decoration: BoxDecoration(
                         color: Kbackground,
                         borderRadius: BorderRadius.circular(15),

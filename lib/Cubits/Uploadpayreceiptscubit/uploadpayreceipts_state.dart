@@ -36,4 +36,12 @@ class DeleteImageFailure extends UploadpayreceiptsState {
   DeleteImageFailure({required this.message});
 }
 
+class UploadLoadingState extends UploadpayreceiptsState {}
+
+class UploadSuccessState extends UploadpayreceiptsState {}
+
+class UploadErrorState extends UploadpayreceiptsState {
+  final String message;
+  UploadErrorState(this.message);
+}
 

@@ -122,18 +122,18 @@ class SeeallSnacksCard extends StatelessWidget {
     required this.variants,
   });
 
-  // حساب أقل سعر
+  
   int get minPrice {
     if (variants.isEmpty) return 0;
     return variants.map((v) => v.price ?? 0).reduce((a, b) => a < b ? a : b);
   }
 
-  // عرض السعر كنطاق إذا كان هناك أكثر من variant
+ 
   String get priceText {
     if (variants.isEmpty) return 'No price';
-    if (variants.length == 1) return '${variants.first.price} IQD';
+    if (variants.length == 1) return '${variants.first.price} SYP';
     final max = variants.map((v) => v.price ?? 0).reduce((a, b) => a > b ? a : b);
-    return '$minPrice - $max IQD';
+    return '$minPrice - $max SYP';
   }
 
   @override
@@ -195,19 +195,7 @@ class SeeallSnacksCard extends StatelessWidget {
                 SizedBox(height: size.height * 0.01),
                 _buildRow("price range", priceText, size.width * 0.01 , size.width* 0.2 ),
                 SizedBox(height: size.height * 0.01),
-                // SizedBox(
-                //   width: size.width * 0.5,
-                //   child: Text(
-                //     desc,
-                //     style: TextStyle(
-                //       color: Colors.white,
-                //       fontSize: 14.sp,
-                //       fontWeight: FontWeight.bold,
-                //     ),
-                //     maxLines: 3,
-                //     overflow: TextOverflow.ellipsis,
-                //   ),
-                // ),
+                
               ],
             ),
           ),

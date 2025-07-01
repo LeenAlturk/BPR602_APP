@@ -1,8 +1,11 @@
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
+import 'package:bpr602_cinema/controller/app_store.dart';
 import 'package:bpr602_cinema/data/resorses_repo/image_repo.dart';
+import 'package:bpr602_cinema/data/resorses_repo/payments_repo.dart';
 import 'package:bpr602_cinema/models/request/imagerequest.dart';
+import 'package:bpr602_cinema/models/response/getpayments.dart';
 import 'package:bpr602_cinema/models/response/imageResponse.dart';
 import 'package:bpr602_cinema/models/response/imageresponsedel.dart';
 import 'package:get_it/get_it.dart';
@@ -14,7 +17,7 @@ part 'uploadpayreceipts_state.dart';
 class UploadpayreceiptsCubit extends Cubit<UploadpayreceiptsState> {
   UploadpayreceiptsCubit() : super(UploadpayreceiptsInitial());
    XFile? image;
-
+ int? imageId;
   Future<void> pickImage() async {
     final ImagePicker picker = ImagePicker();
     final XFile? selectedImage =
@@ -49,7 +52,7 @@ class UploadpayreceiptsCubit extends Cubit<UploadpayreceiptsState> {
           .uploadimage(imageRequest);  
 
       if (response.success == true) {
-          int? imageId = response.data!.id; 
+          imageId = response.data!.id; 
         emit(UploadImageSuccess(response: response , imageId: imageId!)); 
       } else {
         emit(UploadImageFailure(message: response.message ?? 'UNKNOUN ERROR'));
@@ -77,5 +80,34 @@ Future<void> deleteImage(int imageId) async {
       emit(DeleteImageFailure(message: ' UN ERROR HAPINING WHEN UPLOAD   '));
     }
   }
+
+
+
+Future<void> uploadpayment(
+final int paymentid
+) async {
+  
+  emit(UploadLoadingState());
+
+  try {
+    final response = await GetIt.I.get<PaymentsRepo>().uploadrecipt(
+   paymentid,imageId
+    );
+
+    if (response.success == true) {
+      emit(UploadSuccessState());
+    } else {
+      if (response.message == "Session Is Done") {
+        DataStore.instance.deleateUserId();
+        DataStore.instance.deleateToken();
+        DataStore.instance.deleateRefreshToken();
+        DataStore.instance.deleateRoalUser();
+      }
+      emit(UploadErrorState(response.message ?? "Something went wrong"));
+    }
+  } catch (ex) {
+    emit(UploadErrorState("Unexpected error occurred"));
+  }
+}
 
 }

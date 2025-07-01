@@ -6,7 +6,7 @@ import 'package:bpr602_cinema/Constants/sizer.dart';
 import 'package:bpr602_cinema/Cubits/profile_custumer_cubit/profile_customer_cubit.dart';
 import 'package:bpr602_cinema/clientScreens/ChangePassword.dart';
 import 'package:bpr602_cinema/clientScreens/EditProfile.dart';
-import 'package:bpr602_cinema/clientScreens/NotificationPage.dart';
+
 import 'package:bpr602_cinema/data/link.dart';
 import 'package:bpr602_cinema/wedgets/Navigating.dart';
 import 'package:bpr602_cinema/wedgets/toast.dart';
@@ -127,12 +127,12 @@ class Clientprofile extends StatelessWidget {
                             ],
                           ),
                           SizedBox(
-                            width: size.width * 0.25,
+                            width: size.width * 0.17,
                           ),
                           IconButton(
                             onPressed: () {
                               NavigationWidget.pushPage(
-                                  context, EditProfileScreen());
+                                  context, EditProfileScreen(Name: cubit.getProfileModel!.data!.fullName!, imageUrl: cubit.getProfileModel!.data!.image?.url,));
                             },
                             icon: const Icon(Icons.edit),
                           ),
@@ -181,8 +181,8 @@ class Clientprofile extends StatelessWidget {
                                 width: size.width * 0.05,
                               ),
                               Text(
-                               // "${cubit.getProfileModel!.data!.role}",
-                               "jjjjj",
+                            "${cubit.getProfileModel!.data!.role}",
+                               
                                 style: TextStyle(
                                     color: Colors.white38,
                                     fontSize: 12.sp,
@@ -236,7 +236,7 @@ class Clientprofile extends StatelessWidget {
                       horizontal: size.height * 0.02),
                   child: Container(
                     width: size.width * 0.9,
-                    height: size.height * 0.26,
+                    height: size.height * 0.17,
                     decoration: BoxDecoration(
                         color: Kbackground,
                         borderRadius: BorderRadius.circular(15),
@@ -258,38 +258,6 @@ class Clientprofile extends StatelessWidget {
                           ),
                           SizedBox(
                             height: size.height * 0.0001,
-                          ),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.notifications,
-                                color: Colors.white,
-                                size: 20.sp,
-                              ),
-                              SizedBox(
-                                width: size.width * 0.05,
-                              ),
-                              Text(
-                                "Notifications",
-                                style: TextStyle(
-                                    color: Colors.white38,
-                                    fontSize: 11.sp,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(
-                                width: size.width * 0.34,
-                              ),
-                              IconButton(
-                                onPressed: () {
-                                  NavigationWidget.pushPage(
-                                      context, Notificationpage());
-                                },
-                                icon: Icon(Icons.arrow_forward_ios),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: size.height * 0.02,
                           ),
                           Divider(
                             thickness: 0.5,

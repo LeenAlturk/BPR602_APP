@@ -23,11 +23,11 @@ class EmpProfileCubit extends Cubit<EmpProfileState> {
     emit(ProfileCustomerLoggedOut());
   }
   ProfileRresponse? getProfileModel;
-    Future<void> getprofile() async {
+    Future<void> getprofileEmp() async {
     emit(Profileloading());
     try {
       getProfileModel =
-          await GetIt.I.get<ProfileManagmentRepo>().getProfile();
+          await GetIt.I.get<ProfileManagmentRepo>().getProfileEmp();
       if (getProfileModel!.message == 'Session Is Done') {
         emit(Profilerrorstate(message: getProfileModel!.message!));
       } else if (getProfileModel!.data != null) {

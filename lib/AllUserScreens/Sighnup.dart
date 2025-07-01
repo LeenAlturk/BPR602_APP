@@ -103,7 +103,7 @@ class SighnUpScreen extends StatelessWidget {
                                     .read<SignupCubit>()
                                     .fullNameValidator,
                                 prefIcon: Icons.person,
-                                hintText: 'Enter your Full Name',
+                                hintText: 'Enter your User Name',
                                 iconData: Icons.person,
                                 onChange: () {},
                               ),

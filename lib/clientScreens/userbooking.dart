@@ -202,76 +202,137 @@ class UserBooking extends StatelessWidget {
                                                   color: Colors.white)),
                                         ],
                                       ),
-                                      Align(
-                                        alignment: Alignment.centerRight,
-                                        child: TextButton(
-                                          onPressed: () {
-                                            showDialog(
-                                              context: context,
-                                              builder: (ctx) => AlertDialog(
-                                                backgroundColor: Kbackground,
-                                                title: const Text(
-                                                  "Confirm Deletion",
-                                                  style:
-                                                      TextStyle(color: Ktext),
-                                                ),
-                                                content: const Text(
-                                                  "Are you sure you want to delete this booking?",
-                                                  style: TextStyle(
-                                                      color: Colors.white),
-                                                ),
-                                                actions: [
-                                                  TextButton(
-                                                    onPressed: () =>
-                                                        Navigator.pop(ctx),
-                                                    child: const Text("Cancel",
-                                                        style: TextStyle(
-                                                            color: Colors
-                                                                .amberAccent)),
-                                                  ),
-                                                  TextButton(
-                                                    onPressed: () {
-                                                      Navigator.pop(ctx);
-                                                      cubit.deletebooking(
-                                                          booking.id!);
-                                                    },
-                                                    child: const Text("Delete",
-                                                        style: TextStyle(
-                                                            color: Colors.red)),
-                                                  ),
-                                                ],
-                                              ),
-                                            );
-                                          },
-                                          child: Text(
-                                            "Delete Booking",
-                                            style: TextStyle(
-                                              fontSize: size.width * 0.04,
-                                              color: subMain,
-                                            ),
-                                          ),
-                                        ),
-                                        
+                                      Row(
+                                        children: [
+                                          Text('Payment : ',
+                                              style: TextStyle(
+                                                  color: Ktext,
+                                                  fontSize: 12.sp,
+                                                  fontWeight: FontWeight.bold)),
+                                          Text('${booking.paymentType}',
+                                              style: TextStyle(
+                                                  color: Colors.white)),
+                                        ],
                                       ),
-                                        Align(
-                                        alignment: Alignment.centerRight,
-                                        child: TextButton(
-                                          onPressed: () {
-                                             NavigationWidget.pushPage(
-            context,
-             Tickets(bookingid: booking.id!,),
-          );
-                                          },
-                                          child: Text(
-                                            "view ticket",
+                                      Row(
+                                        children: [
+                                          Text('status: ',
+                                              style: TextStyle(
+                                                  color: Ktext,
+                                                  fontSize: 12.sp,
+                                                  fontWeight: FontWeight.bold)),
+                                          Text('${booking.payment!.status}',
+                                              style: TextStyle(
+                                                  color: Colors.white)),
+                                        ],
+                                      ),
+
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'Chairs: ',
                                             style: TextStyle(
-                                              fontSize: size.width * 0.04,
-                                              color: kbutton,
+                                              color: Ktext,
+                                              fontSize: 12.sp,
+                                              fontWeight: FontWeight.bold,
                                             ),
                                           ),
-                                        ),
-                                        
-                                      )
+                                          Text(
+                                            booking.hallChairs
+                                                    ?.map((c) => c.code)
+                                                    .whereType<String>()
+                                                    .join(', ') ??
+                                                'No Chairs',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12.sp,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          if (booking.payment?.status != "Accepted")
+
+                                          TextButton(
+                                            onPressed: () {
+                                              showDialog(
+                                                context: context,
+                                                builder: (ctx) => AlertDialog(
+                                                  backgroundColor: Kbackground,
+                                                  title: const Text(
+                                                    "Confirm Deletion",
+                                                    style:
+                                                        TextStyle(color: Ktext),
+                                                  ),
+                                                  content: const Text(
+                                                    "Are you sure you want to delete this booking?",
+                                                    style: TextStyle(
+                                                        color: Colors.white),
+                                                  ),
+                                                  actions: [
+                                                    TextButton(
+                                                      onPressed: () =>
+                                                          Navigator.pop(ctx),
+                                                      child: const Text(
+                                                          "Cancel",
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .amberAccent)),
+                                                    ),
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(ctx);
+                                                        cubit.deletebooking(
+                                                            booking.id!);
+                                                      },
+                                                      child: const Text(
+                                                          "Delete",
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.red)),
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+                                            },
+                                            child: Text(
+                                              "Delete Booking",
+                                              style: TextStyle(
+                                                fontSize: size.width * 0.04,
+                                                color: subMain,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: size.width * 0.01,
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              NavigationWidget.pushPage(
+                                                context,
+                                                Tickets(
+                                                  bookingid: booking.id!,
+                                                ),
+                                              );
+                                            },
+                                            child: Text(
+                                              "view ticket",
+                                              style: TextStyle(
+                                                fontSize: size.width * 0.04,
+                                                color: kbutton,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      //     Align(
+                                      //     alignment: Alignment.centerRight,
+                                      //     child:
+
+                                      //   )
                                     ],
                                   ),
                                 ),

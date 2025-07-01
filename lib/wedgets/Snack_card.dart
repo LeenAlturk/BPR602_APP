@@ -159,7 +159,7 @@ class SnackCard extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: size.width * 0.01),
             child: Text(
-              "Prices range: ${priceText} IQD",
+              "Prices range: ${priceText} SYP",
               style: TextStyle(
                 color: Colors.white70,
                 fontSize: 12.sp,

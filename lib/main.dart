@@ -49,6 +49,7 @@ import 'package:bpr602_cinema/data/resorses_repo/booking_repo.dart';
 import 'package:bpr602_cinema/data/resorses_repo/hall_repo.dart';
 import 'package:bpr602_cinema/data/resorses_repo/image_repo.dart';
 import 'package:bpr602_cinema/data/resorses_repo/movies_repo.dart';
+import 'package:bpr602_cinema/data/resorses_repo/payments_repo.dart';
 import 'package:bpr602_cinema/data/resorses_repo/profile_managment.dart';
 import 'package:bpr602_cinema/data/resorses_repo/snacks_repo.dart';
 import 'package:flutter/material.dart';
@@ -96,6 +97,8 @@ void main() async {
     //BookingRepo
     //ProfileManagmentRepo
     GetIt.I.registerSingleton<ProfileManagmentRepo>(ProfileManagmentRepo());
+    //PaymentsRepo
+    GetIt.I.registerSingleton<PaymentsRepo>(PaymentsRepo());
     GetIt.I.registerSingleton<BookingRepo>(BookingRepo());
     //gemovietype
     if (DataStore.instance.hasToken) {

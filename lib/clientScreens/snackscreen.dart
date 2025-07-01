@@ -4,7 +4,7 @@ import 'package:bpr602_cinema/Constants/colors.dart';
 import 'package:bpr602_cinema/Constants/sizer.dart';
 import 'package:bpr602_cinema/Cubits/Cartcubit/shopping_cart_cubit.dart';
 import 'package:bpr602_cinema/Cubits/snackcubit/snackcubit_cubit.dart';
-import 'package:bpr602_cinema/clientScreens/NotificationPage.dart';
+
 import 'package:bpr602_cinema/clientScreens/seeallsnacks.dart';
 import 'package:bpr602_cinema/clientScreens/snackcart.dart';
 import 'package:bpr602_cinema/clientScreens/snackdetailescreen.dart';

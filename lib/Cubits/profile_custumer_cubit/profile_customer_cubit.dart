@@ -17,16 +17,7 @@ part 'profile_customer_state.dart';
 class ProfileCustomerCubit extends Cubit<ProfileCustomerState> {
   ProfileCustomerCubit() : super(ProfileCustomerInitial());
     XFile? image;
-// void logout() {
-//   DataStore.instance.deleateUserId();
-//   DataStore.instance.deleateToken();
-//   DataStore.instance.deleateRefreshToken();
-//   DataStore.instance.deleateEmailUser();
-//   DataStore.instance.deleateFirstNameUser();
-//   DataStore.instance.deleateRoalUser();
 
-//   emit(ProfileCustomerLoggedOut());
-// }
   void logout(BuildContext context) {
     DataStore.instance.deleateUserId();
     DataStore.instance.deleateToken();

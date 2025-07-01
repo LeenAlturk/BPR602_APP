@@ -20,10 +20,10 @@ int? uploadedImageId;
 
   final FormValidator fullNameValidator = FormValidator(
     hint: 'Full Name',
-    regExp: RegExp(r'^[a-zA-Z ]{3,}$'),
+    regExp: RegExp(r'^[a-zA-Z]{3,}$'),
 
 
-    errorMessage: '3 or more characters',
+    errorMessage: 'No spaceses should be in username',
   );
 
   final FormValidator emailValidator = FormValidator(
@@ -91,6 +91,9 @@ int? uploadedImageId;
       emit(UploadImageproFailure(message: response!.message));
     }
   }
+
+
+
 Future<void> updateProfile(
 
 ) async {
@@ -122,6 +125,19 @@ Future<void> updateProfile(
     }
   } catch (ex) {
     emit(UpdateProfileErrorState("Unexpected error occurred"));
+  }
+}
+
+Future<void> fetchUserProfileData(String fullName) async {
+  try {
+    
+    
+
+    fullNameValidator.controller.text = fullName;
+
+    emit(UserProfileDataLoaded()); // حالة وهمية إن احتجت
+  } catch (e) {
+    emit(UpdateProfileErrorState("no data"));
   }
 }
 

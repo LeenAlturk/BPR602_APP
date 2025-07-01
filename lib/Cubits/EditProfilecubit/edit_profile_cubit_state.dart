@@ -37,3 +37,4 @@ class UpdateProfileErrorState extends EditProfileCubitState {
   final String message;
   UpdateProfileErrorState(this.message);
 }
+class UserProfileDataLoaded extends EditProfileCubitState{}

@@ -4,7 +4,7 @@ import 'package:bpr602_cinema/Animation/Fadeinfadeout.dart';
 import 'package:bpr602_cinema/Constants/colors.dart';
 import 'package:bpr602_cinema/Constants/sizer.dart';
 import 'package:bpr602_cinema/Cubits/HomeCubit/home_cubit.dart';
-import 'package:bpr602_cinema/clientScreens/NotificationPage.dart';
+
 import 'package:bpr602_cinema/clientScreens/detailesPage.dart';
 import 'package:bpr602_cinema/clientScreens/seeallshowing.dart';
 import 'package:bpr602_cinema/controller/app_store.dart';

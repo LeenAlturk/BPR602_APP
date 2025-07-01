@@ -436,7 +436,7 @@ class HallSelect extends StatelessWidget {
                           ),
                           SizedBox(width: 8),
                           Text(
-                            '${item.price} IQD',
+                            '${item.price} SYP',
                             style: TextStyle(
                               fontSize: 14.sp,
                               color: Colors.white,
