@@ -340,14 +340,27 @@ class _TimerContainerState extends State<TimerContainer> {
               ],
             ),
             const SizedBox(height: 20),
+            // ElevatedBtn(
+            //   buttonText: "Confirm",
+            //   onPressed: () {
+            //     widget.onComplateWriteotp();
+            //   },
+            //   backgroundColor: kbutton,
+            //   textColor: Kbackground,
+            // ),
             ElevatedBtn(
-              buttonText: "Confirm",
-              onPressed: () {
-                widget.onComplateWriteotp();
-              },
-              backgroundColor: kbutton,
-              textColor: Kbackground,
-            ),
+  buttonText: "Confirm",
+  onPressed: () {
+    if (widget.otpCode.text.length == 6) {
+      widget.onComplateWriteotp();
+    } else {
+      AppConstants.showToast(context, "Please enter the 6-digit code", icon: Icons.warning, iconcolor: Colors.orange);
+    }
+  },
+  backgroundColor: kbutton,
+  textColor: Kbackground,
+),
+
           ],
         ),
       ),

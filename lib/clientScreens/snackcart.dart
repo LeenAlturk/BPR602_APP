@@ -21,9 +21,7 @@ class CartScreen extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return BlocListener<ShoppingCartCubit, ShoppingCartState>(
       listener: (context, state) {
-    //       final cartCubit = context.read<ShoppingCartCubit>();
-    //        final bookingCubit = context.read<BookingCubit>();
-    // bookingCubit.selectSnacks(cartCubit.listOfCartItem);
+   
       },
       child: BlocBuilder<ShoppingCartCubit, ShoppingCartState>(
         builder: (context, state) {
@@ -197,27 +195,7 @@ class CartScreen extends StatelessWidget {
                           context.read<ShoppingCartCubit>().listOfCartItem;
                       context.read<BookingCubit>().selectSnacks(listofcart);
                       
-                      //context.read<BookingCubit>().confirmSnackCheckout();
-                      // طباعة البيانات للتأكد (لأغراض التصحيح)
-                      // final booking = context.read<BookingCubit>().state
-                      //     as BookingDataState;
-                      // print("Selected Snacks:");
-                      // for (var snack in booking.selectedSnacks) {
-                      //   print(
-                      //       " - ${snack.title}, Quantity: ${snack.quantity}, VariantID: ${snack.variantId}, Price: ${snack.price}");
-                      // }
-                      // final cartCubit = context.read<ShoppingCartCubit>();
-                      // final bookingCubit = context.read<BookingCubit>();
-                      // bookingCubit.selectSnacks(cartCubit.listOfCartItem);
-
-                      // // طباعة الـ variants بعد الحفظ
-                      // final state = bookingCubit.state as BookingDataState;
-                      // print('----- After Saving Variants -----');
-                      // print('All Variant IDs: ${state.variantIds}');
-                      // state.selectedSnacks.forEach((snack) {
-                      //   print(
-                      //       '${snack.variantId} (${snack.size}) x${snack.quantity}');
-                      // });
+                    
 
                       AppConstants.showToast(context, 'Snacks booking ready',
                           icon: Icons.done, iconcolor: Colors.green);

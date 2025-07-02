@@ -14,7 +14,6 @@ class SeeallsnacksCubit extends Cubit<SeeallsnacksState> {
   void selectFilter(int filterindex) {
     selectedFilter = filterindex;
     emit(SeeallSnacksFilterSelected(selectindex: filterindex));
-    //fetchDataFromApi(index); // function api
   }
    String searchQuery = '';
   int currentPage = 0;
@@ -44,6 +43,8 @@ class SeeallsnacksCubit extends Cubit<SeeallsnacksState> {
         DataStore.instance.deleateRefreshToken();
         DataStore.instance.deleateToken();
         DataStore.instance.deleateRoalUser();
+         DataStore.instance.deleateUserId();
+
         emit(Seeallsnacklerror(message: response.message!));
       } else if(response.message == 'No Internet Connection') {
           emit(Seeallsnacklerror(message: response.message!));

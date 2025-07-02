@@ -16,21 +16,21 @@ import 'package:meta/meta.dart';
 part 'qrcubit_state.dart';
 
 class QrcubitCubit extends Cubit<QrcubitState> {
-  bool _canScan = true; // Flag to control scanning
+  bool _canScan = true; 
 
   QrcubitCubit() : super(QrcubitInitial());
 
-  bool get canScan => _canScan; // Getter to check if scanning is allowed
+  bool get canScan => _canScan; 
 
   void onQRCodeScanned(String qrCode) {
     if (_canScan) {
-      _canScan = false; // Disable scanning after a successful scan
+      _canScan = false; 
       emit(QRScannerSuccess(qrCode));
     }
   }
 
   void resetScanner() {
-    _canScan = true; // Re-enable scanning
-    emit(QRCubitReset()); // Emit a state to indicate scanner reset
+    _canScan = true; 
+    emit(QRCubitReset()); 
   }
 }

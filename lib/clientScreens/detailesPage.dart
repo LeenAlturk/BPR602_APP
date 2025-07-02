@@ -34,7 +34,7 @@ class DetailesPage extends StatelessWidget {
 
     return BlocProvider(
       create: (context) => DetailesCubit()
-        ..getMoviedetailes(id), // Only fetch movie details initially
+        ..getMoviedetailes(id), 
       child: BlocListener<DetailesCubit, DetailesState>(
         listener: (context, state) {
           if (state is DetailEerorstate) {
@@ -59,7 +59,7 @@ class DetailesPage extends StatelessWidget {
                       ?.data
                       ?.trailerUrl !=
                   null) {
-            // Once movie details are accepted and trailerUrl is available, initialize the video
+           
             context.read<DetailesCubit>().intialization(context
                 .read<DetailesCubit>()
                 .movieResponseById!
@@ -68,7 +68,7 @@ class DetailesPage extends StatelessWidget {
           } else if (state is VideoError) {
             print("Listener: Error in video loading - ${state.error}");
           } else if (state is DetailEerorstate) {
-            // Handle movie details fetch error, maybe show a snackbar
+           
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.message)),
             );
@@ -172,7 +172,7 @@ class DetailesPage extends StatelessWidget {
                             ),
                           ),
                         ),
-                        // Video player section
+                       
                         BlocBuilder<DetailesCubit, DetailesState>(
                           buildWhen: (previous, current) =>
                               current is VideoLoading ||
@@ -423,7 +423,7 @@ class DetailesPage extends StatelessWidget {
                                   context,
                                   TimeAndDateScreen(
                                     id: id,
-                                      // You might want to pass more details to TimeAndDateScreen
+                                     
                                       ),
                                 );
                               },

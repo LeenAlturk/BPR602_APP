@@ -20,8 +20,10 @@ class HallSelectCubit extends Cubit<HallSelectState> {
           await GetIt.I.get<GetMovieallinfoRepo>().getmoviedetailse(id);
       if (movieResponseById!.message == 'Session Is Done') {
               
-              DataStore.instance.deleateRefreshToken();
-                DataStore.instance.deleateToken();
+            DataStore.instance.deleateUserId();
+        DataStore.instance.deleateToken();
+        DataStore.instance.deleateRefreshToken();
+        DataStore.instance.deleateRoalUser();
         emit(MovietimeError(message: movieResponseById!.message!));
       }else if(movieResponseById!.message == 'No Internet Connection'){
          emit(MovietimeError(message: movieResponseById!.message!));

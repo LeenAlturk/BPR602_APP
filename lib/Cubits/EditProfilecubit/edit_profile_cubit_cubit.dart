@@ -135,7 +135,7 @@ Future<void> fetchUserProfileData(String fullName) async {
 
     fullNameValidator.controller.text = fullName;
 
-    emit(UserProfileDataLoaded()); // حالة وهمية إن احتجت
+    emit(UserProfileDataLoaded());
   } catch (e) {
     emit(UpdateProfileErrorState("no data"));
   }

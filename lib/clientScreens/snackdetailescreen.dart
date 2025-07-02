@@ -599,7 +599,7 @@ class _SnackDetailsState extends State<SnackDetails> {
                     SizedBox(height: size.height * 0.03),
                     ElevatedBtn(
                       buttonText:
-                          "Add to Cart Total ${(snackItem!.quantity * snackItem!.price)} IQD",
+                          "Add to Cart Total ${(snackItem!.quantity * snackItem!.price)} SYP",
                       backgroundColor: kbutton,
                       onPressed: () {
                         cartCubit.addToCart(snackItem!);

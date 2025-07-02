@@ -5,6 +5,9 @@ import 'package:bpr602_cinema/AllUserScreens/Login.dart';
 import 'package:bpr602_cinema/Constants/colors.dart';
 import 'package:bpr602_cinema/Constants/sizer.dart';
 import 'package:bpr602_cinema/Cubits/Uploadpayreceiptscubit/uploadpayreceipts_cubit.dart';
+import 'package:bpr602_cinema/clientScreens/payment.dart';
+import 'package:bpr602_cinema/models/response/alluserbooking.dart';
+import 'package:bpr602_cinema/wedgets/Navigating.dart';
 import 'package:bpr602_cinema/wedgets/elevatedbtn.dart';
 import 'package:bpr602_cinema/wedgets/toast.dart';
 import 'package:flutter/material.dart';
@@ -51,6 +54,10 @@ class Uploadpayreceipts extends StatelessWidget {
           
           if (state is UploadSuccessState) {
             AppConstants.showToast(context, "Upload is Done " , icon: Icons.done , iconcolor: Colors.green);
+            NavigationWidget.pushPage(
+                                context,
+                                 Payments(),
+                              );
           } else if (state is UploadErrorState) {
             if (state.message == "Session Is Done") {
             AppConstants.showToast(context, state.message);

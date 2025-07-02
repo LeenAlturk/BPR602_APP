@@ -22,7 +22,7 @@ class ProfileCustomerCubit extends Cubit<ProfileCustomerState> {
     DataStore.instance.deleateUserId();
     DataStore.instance.deleateToken();
     DataStore.instance.deleateRefreshToken();
-   
+    
     DataStore.instance.deleateFirstNameUser();
     DataStore.instance.deleateRoalUser();
     Navigator.of(context).pushAndRemoveUntil(
@@ -37,6 +37,10 @@ class ProfileCustomerCubit extends Cubit<ProfileCustomerState> {
       getProfileModel =
           await GetIt.I.get<ProfileManagmentRepo>().getProfile();
       if (getProfileModel!.message == 'Session Is Done') {
+           DataStore.instance.deleateRefreshToken();
+        DataStore.instance.deleateToken();
+        DataStore.instance.deleateRoalUser();
+        DataStore.instance.deleateUserId();
         emit(profilerrorstate(message: getProfileModel!.message!));
       } else if (getProfileModel!.data != null) {
         emit(profileloaded());

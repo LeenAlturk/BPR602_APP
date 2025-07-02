@@ -105,6 +105,8 @@ late YoutubePlayerController _controller;
               
               DataStore.instance.deleateRefreshToken();
                 DataStore.instance.deleateToken();
+                DataStore.instance.deleateRoalUser();
+                DataStore.instance.deleateUserId();
         emit(DetailEerorstate(message: movieResponseById!.message!));
       }else if(movieResponseById!.message == 'No Internet Connection'){
          emit(DetailEerorstate(message: movieResponseById!.message!));

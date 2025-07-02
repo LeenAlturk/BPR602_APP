@@ -6,6 +6,7 @@ import 'package:bpr602_cinema/Constants/sizer.dart';
 import 'package:bpr602_cinema/Cubits/OTPCubit/otp_cubit.dart';
 import 'package:bpr602_cinema/wedgets/Navigating.dart';
 import 'package:bpr602_cinema/wedgets/elevatedbtn.dart';
+import 'package:bpr602_cinema/wedgets/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
@@ -266,16 +267,29 @@ class _TimerContainerState extends State<TimerContainer> {
             const SizedBox(
               height: 20,
             ),
+            // ElevatedBtn(
+            //   // minWidth: 200.0,
+            //   // minHeight: 20.0,
+            //   buttonText: "Confirm",
+            //   onPressed: () {
+            //     widget.onComplateWriteotp();
+            //   },
+            //   backgroundColor: kbutton,
+            //   textColor: Kbackground,
+            // ),
             ElevatedBtn(
-              // minWidth: 200.0,
-              // minHeight: 20.0,
-              buttonText: "Confirm",
-              onPressed: () {
-                widget.onComplateWriteotp();
-              },
-              backgroundColor: kbutton,
-              textColor: Kbackground,
-            ),
+  buttonText: "Confirm",
+  onPressed: () {
+    if (widget.otpCode.text.length == 6) {
+      widget.onComplateWriteotp();
+    } else {
+      AppConstants.showToast(context, "Please enter the 6-digit code", icon: Icons.warning, iconcolor: Colors.orange);
+    }
+  },
+  backgroundColor: kbutton,
+  textColor: Kbackground,
+),
+
           ],
         ),
       ),

@@ -139,41 +139,28 @@ class UserBooking extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
+                                    
+                                       Row(
+                                      
+                                        children: [
+                                            Text(
                                         'Booking Number : ${booking.id}',
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: kbutton,
-                                          fontSize: size.width * 0.045,
+                                          fontSize:15.sp,
                                         ),
                                       ),
+
+                                         
+                                          
+                                        ],
+                                      ),
                                       const Divider(thickness: 1),
+                                     
+                                      SizedBox(height: size.height * 0.01,),
                                       Row(
-                                        children: [
-                                          Text('Hall :',
-                                              style: TextStyle(
-                                                  color: Ktext,
-                                                  fontSize: 12.sp,
-                                                  fontWeight: FontWeight.bold)),
-                                          Text(
-                                              ' ${booking.movieTime!.hall!.name}',
-                                              style:
-                                                  TextStyle(color: Whitconst)),
-                                        ],
-                                      ),
-                                      Row(
-                                        children: [
-                                          Text('Total Price : ',
-                                              style: TextStyle(
-                                                  color: Ktext,
-                                                  fontSize: 14.sp,
-                                                  fontWeight: FontWeight.bold)),
-                                          Text(' ${booking.totalPrice} SYP',
-                                              style:
-                                                  TextStyle(color: Whitconst)),
-                                        ],
-                                      ),
-                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text('Date : ',
                                               style: TextStyle(
@@ -188,10 +175,6 @@ class UserBooking extends StatelessWidget {
                                             style:
                                                 TextStyle(color: Colors.white),
                                           ),
-                                        ],
-                                      ),
-                                      Row(
-                                        children: [
                                           Text('Time : ',
                                               style: TextStyle(
                                                   color: Ktext,
@@ -202,7 +185,8 @@ class UserBooking extends StatelessWidget {
                                                   color: Colors.white)),
                                         ],
                                       ),
-                                      Row(
+                                       Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text('Payment : ',
                                               style: TextStyle(
@@ -212,10 +196,6 @@ class UserBooking extends StatelessWidget {
                                           Text('${booking.paymentType}',
                                               style: TextStyle(
                                                   color: Colors.white)),
-                                        ],
-                                      ),
-                                      Row(
-                                        children: [
                                           Text('status: ',
                                               style: TextStyle(
                                                   color: Ktext,
@@ -226,7 +206,31 @@ class UserBooking extends StatelessWidget {
                                                   color: Colors.white)),
                                         ],
                                       ),
+                                     
 
+                                        Row(
+                                        
+                                        children: [
+                                          Text('Movie :',
+                                              style: TextStyle(
+                                                  color: Ktext,
+                                                  fontSize: 12.sp,
+                                                  fontWeight: FontWeight.bold)),
+                                          Text(
+                                              ' ${booking.movieTime!.movie!.name}',
+                                              style:
+                                                  TextStyle(color: Whitconst)),
+                                        ],
+                                      ),
+                                        Row(
+                                         children: [
+                                           Text('Hall : ${booking.movieTime!.hall!.name}',
+                                                  style: TextStyle(
+                                                      color: Ktext,
+                                                      fontSize: 12.sp,
+                                                      fontWeight: FontWeight.bold)),
+                                         ],
+                                       ),
                                       Row(
                                         children: [
                                           Text(
@@ -248,6 +252,19 @@ class UserBooking extends StatelessWidget {
                                               fontSize: 12.sp,
                                             ),
                                           ),
+                                        ],
+                                      ),
+                                       const Divider(thickness: 1),
+                                         Row(
+                                        children: [
+                                          Text('Total Price : ',
+                                              style: TextStyle(
+                                                  color: Ktext,
+                                                  fontSize: 14.sp,
+                                                  fontWeight: FontWeight.bold)),
+                                          Text(' ${booking.totalPrice} SYP',
+                                              style:
+                                                  TextStyle(color: Whitconst)),
                                         ],
                                       ),
                                       Row(

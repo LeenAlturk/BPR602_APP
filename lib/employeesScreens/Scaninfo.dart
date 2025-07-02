@@ -7,7 +7,7 @@ import 'package:bpr602_cinema/wedgets/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
-
+import 'package:intl/intl.dart';
 class Scaninfo extends StatelessWidget {
   final String result;
   const Scaninfo({super.key, required this.result});
@@ -66,12 +66,12 @@ class Scaninfo extends StatelessWidget {
             return Scaffold(
               backgroundColor: Kbackground,
               body: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
+                // mainAxisAlignment: MainAxisAlignment.center,
+                // crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Center(
                     child: Container(
-                      width: size.width * 0.8,
+                      width: size.width * 0.3,
                       height: size.height * 0.4,
                       decoration: BoxDecoration(
                         color: ksmallActionColor,
@@ -83,13 +83,13 @@ class Scaninfo extends StatelessWidget {
                         ),
                       ),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Lottie.asset(
                             'assets/svg/scan.json',
-                            width: size.width * 0.5,
-                            height: size.height * 0.2,
+                            width: size.width * 0.2,
+                            height: size.height * 0.1,
                           ),
                           SizedBox(
                             height: size.height * 0.02,
@@ -102,9 +102,9 @@ class Scaninfo extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(
-                            height: size.height * 0.05,
-                          ),
+                          // SizedBox(
+                          //   height: size.height * 0.01,
+                          // ),
                           Center(
                             child: Text(
                               "No info available",
@@ -172,17 +172,33 @@ class Scaninfo extends StatelessWidget {
                           Text(
                             "Client Ticket Information",
                             style: TextStyle(
-                              color: const Color.fromARGB(255, 216, 207, 168),
-                              fontSize: 14.sp,
+                              color:Colors.amber,
+                              fontSize: 16.sp,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           SizedBox(
-                            height: size.height * 0.05,
+                            height: size.height * 0.01,
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
+                               Text(
+                                " Booking Number: ${cubit.getbookingbyidResponse!.data!.id}",
+                                style: TextStyle(
+                                  color: Ktext,
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                " Movie :${cubit.getbookingbyidResponse!.data!.movieTime!.movie!.name}",
+                                style: TextStyle(
+                                  color: Ktext,
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                               Text(
                                 " Number of person ${cubit.getbookingbyidResponse!.data!.hallChairs!.length}",
                                 style: TextStyle(
@@ -191,8 +207,11 @@ class Scaninfo extends StatelessWidget {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
+                               
                               Text(
-                                ' ${cubit.getbookingbyidResponse!.data!.bookingDate} ${cubit.getbookingbyidResponse!.data!.movieTime!.time!}',
+                                ' ${ DateFormat('yyyy-MM-dd').format(
+                                                DateTime.parse(cubit.getbookingbyidResponse!.data!.bookingDate
+                                                    .toString()))}   |   ${cubit.getbookingbyidResponse!.data!.movieTime!.time!}',
                                 style: TextStyle(
                                   color: Ktext,
                                   fontSize: 14.sp,
@@ -204,6 +223,14 @@ class Scaninfo extends StatelessWidget {
                                 style: TextStyle(
                                   fontSize: 16.sp,
                                   color: Colors.grey,
+                                ),
+                              ),
+                               Text(
+                                " Hall: ${cubit.getbookingbyidResponse!.data!.movieTime!.hall!.name}",
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ],

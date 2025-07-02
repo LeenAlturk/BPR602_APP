@@ -92,17 +92,7 @@ class SeeAllShowingNow extends StatelessWidget {
                         Icons.search,
                         color: Colors.white,
                       ),
-                      // trailing: [
-                      //   IconButton(
-                      //     icon: const Icon(Icons.clear),
-                      //     onPressed: () {
-                      //       BlocProvider.of<SeeallCubit>(searchContext)
-                      //           .searchMovies('');
-
-                      //       searchController.clear();
-                      //     },
-                      //   ),
-                      // ],
+                      
                       trailing: [
                         BlocBuilder<SeeallCubit, SeeallState>(
                           builder: (context, state) {
@@ -203,21 +193,9 @@ class SeeAllShowingNow extends StatelessWidget {
                       .where((movie) => movie.status == statustype)
                       .toList();
 
-                  // التحقق من أن القائمة المصفاة فارغة، وليس هناك جلب للبيانات حالياً
-                  // if (filteredMovies.isEmpty && !cubit.isFetching) {
-                  //   return Center(
-                  //     child: Text(
-                  //       'No Movies available',
-                  //       style: TextStyle(
-                  //         color: Colors.white,
-                  //         fontSize: 18,
-                  //       ),
-                  //     ),
-                  //   );
-                  // }
+                 
 
                   if (state is Movieallloading && cubit.movies.isEmpty) {
-                    // عرض مؤشر تحميل عند الدخول لأول مرة أو أثناء تحميل الصفحة الأولى
                     return const Expanded(
                       child: Center(child: CircularProgressIndicator()),
                     );
@@ -256,7 +234,7 @@ class SeeAllShowingNow extends StatelessWidget {
                                   context,
                                   DetailesPage(
                                     Isshowing: movie.status!.contains(
-                                        "Showing"), // true إذا كانت تحتوي على "Showing"
+                                        "Showing"),
                                     id: movie.id!,
                                   ),
                                 );

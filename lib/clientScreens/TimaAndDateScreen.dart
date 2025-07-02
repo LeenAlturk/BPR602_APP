@@ -88,14 +88,14 @@ class _TimeAndDateScreenState extends State<TimeAndDateScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'Select your favorate ',
+                            'Click to Select your favorate ',
                             style:
-                                TextStyle(color: Colors.white, fontSize: 16.sp),
+                                TextStyle(color: Colors.white, fontSize: 15.sp),
                           ),
                           Text(
                             'booking Date',
                             style:
-                                TextStyle(color: Colors.amber, fontSize: 16.sp),
+                                TextStyle(color: Colors.amber, fontSize: 15.sp),
                           ),
                         ],
                       ),

@@ -9,32 +9,7 @@ part 'snackcubit_state.dart';
 
 class SnackcubitCubit extends Cubit<SnackcubitState> {
   SnackcubitCubit() : super(SnackcubitInitial());
-  //   SnackResponse ? snackResponse ; 
-  //  Future <void> getsnacks () async{
-  //     emit(Snackloading());
-  //     try {
-        
-  //        snackResponse = await GetIt.I.get<Getsnacks>().getalsnacks(
-  //         pageSize: 30
-  //        );
-  //           if (snackResponse!.message == 'Session Is Done') {
-              
-  //             DataStore.instance.deleateRefreshToken();
-  //               DataStore.instance.deleateToken();
-  //               DataStore.instance.deleateRoalUser();
-  //       emit(snackerror(message: snackResponse!.message!));
-  //     } else if (snackResponse!.data != null) {
-  //       emit(Snacksloaded());
-  //     } else if (snackResponse!.message == 'Internet is Week') {
-  //       emit(snackerror(message: snackResponse!.message!));
-  //     } else {
-  //       emit(snackerror(message: snackResponse!.message!));
-  //     }
-  //     } catch (e) {
-   
-  //      emit(snackerror(message: 'Something went wrong'));
-  //     }
-  //  }
+
 
     SnackResponse? snackResponsefood;
   SnackResponse? snackResponsedrinks;
@@ -50,6 +25,7 @@ class SnackcubitCubit extends Cubit<SnackcubitState> {
         DataStore.instance.deleateRefreshToken();
         DataStore.instance.deleateToken();
         DataStore.instance.deleateRoalUser();
+        DataStore.instance.deleateUserId();
         emit(snackerror(message: snackResponsefood!.message!));
       }else if(snackResponsefood!.message == 'No Internet Connection'){
         emit(snackerror(message: snackResponsefood!.message!));
@@ -87,12 +63,9 @@ class SnackcubitCubit extends Cubit<SnackcubitState> {
     }
   }
 
-  // Future<void> refreshAll() async {
-  //   await getNowShowingMovies();
-  //   await getComingSoonMovies();
-  // }
+ 
   Future<void> refreshAll() async {
-  emit(Snackloading()); // Emit loading state for all widgets
+  emit(Snackloading()); 
   try {
     await Future.wait([
       getsnakfood(),

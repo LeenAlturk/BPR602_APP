@@ -34,7 +34,6 @@ class BookingRepo extends BaseClient {
     return Bookingresponse.fromJson(response.data);
   } catch (ex) {
     if (ex is DioException) {
-      // في حال انتهاء التوكن
       if (ex.response?.statusCode == 401) {
         try {
           final refreshModel = RefreshRequest(
@@ -61,7 +60,7 @@ class BookingRepo extends BaseClient {
         }
       }
 
-      // أخطاء الشبكة
+      
       if (ex.type == DioExceptionType.connectionTimeout ||
           ex.type == DioExceptionType.receiveTimeout) {
         return Bookingresponse(message: 'Internet is Weak', success: false);
@@ -72,7 +71,7 @@ class BookingRepo extends BaseClient {
         return Bookingresponse(message: 'No Internet Connection', success: false);
       }
 
-      // رسالة من السيرفر إن وجدت
+     
       if (ex.response?.data != null && ex.response?.data is Map && ex.response?.data['message'] != null) {
         return Bookingresponse(message: ex.response!.data['message'], success: false);
       }
@@ -150,7 +149,7 @@ Future<Bookinguserresponse> getallbookinguser({
           ex.response?.data['message'] != null) {
         return Bookinguserresponse(message: ex.response!.data['message'], success: false);
       }
-      // هذا الجزء بعد محاولة تجديد التوكن
+     
       if (ex.type == DioExceptionType.connectionTimeout) {
         return Bookinguserresponse(message: 'Internet is Weak', success: false);
       }
@@ -228,7 +227,7 @@ Future<Deletebookingresponse> deletebooking(int bookingid) async {
           ex.response?.data['message'] != null) {
         return Deletebookingresponse(message: ex.response!.data['message'], success: false);
       }
-      // هذا الجزء بعد محاولة تجديد التوكن
+     
       if (ex.type == DioExceptionType.connectionTimeout) {
         return Deletebookingresponse(message: 'Internet is Weak', success: false);
       }
@@ -245,8 +244,7 @@ Future<Deletebookingresponse> deletebooking(int bookingid) async {
     }
   }
 }
-//get booking id 
-//GetbookingbyidResponse
+
 
 
 
@@ -254,8 +252,7 @@ Future<GetbookingbyidResponse> getticketdetailse(int userbookingid ) async {
     Map<String, dynamic> headers = {
       "Authorization": "Bearer ${DataStore.instance.token}",
       'accept': '/',
-      // 'Content-Type': 'application/json',
-      // 'Accept': 'application/json',
+     
     };
     try {
       

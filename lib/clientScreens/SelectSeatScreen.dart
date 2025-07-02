@@ -156,7 +156,7 @@ Expanded(
               scrollDirection: Axis.vertical,
                physics: const ClampingScrollPhysics(),
               child: SizedBox(
-                width: data.hall.columnCount * 42.0,
+                width: data.hall.columnCount * 45.0,
                 child: GridView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,

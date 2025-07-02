@@ -12,33 +12,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BookingDetailes extends StatelessWidget {
-  // final String? title;
-  // final String? syn;
-  // final String? imgurl;
-  // final int? duration;
-  // final String? director;
-  // final String? ar;
-  // final String? genre;
-  // final int? totalpriceseat;
-  // final double? totalSnackPrice;
+  
   const BookingDetailes({
     super.key,
-    //  this.syn,
-    //  this.totalpriceseat,
-    //  this.imgurl,
-    //  this.duration,
-    //  this.director,
-    //  this.ar,
-    //  this.genre,
-    //  this.totalSnackPrice ,
-    //  this.title
+   
   });
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    //int mytotalpriceseat = totalpriceseat!;
+    
     final booking = context.watch<BookingCubit>().state as BookingDataState;
 
     return Scaffold(
@@ -390,25 +374,12 @@ class BookingDetailes extends StatelessWidget {
               textColor: ksmallActionColor,
               buttonText: "Continue",
               onPressed: () {
-//                  context.read<ShoppingCartCubit>().clearCart();
-//                  context.read<BookingCubit>().selectSnacks(null);
 
-// Future.microtask(() {
-//   final booking = context.read<BookingCubit>().state as BookingDataState;
-//   print("Snacks saved to BookingCubit:");
-//   if (booking.selectedSnacks.isEmpty) {
-//     print("=> Snack list is now empty ");
-//   } else {
-//     for (var snack in booking.selectedSnacks) {
-//       print(" - ${snack.title}, price: ${snack.price}");
-//     }
-//   }
-// });
 
                 NavigationWidget.pushPage(
                     context,
                     Bill(
-                        //totalpriceseat: mytotalpriceseat , title: title!, imgurl: imgurl!,
+                        
                         ));
               },
             ),

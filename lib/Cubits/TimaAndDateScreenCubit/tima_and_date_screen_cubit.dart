@@ -10,51 +10,18 @@ import 'package:meta/meta.dart';
 
 part 'tima_and_date_screen_state.dart';
 
-// class TimaAndDateScreenCubit extends Cubit<TimaAndDateScreenState> {
-//   TimaAndDateScreenCubit() : super(TimaAndDateScreenInitial());
-//   DateTime today = DateTime.now();
-//   int _selectedChoice = 0; // Track the selected choice for standard
-//   int _selectedChoice2 = 0; // Track the selected choice for IMAX
-//   void onDateSelected(DateTime day, DateTime focasedDate) {
-//     today = day;
-//     emit(TimaAndDateScreenDateSelected(today));
-//   }
 
-//   void selectChoice(int? Time) {
-//     // Check if index is null to handle deselection
-//     if (Time != null) {
-//       _selectedChoice = Time;
-//       emit(TimeHaleStandard(_selectedChoice));
-//     } else {
-//       // Handle the case when no choice is selected
-//       _selectedChoice = -1; // or any value that represents 'no selection'
-//       emit(TimeHaleStandard(_selectedChoice));
-//     }
-//   }
-
-//   void selectChoiceiMAX(int? index) {
-//     // Check if index is null to handle deselection
-//     if (index != null) {
-//       _selectedChoice2 = index;
-//       emit(TimeHaleIMAX(_selectedChoice2));
-//     } else {
-//       // Handle the case when no choice is selected
-//       _selectedChoice2 = -1; // or any value that represents 'no selection'
-//       emit(TimeHaleIMAX(_selectedChoice2));
-//     }
-//   }
-// }
 class TimaAndDateScreenCubit extends Cubit<TimaAndDateScreenState> {
   TimaAndDateScreenCubit() : super(TimaAndDateScreenInitial());
-bool isVip = true; // Default: VIP
-  bool is3D = true; // Default: 3D
+bool isVip = true; 
+  bool is3D = true; 
   DateTime today = DateTime.now();
-  String? selectedStandardTime; // Store selected Standard time
-  String? selectedIMAXTime; // Store selected IMAX time
+  String? selectedStandardTime; 
+  String? selectedIMAXTime; 
   final List<String> subtitles = ["en", "Ar", "Fr", "Tr"];
   final List<String> Language = ["en", "Ar", "Fr", "Tr"];
-  //String selectedSubtitle = "en"; // Default subtitle
-  String selectedlang = "en"; // Default subtitle
+
+  String selectedlang = "en"; 
   final List<String> standardTimes = [
     "10:00 AM",
     "12:30 PM",
@@ -83,7 +50,6 @@ bool? isDateSelected;
 
   void selectStandardTime(int? index) {
   selectedStandardTime = index != null ? standardTimes[index] : null;
-  // Deselect IMAX time if Standard is selected
   if (index != null) {
     selectedIMAXTime = null;
   }
@@ -100,18 +66,6 @@ void selectIMAXTime(int? index) {
 }
 
 
-//    void selectSubtitle(String subtitle) {
-//   if (selectedSubtitle != subtitle) {
-//     selectedSubtitle = subtitle;
-//     emit(TimaAndDateScreenSubtitleSelected(subtitle)); // Only emit when the subtitle changes
-//   }
-// }
-//    void selectLang(String language) {
-//   if (selectedlang != language) {
-//     selectedlang = language;
-//     emit(TimaAndDateScreenlangSelected(language)); // Only emit when the subtitle changes
-//   }
-// }
 
 void SwitchHale (bool value){
 isVip = value;
@@ -137,49 +91,17 @@ Movie? selectedSubtitle;
 // Update the getMoviedetailesTAndD method:
  MovieResponseById? movieResponseById;
 
-// Future<void> getMoviedetailesTAndD(int id) async {
-//   emit(TimeAndDateLoading());
-//   try {
-//     movieResponseById = await GetIt.I.get<GetMovieallinfoRepo>().getmoviedetailse(id);
 
-//     if (movieResponseById!.message == 'Session Is Done') {
-//       DataStore.instance.deleateRefreshToken();
-//       DataStore.instance.deleateToken();
-//       emit(TimeAndDateEroorSttae(message: movieResponseById!.message!));
-//     } else if (movieResponseById?.data != null) {
-//       // Get data from API
-//       availableLanguages = movieResponseById!.data!.movieLanguages ?? [];
-//       availableSubtitles = movieResponseById!.data!.movieSubtitles ?? [];
-      
-//       // Set default selections if available
-//       if (availableLanguages.isNotEmpty) {
-//         selectedLanguage = availableLanguages.first;
-//       }
-//       if (availableSubtitles.isNotEmpty) {
-//         selectedSubtitle = availableSubtitles.first;
-//       }
-
-//       // Set date range
-//       startDate = movieResponseById!.data!.fromDate ?? DateTime.now();
-//       endDate = movieResponseById!.data!.toDate ?? DateTime.now().add(Duration(days: 30));
-
-//       emit(TimeAndDateAcceptState());
-//     } else {
-//       emit(TimeAndDateEroorSttae(message: movieResponseById!.message!));
-//     }
-//   } catch (ex) {
-//     emit(TimeAndDateEroorSttae(message: movieResponseById?.message ?? 'Unknown error'));
-//   }
-// }
-// تأكد أن هذه الدالة موجودة في الكيوبت
 Future<void> getMoviedetailesTAndD(int id) async {
   emit(TimeAndDateLoading());
   try {
     movieResponseById = await GetIt.I.get<GetMovieallinfoRepo>().getmoviedetailse(id);
 
     if (movieResponseById!.message == 'Session Is Done') {
-      DataStore.instance.deleateRefreshToken();
-      DataStore.instance.deleateToken();
+       DataStore.instance.deleateRefreshToken();
+        DataStore.instance.deleateToken();
+        DataStore.instance.deleateRoalUser();
+         DataStore.instance.deleateUserId();
       emit(TimeAndDateEroorSttae(message: movieResponseById!.message!));
     }else if(movieResponseById!.message == 'No Internet Connection'){
          emit(TimeAndDateEroorSttae(message: movieResponseById!.message!));
@@ -194,11 +116,9 @@ Future<void> getMoviedetailesTAndD(int id) async {
         selectedSubtitle = availableSubtitles.first;
       }
 
-      // هنا التعديل المهم
       startDate = movieResponseById!.data!.fromDate ?? DateTime.now();
       endDate = movieResponseById!.data!.toDate ?? DateTime.now().add(Duration(days: 30));
       
-      // ضبط today ليكون أول يوم متاح إذا كان التاريخ الحالي قبل startDate
       if (DateTime.now().isBefore(startDate!)) {
         today = startDate!;
       } else {
@@ -215,7 +135,6 @@ Future<void> getMoviedetailesTAndD(int id) async {
   }
 }
 
-// Update the selection methods:
 void selectSubtitle(Movie subtitle) {
   selectedSubtitle = subtitle;
   emit(TimaAndDateScreenSubtitleSelected(subtitle));

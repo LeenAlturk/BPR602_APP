@@ -19,8 +19,10 @@ class SeatcubitCubit extends Cubit<SeatcubitState> {
           await GetIt.I.get<GeHallRepo>().getHall(id , bookingDate);
       if (gethallid!.message == 'Session Is Done') {
               
-              DataStore.instance.deleateRefreshToken();
-                DataStore.instance.deleateToken();
+             DataStore.instance.deleateUserId();
+        DataStore.instance.deleateToken();
+        DataStore.instance.deleateRefreshToken();
+        DataStore.instance.deleateRoalUser();
         emit(GetHallErrorState(message: gethallid!.message!));
       }else if(gethallid!.message == 'No Internet Connection'){
          emit(GetHallErrorState(message: gethallid!.message!));

@@ -12,16 +12,13 @@ class BookingCubit extends Cubit<BookingState> {
 
 
 
-// void confirmSnackCheckout() {
-//   _snacksConfirmed = true;
-// }
 
  
 void checkout(List<snacks> snacks) {
   final current = state as BookingDataState;
   emit(current.copyWith(
     selectedSnacks: snacks,
-    isCheckedOut: true, // تم الضغط على Checkout
+    isCheckedOut: true,
   ));
   recalculateTotal();
 }
@@ -29,7 +26,6 @@ void checkout(List<snacks> snacks) {
   void selectMovie(Data movie) {
     final current = state as BookingDataState;
     emit(current.copyWith(selectedMovie: movie));
-    //_recalculateTotal();
   }
 
   void selectDate(DateTime date) {
@@ -59,71 +55,12 @@ void checkout(List<snacks> snacks) {
 
 
 
-// void selectSnacks(List<snacks>? snacks) {
-//   final current = state as BookingDataState;
-//   emit(current.copyWith(selectedSnacks: snacks ?? []));
-// }
 
-// void selectSnacks(List<snacks>? snacks) {
-//   final current = state as BookingDataState;
-//   final variantIds = snacks?.map((snack) => snack.variantId ??0).toList() ?? [];
-  
-//   emit(current.copyWith(
-//     selectedSnacks: snacks ?? [],
-//     variantIds: variantIds, // حفظ الـ variant IDs
-//   ));
-// }
 void selecthallseat( List<Seat> ? seats) {
   final current = state as BookingDataState;
   emit(current.copyWith(selectedSeats: seats ?? []));
 }
 
-// void selectSnacks(List<snacks>? snacks) {
-//   final current = state as BookingDataState;
-//   final variantIds = <int>[];
-  
-//   snacks?.forEach((snack) {
-//     for (int i = 0; i < snack.quantity; i++) {
-//       variantIds.add(snack.variantId!);
-//     }
-//   });
-
-//   print('----- After Saving Variants -----');
-//   print('All Variant IDs: $variantIds');
-//     // _snacksConfirmed = false;
-//   emit(current.copyWith(
-//     selectedSnacks: snacks ?? [],
-//     variantIds: variantIds,
- 
-//   ));
-//    recalculateTotal(); 
-// }
-
-
-// void selectSnacks(List<snacks>? newSnacks) {
-//   final current = state as BookingDataState;
-//   final variantIds = <int>[];
-  
-//   // مسح السناكات القديمة تماماً واستبدالها بالجديدة
-//   final updatedSnacks = newSnacks ?? [];
-  
-//   updatedSnacks.forEach((snack) {
-//     for (int i = 0; i < snack.quantity; i++) {
-//       variantIds.add(snack.variantId!);
-//     }
-//   });
-
-//   print('----- Updating Snacks -----');
-//   print('New snacks count: ${updatedSnacks.length}');
-//   updatedSnacks.forEach((s) => print(' - ${s.title} x${s.quantity}'));
-
-//   emit(current.copyWith(
-//     selectedSnacks: List.from(updatedSnacks), // إنشاء نسخة جديدة
-//     variantIds: variantIds,
-//   ));
-  
-//   recalculateTotal();
-// }
 
 
 
@@ -133,7 +70,6 @@ void selectSnacks(List<snacks>? newSnacks) {
   final current = state as BookingDataState;
   final variantIds = <int>[];
 
-  // إنشاء نسخة جديدة من كل عنصر snack
   final copiedSnacks = newSnacks?.map((snack) => snack.copyWith()).toList() ?? [];
 
   copiedSnacks.forEach((snack) {
@@ -143,60 +79,21 @@ void selectSnacks(List<snacks>? newSnacks) {
   });
 
   emit(current.copyWith(
-    selectedSnacks: copiedSnacks, // نسخة منفصلة عن السلة
+    selectedSnacks: copiedSnacks,
     variantIds: variantIds,
   ));
 
   recalculateTotal();
 }
 
-  // void selectSnack(SnackModel snack) {
-  //   final current = state as BookingDataState;
-  //   emit(current.copyWith(selectedSnack: snack));
-  //   _recalculateTotal();
-  // }
-
-  // void recalculateTotal() {
-  //   final current = state as BookingDataState;
-  //   double total = 0.0;
-
-  //   if (current.movietotalprice != null) {
-  //     total += current.movietotalprice!;
-  //   }
-
-  //   // if (current.selectedSnack != null) {
-  //   //   total += current.selectedSnack!.price ?? 0;
-  //   // }
-
-  //   emit(current.copyWith(totalPrice: total));
-  // }
-
-//   void recalculateTotal() {
-//   final current = state as BookingDataState;
-//   double total = 0.0;
-
-//   // حساب سعر الأفلام إذا موجود
-//   if (current.movietotalprice != null) {
-//     total += current.movietotalprice!;
-//   }
-
-//   // حساب سعر السناكات
-//   for (var snack in current.selectedSnacks) {
-//     total += (snack.price * snack.quantity);
-//   }
-
-//   emit(current.copyWith(totalPrice: total));
-// }
 void recalculateTotal() {
   final current = state as BookingDataState;
   double total = 0.0;
 
-  // حساب سعر الأفلام إذا موجود
   if (current.movietotalprice != null) {
     total += current.movietotalprice!;
   }
 
-  // حساب سعر السناكات
   double snacksTotal = 0.0;
   for (var snack in current.selectedSnacks) {
     snacksTotal += (snack.price * snack.quantity);
@@ -215,7 +112,6 @@ void recalculateTotal() {
     emit(BookingDataState());
   }
 
-  // في ملف booking_cubit.dart
 void printBookingDetails() {
   final state = this.state as BookingDataState;
   
