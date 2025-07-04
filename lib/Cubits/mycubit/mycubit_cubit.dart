@@ -61,21 +61,38 @@ class MycubitCubit extends Cubit<MycubitState> {
     emit(FilterCleared());
   }
 
-  void search(String query) {
-  searchQuery = query;
+//   void search(String query) {
+//   searchQuery = query;
 
  
+//   if (_debounce?.isActive ?? false) _debounce!.cancel();
+
+
+//   _debounce = Timer(const Duration(milliseconds: 600), () {
+//     if (query.isNotEmpty) {
+//       resetAndFetchMovies();
+//     } else {
+//       clearSearch();
+//     }
+//   });
+// }
+void search(String query) {
+  // Trim the query and check if it's empty
+  final trimmedQuery = query.trim();
+  if (trimmedQuery.isEmpty) {
+    clearSearch();
+    return;
+  }
+
+  searchQuery = trimmedQuery;
+
   if (_debounce?.isActive ?? false) _debounce!.cancel();
 
-
   _debounce = Timer(const Duration(milliseconds: 600), () {
-    if (query.isNotEmpty) {
-      resetAndFetchMovies();
-    } else {
-      clearSearch();
-    }
+    resetAndFetchMovies();
   });
 }
+
 @override
 Future<void> close() {
   _debounce?.cancel();
@@ -84,12 +101,17 @@ Future<void> close() {
 
  
 
-  void clearSearch() {
-    searchQuery = null;
-    emit(MycubitInitial());
-    //resetAndFetchMovies();
-  }
-
+  // void clearSearch() {
+  //   searchQuery = null;
+  //   emit(MycubitInitial());
+  //   //resetAndFetchMovies();
+  // }
+void clearSearch() {
+  if (_debounce?.isActive ?? false) _debounce!.cancel();
+  searchQuery = null;
+  searchController.clear();
+  emit(MycubitInitial());
+}
   Future<void> loadMoreMovies() async {
     if (!hasMore) return;
         isLoadingMore = true;
@@ -128,7 +150,7 @@ Future<void> close() {
         DataStore.instance.deleateToken();
         DataStore.instance.deleateRoalUser();
         DataStore.instance.deleateUserId();
-
+        DataStore.instance.deleateFirstNameUser();
         emit(MoviesearchErrortstate(message: newResponse.message!));
       }else if(newResponse.message == "No Internet Connection"){
           emit(MoviesearchErrortstate(message: newResponse.message!));

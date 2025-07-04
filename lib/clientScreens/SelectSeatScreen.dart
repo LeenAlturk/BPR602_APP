@@ -110,272 +110,282 @@ class _SelectSeatScreenState extends State<SelectSeatScreen> {
                         )))
               ],
             ),
-            body: Column(
-              children: [
-                Image.asset(
-                  "assets/scre cenima.png",
-                  width: size.width ,
-                  height: size.height * 0.12,
-                ),
-
-                SizedBox(height: size.height * 0.01,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.swipe_right, color: const Color.fromARGB(255, 236, 198, 45)),
-                    Icon(Icons.swipe_down, color: const Color.fromARGB(255, 236, 198, 45)),
-                    Text(
-                    ' You can Scroll Cinema Hall ',
-                    style: TextStyle(color: const Color.fromARGB(255, 236, 198, 45), fontSize: 12.sp),
-                                  ),
-                  ],
-                ),
-                   SizedBox(height: size.height * 0.01,),
-                
-Expanded(
-  child: Builder(
-    builder: (context) {
-      if (state is GetHallAwaitState) {
-        return const Center(child: CircularProgressIndicator());
-      } else if (state is GetHallErrorState) {
-        return Center(
-          child: Text(
-            'Error: ${state.message}',
-            style: const TextStyle(color: Colors.red),
-          ),
-        );
-      } else if (state is GetHallAcceptState) {
-        final data = context.read<SeatcubitCubit>().gethallid!.data!;
-        final chairs = data.hallChairs;
-
-        return Center(
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-             physics: const ClampingScrollPhysics(),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-               physics: const ClampingScrollPhysics(),
-              child: SizedBox(
-                width: data.hall.columnCount * 45.0,
-                child: GridView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.all(8.0),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: data.hall.columnCount,
-                    crossAxisSpacing: 2,
-                    mainAxisSpacing: 2,
+            body: 
+            SafeArea(
+              child: Column(
+                children: [
+                  Image.asset(
+                    "assets/scre cenima.png",
+                    width: size.width ,
+                    height: size.height * 0.12,
                   ),
-                  itemCount: chairs.length,
-                  itemBuilder: (context, index) {
-                   final seat = chairs[index];
-if (!seat.isValid) return const SizedBox.shrink();
-
-final isTaken = seat.isTaken;
-final isSelected = selectedSeats.any((s) => s.id == seat.code);
-
-return GestureDetector(
-  onTap: () {
-    if (!isTaken) {
-      toggleSeatSelection(Seat(
-        seat.code,
-        isSelected ? SeatStatus.selected : SeatStatus.available,
-        seat.chairId,
-      ));
-    }
-  },
-  child: AspectRatio(
-    aspectRatio: 1,
-    child: LayoutBuilder(
-      builder: (context, constraints) {
-        double iconSize = constraints.maxWidth * 0.55;
-        double fontSize = constraints.maxWidth * 0.23;
-
-        return Container(
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: isTaken
-                ? Colors.red
-                : isSelected
-                    ? Colors.green
-                    : Colors.grey,
-            borderRadius: BorderRadius.circular(4),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.chair_sharp,
-                color: Colors.white,
-                size: iconSize,
-              ),
-              const SizedBox(height: 4),
-              Text(
-                seat.code,
-                style: TextStyle(
+              
+                  SizedBox(height: size.height * 0.01,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.swipe_right, color: const Color.fromARGB(255, 236, 198, 45)),
+                      Icon(Icons.swipe_down, color: const Color.fromARGB(255, 236, 198, 45)),
+                      Text(
+                      ' You can Scroll Cinema Hall ',
+                      style: TextStyle(color: const Color.fromARGB(255, 236, 198, 45), fontSize: 12.sp),
+                                    ),
+                    ],
+                  ),
+                     SizedBox(height: size.height * 0.01,),
+                  
+              Expanded(
+                child: Builder(
+                  builder: (context) {
+                    if (state is GetHallAwaitState) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (state is GetHallErrorState) {
+                      return Center(
+                        child: Text(
+              'Error: ${state.message}',
+              style: const TextStyle(color: Colors.red),
+                        ),
+                      );
+                    } else if (state is GetHallAcceptState) {
+                      final data = context.read<SeatcubitCubit>().gethallid!.data!;
+                      final chairs = data.hallChairs;
+              
+                      return Center(
+                        child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+               physics: const ClampingScrollPhysics(),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                 physics: const ClampingScrollPhysics(),
+                child: SizedBox(
+                  width: data.hall.columnCount * 45.0,
+                  child: GridView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.all(8.0),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: data.hall.columnCount,
+                      crossAxisSpacing: 2,
+                      mainAxisSpacing: 2,
+                    ),
+                    itemCount: chairs.length,
+                    itemBuilder: (context, index) {
+                     final seat = chairs[index];
+              if (!seat.isValid) return const SizedBox.shrink();
+              
+              final isTaken = seat.isTaken;
+              final isSelected = selectedSeats.any((s) => s.id == seat.code);
+              
+              return GestureDetector(
+                onTap: () {
+                  if (!isTaken) {
+                    toggleSeatSelection(Seat(
+                      seat.code,
+                      isSelected ? SeatStatus.selected : SeatStatus.available,
+                      seat.chairId,
+                    ));
+                  }
+                },
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      double iconSize = constraints.maxWidth * 0.55;
+                      double fontSize = constraints.maxWidth * 0.23;
+              
+                      return Container(
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+              color: isTaken
+                  ? Colors.red
+                  : isSelected
+                      ? Colors.green
+                      : Colors.grey,
+              borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.chair_sharp,
                   color: Colors.white,
-                  fontSize: fontSize,
-                  fontWeight: FontWeight.bold,
+                  size: iconSize,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  seat.code,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: fontSize,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              );
+              
+                    },
+                  ),
                 ),
               ),
-            ],
-          ),
-        );
-      },
-    ),
-  ),
-);
-
+                        ),
+                      );
+                    } else {
+                      return const SizedBox();
+                    }
                   },
                 ),
               ),
-            ),
-          ),
-        );
-      } else {
-        return const SizedBox();
-      }
-    },
-  ),
-),
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Colors.green,
-                          borderRadius: BorderRadius.circular(4)),
-                      margin: EdgeInsets.all(size.width * 0.03),
-                      width: size.width * 0.065,
-                      height: size.height * 0.030,
-                      alignment: Alignment.center,
-                    ),
-                    SizedBox(
-                      width: size.width * 0.01,
-                    ),
-                    Text(
-                      'Selected',
-                      style: TextStyle(fontSize: 16.sp, color: Ktext),
-                    ),
-                    SizedBox(
-                      width: size.width * 0.01,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(4)),
-                      margin: EdgeInsets.all(size.width * 0.03),
-                      width: size.width * 0.065,
-                      height: size.height * 0.030,
-                      alignment: Alignment.center,
-                    ),
-                    SizedBox(
-                      height: size.height * 0.01,
-                    ),
-                    Text(
-                      'Available',
-                      style: TextStyle(fontSize: 16.sp, color: Ktext),
-                    ),
-                    SizedBox(
-                      width: size.width * 0.01,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.circular(4)),
-                      margin: EdgeInsets.all(size.width * 0.03),
-                      width: size.width * 0.065,
-                      height: size.height * 0.030,
-                      alignment: Alignment.center,
-                    ),
-                    SizedBox(
-                      height: size.height * 0.01,
-                    ),
-                    Text(
-                      'Token',
-                      style: TextStyle(fontSize: 16.sp, color: Ktext),
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Text(
-                      'Seat(s)',
-                      style:
-                          TextStyle(fontSize: 14.sp, color: Colors.grey[400]),
-                    ),
-                    SizedBox(height: size.height * 0.01),
-                    Wrap(
-                      spacing: 3.0,
-                      children: selectedSeats.map((seat) {
-                        return Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: Colors.green,
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: Text(
-                            seat.id,
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                   
+              
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                   
-                      Column(
-                        children: [
-                          Text(
-                            'Total Price',
-                            style: TextStyle(
-                                fontSize: 14, color: Colors.grey[400]),
-                          ),
-                          SizedBox(height: size.height * 0.01),
-                          Text(
-                            
-                            '$totalPrice.00 SYP',
-                            style: TextStyle(
-                                fontSize: 20.sp,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.green,
+                            borderRadius: BorderRadius.circular(4)),
+                        margin: EdgeInsets.all(size.width * 0.03),
+                        width: size.width * 0.065,
+                        height: size.height * 0.030,
+                        alignment: Alignment.center,
                       ),
-                      // Selected Seats Section
+                      SizedBox(
+                        width: size.width * 0.01,
+                      ),
+                      Text(
+                        'Selected',
+                        style: TextStyle(fontSize: 16.sp, color: Ktext),
+                      ),
+                      SizedBox(
+                        width: size.width * 0.01,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(4)),
+                        margin: EdgeInsets.all(size.width * 0.03),
+                        width: size.width * 0.065,
+                        height: size.height * 0.030,
+                        alignment: Alignment.center,
+                      ),
+                      SizedBox(
+                        height: size.height * 0.01,
+                      ),
+                      Text(
+                        'Available',
+                        style: TextStyle(fontSize: 16.sp, color: Ktext),
+                      ),
+                      SizedBox(
+                        width: size.width * 0.01,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(4)),
+                        margin: EdgeInsets.all(size.width * 0.03),
+                        width: size.width * 0.065,
+                        height: size.height * 0.030,
+                        alignment: Alignment.center,
+                      ),
+                      SizedBox(
+                        height: size.height * 0.01,
+                      ),
+                      Text(
+                        'Token',
+                        style: TextStyle(fontSize: 16.sp, color: Ktext),
+                      ),
                     ],
                   ),
-                ),
-                SizedBox(
-                  height: size.height * 0.05,
-                ),
-                ElevatedBtn(
-                  backgroundColor: kbutton,
-                  textColor: ksmallActionColor,
-                  buttonText: "Continue",
-                  onPressed: selectedSeats.isNotEmpty
-                      ? () {
-                        
-                         context.read<BookingCubit>().movietotalprice(totalPrice);
-                            context.read<BookingCubit>().selecthallseat(selectedSeats);
-                          NavigationWidget.pushPage(
-                              context,
-                              BookingDetailes(
-                             
-                              ));
-                        }
-                      : null,
-                )
-              ],
+                  Column(
+                    children: [
+                      Text(
+                        'Seat(s)',
+                        style:
+                            TextStyle(fontSize: 14.sp, color: Colors.grey[400]),
+                      ),
+                      SizedBox(height: size.height * 0.01),
+                      Wrap(
+                        spacing: 3.0,
+                        children: selectedSeats.map((seat) {
+                          return Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: Colors.green,
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Text(
+                              seat.id,
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                     
+                      children: [
+                     
+                        Column(
+                          children: [
+                            Text(
+                              'Total Price',
+                              style: TextStyle(
+                                  fontSize: 14, color: Colors.grey[400]),
+                            ),
+                            SizedBox(height: size.height * 0.01),
+                            Text(
+                              
+                              '$totalPrice.00 SYP',
+                              style: TextStyle(
+                                  fontSize: 20.sp,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                        // Selected Seats Section
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: size.height * 0.05,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+    bottom: MediaQuery.of(context).viewPadding.bottom + 16, 
+    left: 16,
+    right: 16,
+  ),
+                    child: ElevatedBtn(
+                      backgroundColor: kbutton,
+                      textColor: ksmallActionColor,
+                      buttonText: "Continue",
+                      onPressed: selectedSeats.isNotEmpty
+                          ? () {
+                            
+                             context.read<BookingCubit>().movietotalprice(totalPrice);
+                                context.read<BookingCubit>().selecthallseat(selectedSeats);
+                              NavigationWidget.pushPage(
+                                  context,
+                                  BookingDetailes(
+                                 
+                                  ));
+                            }
+                          : null,
+                    ),
+                  )
+                ],
+              ),
             ),
           );
         },

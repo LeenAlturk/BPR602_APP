@@ -1,3 +1,4 @@
+
 // import 'dart:convert';
 
 // class Bookinguserresponse {
@@ -28,7 +29,7 @@
 //   Map<String, dynamic> toJson() => {
 //         "success": success,
 //         "message": message,
-//         "data": data?.map((x) => x.toJson()).toList() ?? [],
+//         "data": data?.map((x) => x.toJson()).toList(),
 //       };
 // }
 
@@ -39,8 +40,10 @@
 //   int? totalPrice;
 //   String? paymentType;
 //   DateTime? bookingDate;
-//   List<dynamic>? hallChairs;
+//   List<HallChair>? hallChairs;
 //   List<BookingSnak>? bookingSnaks;
+//   Payment? payment;
+//   dynamic user;
 
 //   Datum({
 //     this.id,
@@ -51,6 +54,8 @@
 //     this.bookingDate,
 //     this.hallChairs,
 //     this.bookingSnaks,
+//     this.payment,
+//     this.user,
 //   });
 
 //   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
@@ -66,11 +71,15 @@
 //             : DateTime.parse(json["bookingDate"]),
 //         hallChairs: json["hallChairs"] == null
 //             ? []
-//             : List<dynamic>.from(json["hallChairs"]),
+//             : List<HallChair>.from(
+//                 json["hallChairs"].map((x) => HallChair.fromJson(x))),
 //         bookingSnaks: json["bookingSnaks"] == null
 //             ? []
 //             : List<BookingSnak>.from(
 //                 json["bookingSnaks"].map((x) => BookingSnak.fromJson(x))),
+//         payment:
+//             json["payment"] == null ? null : Payment.fromJson(json["payment"]),
+//         user: json["user"],
 //       );
 
 //   Map<String, dynamic> toJson() => {
@@ -80,8 +89,30 @@
 //         "totalPrice": totalPrice,
 //         "paymentType": paymentType,
 //         "bookingDate": bookingDate?.toIso8601String(),
-//         "hallChairs": hallChairs ?? [],
-//         "bookingSnaks": bookingSnaks?.map((x) => x.toJson()).toList() ?? [],
+//         "hallChairs": hallChairs?.map((x) => x.toJson()).toList(),
+//         "bookingSnaks": bookingSnaks?.map((x) => x.toJson()).toList(),
+//         "payment": payment?.toJson(),
+//         "user": user,
+//       };
+// }
+
+// class Payment {
+//   int? id;
+//   String? status;
+//   dynamic image;
+
+//   Payment({this.id, this.status, this.image});
+
+//   factory Payment.fromJson(Map<String, dynamic> json) => Payment(
+//         id: json["id"],
+//         status: json["status"],
+//         image: json["image"],
+//       );
+
+//   Map<String, dynamic> toJson() => {
+//         "id": id,
+//         "status": status,
+//         "image": image,
 //       };
 // }
 
@@ -134,26 +165,28 @@
 // class MovieTime {
 //   int? id;
 //   String? time;
-//   bool? is3D;
+//   bool? is3d; // <-- عدلنا الاسم هنا
 //   Hall? hall;
 //   Language? language;
 //   Language? subtitle;
+//   Movie? movie;
 //   int? price;
 
 //   MovieTime({
 //     this.id,
 //     this.time,
-//     this.is3D,
+//     this.is3d,
 //     this.hall,
 //     this.language,
 //     this.subtitle,
+//     this.movie,
 //     this.price,
 //   });
 
 //   factory MovieTime.fromJson(Map<String, dynamic> json) => MovieTime(
 //         id: json["id"],
 //         time: json["time"],
-//         is3D: json["is3d"],
+//         is3d: json["is3d"],
 //         hall: json["hall"] == null ? null : Hall.fromJson(json["hall"]),
 //         language: json["language"] == null
 //             ? null
@@ -161,16 +194,18 @@
 //         subtitle: json["subtitle"] == null
 //             ? null
 //             : Language.fromJson(json["subtitle"]),
+//         movie: json["movie"] == null ? null : Movie.fromJson(json["movie"]),
 //         price: json["price"],
 //       );
 
 //   Map<String, dynamic> toJson() => {
 //         "id": id,
 //         "time": time,
-//         "is3d": is3D,
+//         "is3d": is3d,
 //         "hall": hall?.toJson(),
 //         "language": language?.toJson(),
 //         "subtitle": subtitle?.toJson(),
+//         "movie": movie?.toJson(),
 //         "price": price,
 //       };
 // }
@@ -182,7 +217,7 @@
 //   bool? isVip;
 //   int? rowCount;
 //   int? columnCount;
-//   List<dynamic>? hallChairs;
+//   List<HallChair>? hallChairs;
 
 //   Hall({
 //     this.id,
@@ -203,7 +238,8 @@
 //         columnCount: json["columnCount"],
 //         hallChairs: json["hallChairs"] == null
 //             ? []
-//             : List<dynamic>.from(json["hallChairs"]),
+//             : List<HallChair>.from(
+//                 json["hallChairs"].map((x) => HallChair.fromJson(x))),
 //       );
 
 //   Map<String, dynamic> toJson() => {
@@ -213,7 +249,43 @@
 //         "isVip": isVip,
 //         "rowCount": rowCount,
 //         "columnCount": columnCount,
-//         "hallChairs": hallChairs ?? [],
+//         "hallChairs": hallChairs?.map((x) => x.toJson()).toList(),
+//       };
+// }
+
+// class HallChair {
+//   int? id;
+//   int? hallId;
+//   String? column;
+//   String? row;
+//   String? code;
+//   bool? isValid;
+
+//   HallChair({
+//     this.id,
+//     this.hallId,
+//     this.column,
+//     this.row,
+//     this.code,
+//     this.isValid,
+//   });
+
+//   factory HallChair.fromJson(Map<String, dynamic> json) => HallChair(
+//         id: json["id"],
+//         hallId: json["hallId"],
+//         column: json["column"],
+//         row: json["row"],
+//         code: json["code"],
+//         isValid: json["isValid"],
+//       );
+
+//   Map<String, dynamic> toJson() => {
+//         "id": id,
+//         "hallId": hallId,
+//         "column": column,
+//         "row": row,
+//         "code": code,
+//         "isValid": isValid,
 //       };
 // }
 
@@ -242,6 +314,62 @@
 //         "arabicName": arabicName,
 //         "englishName": englishName,
 //         "code": code,
+//       };
+// }
+
+// class Movie {
+//   int? id;
+//   String? name;
+//   int? year;
+//   String? status;
+//   String? description;
+//   String? fromDate;
+//   String? toDate;
+//   String? lastDateShowing;
+//   int? rate;
+//   String? trailerUrl;
+//   int? durationInMinutes;
+
+//   Movie({
+//     this.id,
+//     this.name,
+//     this.year,
+//     this.status,
+//     this.description,
+//     this.fromDate,
+//     this.toDate,
+//     this.lastDateShowing,
+//     this.rate,
+//     this.trailerUrl,
+//     this.durationInMinutes,
+//   });
+
+//   factory Movie.fromJson(Map<String, dynamic> json) => Movie(
+//         id: json["id"],
+//         name: json["name"],
+//         year: json["year"],
+//         status: json["status"],
+//         description: json["description"],
+//         fromDate: json["fromDate"],
+//         toDate: json["toDate"],
+//         lastDateShowing: json["lastDateShowing"],
+//         rate: json["rate"],
+//         trailerUrl: json["trailerUrl"],
+//         durationInMinutes: json["durationInMinutes"],
+//       );
+
+//   Map<String, dynamic> toJson() => {
+//         "id": id,
+//         "name": name,
+//         "year": year,
+//         "status": status,
+//         "description": description,
+//         "fromDate": fromDate,
+//         "toDate": toDate,
+//         "lastDateShowing": lastDateShowing,
+//         "rate": rate,
+//         "trailerUrl": trailerUrl,
+//         "durationInMinutes": durationInMinutes,
 //       };
 // }
 import 'dart:convert';
@@ -274,7 +402,7 @@ class Bookinguserresponse {
   Map<String, dynamic> toJson() => {
         "success": success,
         "message": message,
-        "data": data?.map((x) => x.toJson()).toList() ?? [],
+        "data": data?.map((x) => x.toJson()).toList(),
       };
 }
 
@@ -288,6 +416,7 @@ class Datum {
   List<HallChair>? hallChairs;
   List<BookingSnak>? bookingSnaks;
   Payment? payment;
+  dynamic user;
 
   Datum({
     this.id,
@@ -299,6 +428,7 @@ class Datum {
     this.hallChairs,
     this.bookingSnaks,
     this.payment,
+    this.user,
   });
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
@@ -322,6 +452,7 @@ class Datum {
                 json["bookingSnaks"].map((x) => BookingSnak.fromJson(x))),
         payment:
             json["payment"] == null ? null : Payment.fromJson(json["payment"]),
+        user: json["user"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -334,6 +465,7 @@ class Datum {
         "hallChairs": hallChairs?.map((x) => x.toJson()).toList(),
         "bookingSnaks": bookingSnaks?.map((x) => x.toJson()).toList(),
         "payment": payment?.toJson(),
+        "user": user,
       };
 }
 
@@ -406,7 +538,7 @@ class SnakVariant {
 class MovieTime {
   int? id;
   String? time;
-  bool? is3D;
+  bool? is3d;
   Hall? hall;
   Language? language;
   Language? subtitle;
@@ -416,7 +548,7 @@ class MovieTime {
   MovieTime({
     this.id,
     this.time,
-    this.is3D,
+    this.is3d,
     this.hall,
     this.language,
     this.subtitle,
@@ -427,7 +559,7 @@ class MovieTime {
   factory MovieTime.fromJson(Map<String, dynamic> json) => MovieTime(
         id: json["id"],
         time: json["time"],
-        is3D: json["is3d"],
+        is3d: json["is3d"],
         hall: json["hall"] == null ? null : Hall.fromJson(json["hall"]),
         language: json["language"] == null
             ? null
@@ -442,7 +574,7 @@ class MovieTime {
   Map<String, dynamic> toJson() => {
         "id": id,
         "time": time,
-        "is3d": is3D,
+        "is3d": is3d,
         "hall": hall?.toJson(),
         "language": language?.toJson(),
         "subtitle": subtitle?.toJson(),
@@ -567,7 +699,7 @@ class Movie {
   String? fromDate;
   String? toDate;
   String? lastDateShowing;
-  int? rate;
+  double? rate;
   String? trailerUrl;
   int? durationInMinutes;
 
@@ -594,7 +726,7 @@ class Movie {
         fromDate: json["fromDate"],
         toDate: json["toDate"],
         lastDateShowing: json["lastDateShowing"],
-        rate: json["rate"],
+        rate: json["rate"]?.toDouble(),
         trailerUrl: json["trailerUrl"],
         durationInMinutes: json["durationInMinutes"],
       );

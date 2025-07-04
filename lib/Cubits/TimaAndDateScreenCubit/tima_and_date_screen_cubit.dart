@@ -102,6 +102,7 @@ Future<void> getMoviedetailesTAndD(int id) async {
         DataStore.instance.deleateToken();
         DataStore.instance.deleateRoalUser();
          DataStore.instance.deleateUserId();
+         DataStore.instance.deleateFirstNameUser();
       emit(TimeAndDateEroorSttae(message: movieResponseById!.message!));
     }else if(movieResponseById!.message == 'No Internet Connection'){
          emit(TimeAndDateEroorSttae(message: movieResponseById!.message!));

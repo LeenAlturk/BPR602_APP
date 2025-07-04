@@ -44,7 +44,9 @@ NavigationWidget.pushPage(
                   initialIndex: 0,
                 ));
           }
-         
+         if(state is LogInFieldAcces){
+           AppConstants.showToast(context, "No permission to acces");
+         }
         },
         builder: (context, state) {
           return Scaffold(

@@ -18,17 +18,35 @@ class ProfileCustomerCubit extends Cubit<ProfileCustomerState> {
   ProfileCustomerCubit() : super(ProfileCustomerInitial());
     XFile? image;
 
-  void logout(BuildContext context) {
-    DataStore.instance.deleateUserId();
-    DataStore.instance.deleateToken();
-    DataStore.instance.deleateRefreshToken();
+  // void logout(BuildContext context) {
+  //   DataStore.instance.deleateUserId();
+  //   DataStore.instance.deleateToken();
+  //   DataStore.instance.deleateRefreshToken();
     
-    DataStore.instance.deleateFirstNameUser();
-    DataStore.instance.deleateRoalUser();
+  //   DataStore.instance.deleateFirstNameUser();
+  //   DataStore.instance.deleateRoalUser();
+    
+  //   emit(ProfileCustomerLoggedOut());
+    
+    
+  // }
+  void logout(BuildContext context) {
+  // حذف البيانات
+  DataStore.instance.deleateUserId();
+  DataStore.instance.deleateToken();
+  DataStore.instance.deleateRefreshToken();
+  DataStore.instance.deleateFirstNameUser();
+  DataStore.instance.deleateRoalUser();
+  DataStore.instance.deleateFirstNameUser();
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => LoginScreen()), (route) => false);
-    emit(ProfileCustomerLoggedOut());
-  }
+  emit(ProfileCustomerLoggedOut());
+
+}
+
+
+
+
   ProfileRresponse? getProfileModel;
 
   Future<void> getprofile() async {
@@ -41,6 +59,8 @@ class ProfileCustomerCubit extends Cubit<ProfileCustomerState> {
         DataStore.instance.deleateToken();
         DataStore.instance.deleateRoalUser();
         DataStore.instance.deleateUserId();
+        DataStore.instance.deleateFirstNameUser();
+       
         emit(profilerrorstate(message: getProfileModel!.message!));
       } else if (getProfileModel!.data != null) {
         emit(profileloaded());

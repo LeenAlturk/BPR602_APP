@@ -16,7 +16,8 @@ class ScaninfoCubit extends Cubit<ScaninfoState> {
       getbookingbyidResponse =
           await GetIt.I.get<BookingRepo>().getticketdetailse(id);
       if (getbookingbyidResponse!.message == 'Session Is Done') {
-              
+              DataStore.instance.deleateFirstNameUser();
+              DataStore.instance.deleateUserId();
               DataStore.instance.deleateRefreshToken();
                 DataStore.instance.deleateToken();
         emit(ScaneddetailesError(message: getbookingbyidResponse!.message!));

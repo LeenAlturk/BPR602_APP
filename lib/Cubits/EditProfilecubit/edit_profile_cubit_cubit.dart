@@ -94,39 +94,89 @@ int? uploadedImageId;
 
 
 
-Future<void> updateProfile(
+// Future<void> updateProfile(
 
-) async {
-   if (!formKey1.currentState!.validate()) {
-      return;
-    }
+// ) async {
+//    if (!formKey1.currentState!.validate()) {
+//       return;
+//     }
+//   emit(UpdateProfileLoadingState());
+
+//   try {
+//     final response = await GetIt.I.get<ProfileManagmentRepo>().changeProfile(
+//       UpdateProfileRequest(
+      
+//         userName: fullNameValidator.controller.text ,
+       
+//         imageId: uploadedImageId,
+//       ),
+//     );
+
+//     if (response.success == true) {
+//       emit(UpdateProfileSuccessState());
+//     } else {
+//       if (response.message == "Session Is Done") {
+//         DataStore.instance.deleateUserId();
+//         DataStore.instance.deleateToken();
+//         DataStore.instance.deleateRefreshToken();
+//         DataStore.instance.deleateRoalUser();
+//       }
+//       emit(UpdateProfileErrorState(response.message ?? "Something went wrong"));
+//     }
+//   } 
+//   catch (ex) {
+//     emit(UpdateProfileErrorState("Unexpected error occurred"));
+//   }
+// }
+
+Future<void> updateProfile() async {
+  if (!formKey1.currentState!.validate()) {
+    return;
+  }
+
   emit(UpdateProfileLoadingState());
 
   try {
     final response = await GetIt.I.get<ProfileManagmentRepo>().changeProfile(
       UpdateProfileRequest(
-      
-        userName: fullNameValidator.controller.text ,
-       
+        userName: fullNameValidator.controller.text,
         imageId: uploadedImageId,
       ),
     );
 
     if (response.success == true) {
       emit(UpdateProfileSuccessState());
+      DataStore.instance.setFirstNameUser(response.data!.fullName!);
     } else {
+      // التحقق من انتهاء الجلسة
       if (response.message == "Session Is Done") {
-        DataStore.instance.deleateUserId();
-        DataStore.instance.deleateToken();
-        DataStore.instance.deleateRefreshToken();
-        DataStore.instance.deleateRoalUser();
+        await DataStore.instance.deleateUserId();
+        await DataStore.instance.deleateToken();
+        await DataStore.instance.deleateRefreshToken();
+        await DataStore.instance.deleateRoalUser();
+        await DataStore.instance.deleateFirstNameUser();
+        emit(UpdateProfileErrorState("Session Is Done"));
       }
-      emit(UpdateProfileErrorState(response.message ?? "Something went wrong"));
+      else if (response.message == "No Internet Connection") {
+        emit(UpdateProfileErrorState("No Internet Connection"));
+      }
+      else if (response.message == "Internet is Weak") {
+        emit(UpdateProfileErrorState("Internet is Weak"));
+      }
+      else {
+        emit(UpdateProfileErrorState(response.message ?? "Something went wrong"));
+      }
     }
   } catch (ex) {
     emit(UpdateProfileErrorState("Unexpected error occurred"));
   }
 }
+
+
+
+
+
+
 
 Future<void> fetchUserProfileData(String fullName) async {
   try {

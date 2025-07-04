@@ -8,6 +8,7 @@ class LogInAwaitState extends LoginState {}
 
 class LogInAcceptState extends LoginState {}
 class LogInscannerAcceptState extends LoginState {}
+class LogInFieldAcces extends LoginState {}
 
 class LogInAcceptStateEmp extends LoginState {}
 

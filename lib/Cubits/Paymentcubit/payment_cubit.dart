@@ -38,6 +38,7 @@ class PaymentCubit extends Cubit<PaymentState> {
         DataStore.instance.deleateRefreshToken();
         DataStore.instance.deleateToken();
         DataStore.instance.deleateRoalUser();
+        DataStore.instance.deleateFirstNameUser();
         emit(PaymentError(message: getpayment!.message!));
       }else if(getpayment!.message == 'No Internet Connection'){
         emit(PaymentError(message: getpayment!.message!));

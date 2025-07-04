@@ -104,6 +104,7 @@ void main() async {
     if (DataStore.instance.hasToken) {
       log('user token is : ${DataStore.instance.token}');
       log('user id is : ${DataStore.instance.userID}');
+      log('Name : ${DataStore.instance.getUserFirstName}');
     } else {
       log('there is no user');
     }

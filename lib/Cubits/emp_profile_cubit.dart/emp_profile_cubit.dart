@@ -15,7 +15,6 @@ class EmpProfileCubit extends Cubit<EmpProfileState> {
     DataStore.instance.deleateUserId();
     DataStore.instance.deleateToken();
     DataStore.instance.deleateRefreshToken();
-   
     DataStore.instance.deleateFirstNameUser();
     DataStore.instance.deleateRoalUser();
     Navigator.of(context).pushAndRemoveUntil(
@@ -29,6 +28,11 @@ class EmpProfileCubit extends Cubit<EmpProfileState> {
       getProfileModel =
           await GetIt.I.get<ProfileManagmentRepo>().getProfileEmp();
       if (getProfileModel!.message == 'Session Is Done') {
+        DataStore.instance.deleateUserId();
+    DataStore.instance.deleateToken();
+    DataStore.instance.deleateRefreshToken();
+    DataStore.instance.deleateFirstNameUser();
+    DataStore.instance.deleateRoalUser();
         emit(Profilerrorstate(message: getProfileModel!.message!));
       } else if (getProfileModel!.data != null) {
         emit(Profileloaded());

@@ -102,6 +102,7 @@ final int paymentid
         DataStore.instance.deleateToken();
         DataStore.instance.deleateRefreshToken();
         DataStore.instance.deleateRoalUser();
+        DataStore.instance.deleateFirstNameUser();
       }
       emit(UploadErrorState(response.message ?? "Something went wrong"));
     }

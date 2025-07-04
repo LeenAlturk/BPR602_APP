@@ -177,26 +177,31 @@ class SeeallSnacksCard extends StatelessWidget {
               ),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.all(size.width * 0.04),
-            child: Column(
-              
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: size.height * 0.08,),
-                Text(
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.all(size.width * 0.04),
+              child: Column(
+                
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: size.height * 0.08,),
+                  Text(
                   title,
                   style: TextStyle(
                     color: kbutton,
-                    fontSize: 18.sp,
+                    fontSize: 13.sp,
                     fontWeight: FontWeight.bold,
                   ),
+                  softWrap: true,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                SizedBox(height: size.height * 0.01),
-                _buildRow("price range", priceText, size.width * 0.01 , size.width* 0.2 ),
-                SizedBox(height: size.height * 0.01),
-                
-              ],
+                  SizedBox(height: size.height * 0.01),
+                  _buildRow("price range", priceText, size.width * 0.01 , size.width* 0.2 ),
+                  SizedBox(height: size.height * 0.01),
+                  
+                ],
+              ),
             ),
           ),
         ],

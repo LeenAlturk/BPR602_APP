@@ -423,7 +423,7 @@ Widget _buildPaymentOptions(Size size) {
                           ),
                         )
                       : Text(
-                          "Move to payments",
+                          "Confirm Booking",
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 14.sp,

@@ -52,7 +52,7 @@ class SearchScreen extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => NoInternetScreen()),
                   (route) => false);
             } else {
-              //AppConstants.showToast(context, state.message);
+              
               print("nothing");
             }
           }
@@ -112,7 +112,7 @@ class SearchScreen extends StatelessWidget {
                                   context.read<MycubitCubit>().searchController.clear();
                                   context.read<MycubitCubit>().searchFocusNode.unfocus();
                                   context.read<MycubitCubit>().clearSearch();
-                                  context.read<MycubitCubit>().clearFilter();
+                                  //context.read<MycubitCubit>().clearFilter();
                                 },
                               )
                             : null,
@@ -159,6 +159,7 @@ BlocBuilder<MycubitCubit, MycubitState>(
                 IconButton(
                   icon: Icon(Icons.close, color: Colors.white),
                   onPressed: () {
+                    
                     cubit.searchController.clear();
                     cubit.clearFilter();
                   },
@@ -173,8 +174,7 @@ BlocBuilder<MycubitCubit, MycubitState>(
   },
 ),
 
-              //  الجزء الرئيسي من الواجهة
-              //قديم
+           
               Expanded(
                 child: BlocBuilder<MycubitCubit, MycubitState>(
                   builder: (context, state) {
@@ -184,7 +184,7 @@ BlocBuilder<MycubitCubit, MycubitState>(
                       return Center(child: CircularProgressIndicator());
                     }
 
-                    // عرض أزرار الفلتر في الحالة الأولية
+                    
                     if ((state is MycubitInitial || state is FilterCleared) && 
           cubit.selectedMovieTypeId == null) {
                       return GridView.builder(

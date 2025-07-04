@@ -235,7 +235,7 @@ class CartItemWidget extends StatelessWidget {
           ),
         ),
         width: size.width * 0.6,
-        height: size.height * 0.15,
+        height: size.height * 0.18,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -251,8 +251,8 @@ class CartItemWidget extends StatelessWidget {
               ),
               title: Text(
                 snack.title,
-                style: const TextStyle(
-                    color: Colors.white, fontWeight: FontWeight.bold),
+                style:  TextStyle(
+                    color: Colors.white, fontWeight: FontWeight.bold ,),
               ),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

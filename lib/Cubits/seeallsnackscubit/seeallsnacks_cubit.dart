@@ -44,6 +44,7 @@ class SeeallsnacksCubit extends Cubit<SeeallsnacksState> {
         DataStore.instance.deleateToken();
         DataStore.instance.deleateRoalUser();
          DataStore.instance.deleateUserId();
+         DataStore.instance.deleateFirstNameUser();
 
         emit(Seeallsnacklerror(message: response.message!));
       } else if(response.message == 'No Internet Connection') {

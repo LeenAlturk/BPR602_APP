@@ -35,7 +35,7 @@ class itemSnacksbill extends StatelessWidget {
           color: Kbackground,
           borderRadius: BorderRadius.circular(20),
         ),
-        width: size.width * 0.95,
+        width: size.width * 0.98,
         height: size.height * 0.20,
         child: Column(
           children: [
@@ -52,19 +52,20 @@ class itemSnacksbill extends StatelessWidget {
                     ),
                   ),
                 ),
-                Padding(
-                  padding:  EdgeInsets.all(size.height * 0.03),
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Tittle : $title',
+                        '$title',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 12.sp,
                           fontWeight: FontWeight.bold,
                         ),
+                          maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                       ),
                       Text(
                         'Price : $price.00 SYP ',

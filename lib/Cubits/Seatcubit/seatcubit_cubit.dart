@@ -23,6 +23,8 @@ class SeatcubitCubit extends Cubit<SeatcubitState> {
         DataStore.instance.deleateToken();
         DataStore.instance.deleateRefreshToken();
         DataStore.instance.deleateRoalUser();
+        DataStore.instance.deleateUserId();
+        DataStore.instance.deleateFirstNameUser();
         emit(GetHallErrorState(message: gethallid!.message!));
       }else if(gethallid!.message == 'No Internet Connection'){
          emit(GetHallErrorState(message: gethallid!.message!));

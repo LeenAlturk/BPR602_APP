@@ -61,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: EdgeInsets.all(8.0),
                 child: CircleAvatar(
                   backgroundColor: kbutton,
-                  child: Text(DataStore.instance.getUserEmail![0].toUpperCase(),
+                  child: Text(" ${ DataStore.instance.getUserFirstName?.substring(0, 1).toUpperCase() ?? ' ' }",
                       style: TextStyle(color: Colors.black)),
                 ),
               ),
@@ -69,14 +69,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Hello ${DataStore.instance.getUserEmail!.split('@')[0][0].toUpperCase()}${DataStore.instance.getUserEmail!.split('@')[0].substring(1)}",
+                    "Hello ${DataStore.instance.getUserFirstName ?? ' '}",
                     style: TextStyle(
                         fontSize: 14.sp,
                         color: Ktext,
                         fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    'Lets stream your favorite movies',
+                    'Lets Book your favorite movies',
                     style: TextStyle(fontSize: 12.sp, color: Colors.white),
                   ),
                 ],

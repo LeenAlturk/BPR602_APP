@@ -12,48 +12,79 @@
 //     this.data,
 //   });
 
-//   factory Getpayment.fromRawJson(String str) => Getpayment.fromJson(json.decode(str));
+//   factory Getpayment.fromRawJson(String str) =>
+//       Getpayment.fromJson(json.decode(str));
 
 //   String toRawJson() => json.encode(toJson());
 
 //   factory Getpayment.fromJson(Map<String, dynamic> json) => Getpayment(
 //         success: json["success"],
 //         message: json["message"],
-//         data: json["data"] == null ? [] : List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+//         data: json["data"] == null
+//             ? []
+//             : List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
 //       );
 
 //   Map<String, dynamic> toJson() => {
 //         "success": success,
 //         "message": message,
-//         "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
+//         "data":
+//             data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
 //       };
 // }
 
 // class Datum {
 //   final int? id;
 //   final String? status;
-//   final dynamic image;
+//   final ImageModel? receiptImage;
 //   final Booking? booking;
 
 //   Datum({
 //     this.id,
 //     this.status,
-//     this.image,
+//     this.receiptImage,
 //     this.booking,
 //   });
 
 //   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
 //         id: json["id"],
 //         status: json["status"],
-//         image: json["image"], // الصورة غير موجودة ككائن يحتوي id/url
-//         booking: json["booking"] == null ? null : Booking.fromJson(json["booking"]),
+//         receiptImage: json["receiptImage"] == null
+//             ? null
+//             : ImageModel.fromJson(json["receiptImage"]),
+//         booking:
+//             json["booking"] == null ? null : Booking.fromJson(json["booking"]),
 //       );
 
 //   Map<String, dynamic> toJson() => {
 //         "id": id,
 //         "status": status,
-//         "image": image,
+//         "receiptImage": receiptImage?.toJson(),
 //         "booking": booking?.toJson(),
+//       };
+// }
+
+// class ImageModel {
+//   final int? id;
+//   final String? url;
+//   final String? title;
+
+//   ImageModel({
+//     this.id,
+//     this.url,
+//     this.title,
+//   });
+
+//   factory ImageModel.fromJson(Map<String, dynamic> json) => ImageModel(
+//         id: json["id"],
+//         url: json["url"],
+//         title: json["title"],
+//       );
+
+//   Map<String, dynamic> toJson() => {
+//         "id": id,
+//         "url": url,
+//         "title": title,
 //       };
 // }
 
@@ -82,7 +113,9 @@
 
 //   factory Booking.fromJson(Map<String, dynamic> json) => Booking(
 //         id: json["id"],
-//         movieTime: json["movieTime"] == null ? null : MovieTime.fromJson(json["movieTime"]),
+//         movieTime: json["movieTime"] == null
+//             ? null
+//             : MovieTime.fromJson(json["movieTime"]),
 //         userId: json["userId"],
 //         totalPrice: json["totalPrice"],
 //         paymentType: json["paymentType"],
@@ -90,8 +123,10 @@
 //         hallChairs: json["hallChairs"] ?? [],
 //         bookingSnaks: json["bookingSnaks"] == null
 //             ? []
-//             : List<BookingSnak>.from(json["bookingSnaks"].map((x) => BookingSnak.fromJson(x))),
-//         payment: json["payment"] == null ? null : Payment.fromJson(json["payment"]),
+//             : List<BookingSnak>.from(
+//                 json["bookingSnaks"].map((x) => BookingSnak.fromJson(x))),
+//         payment:
+//             json["payment"] == null ? null : Payment.fromJson(json["payment"]),
 //       );
 
 //   Map<String, dynamic> toJson() => {
@@ -102,7 +137,9 @@
 //         "paymentType": paymentType,
 //         "bookingDate": bookingDate,
 //         "hallChairs": hallChairs,
-//         "bookingSnaks": bookingSnaks == null ? [] : List<dynamic>.from(bookingSnaks!.map((x) => x.toJson())),
+//         "bookingSnaks": bookingSnaks == null
+//             ? []
+//             : List<dynamic>.from(bookingSnaks!.map((x) => x.toJson())),
 //         "payment": payment?.toJson(),
 //       };
 // }
@@ -133,8 +170,12 @@
 //         time: json["time"],
 //         is3d: json["is3d"],
 //         hall: json["hall"] == null ? null : Hall.fromJson(json["hall"]),
-//         language: json["language"] == null ? null : Language.fromJson(json["language"]),
-//         subtitle: json["subtitle"] == null ? null : Language.fromJson(json["subtitle"]),
+//         language: json["language"] == null
+//             ? null
+//             : Language.fromJson(json["language"]),
+//         subtitle: json["subtitle"] == null
+//             ? null
+//             : Language.fromJson(json["subtitle"]),
 //         movie: json["movie"] == null ? null : Movie.fromJson(json["movie"]),
 //         price: json["price"],
 //       );
@@ -228,7 +269,7 @@
 //   final String? fromDate;
 //   final String? toDate;
 //   final String? lastDateShowing;
-//   final int? rate;
+//   final double? rate;
 //   final String? trailerUrl;
 //   final int? durationInMinutes;
 
@@ -255,7 +296,7 @@
 //         fromDate: json["fromDate"],
 //         toDate: json["toDate"],
 //         lastDateShowing: json["lastDateShowing"],
-//         rate: json["rate"],
+//         rate: json["rate"]?.toDouble(),
 //         trailerUrl: json["trailerUrl"],
 //         durationInMinutes: json["durationInMinutes"],
 //       );
@@ -286,7 +327,9 @@
 
 //   factory BookingSnak.fromJson(Map<String, dynamic> json) => BookingSnak(
 //         count: json["count"],
-//         snakVariant: json["snakVariant"] == null ? null : SnakVariant.fromJson(json["snakVariant"]),
+//         snakVariant: json["snakVariant"] == null
+//             ? null
+//             : SnakVariant.fromJson(json["snakVariant"]),
 //       );
 
 //   Map<String, dynamic> toJson() => {
@@ -371,20 +414,23 @@ class Getpayment {
   Map<String, dynamic> toJson() => {
         "success": success,
         "message": message,
-        "data":
-            data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
+        "data": data == null
+            ? []
+            : List<dynamic>.from(data!.map((x) => x.toJson())),
       };
 }
 
 class Datum {
   final int? id;
   final String? status;
+  final String? cancellationReason;
   final ImageModel? receiptImage;
   final Booking? booking;
 
   Datum({
     this.id,
     this.status,
+    this.cancellationReason,
     this.receiptImage,
     this.booking,
   });
@@ -392,16 +438,19 @@ class Datum {
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         id: json["id"],
         status: json["status"],
+        cancellationReason: json["cancellationReason"],
         receiptImage: json["receiptImage"] == null
             ? null
             : ImageModel.fromJson(json["receiptImage"]),
-        booking:
-            json["booking"] == null ? null : Booking.fromJson(json["booking"]),
+        booking: json["booking"] == null
+            ? null
+            : Booking.fromJson(json["booking"]),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "status": status,
+        "cancellationReason": cancellationReason,
         "receiptImage": receiptImage?.toJson(),
         "booking": booking?.toJson(),
       };
@@ -438,9 +487,10 @@ class Booking {
   final int? totalPrice;
   final String? paymentType;
   final String? bookingDate;
-  final List<dynamic>? hallChairs;
+  final List<Chair>? hallChairs;
   final List<BookingSnak>? bookingSnaks;
   final Payment? payment;
+  final UserModel? user;
 
   Booking({
     this.id,
@@ -452,6 +502,7 @@ class Booking {
     this.hallChairs,
     this.bookingSnaks,
     this.payment,
+    this.user,
   });
 
   factory Booking.fromJson(Map<String, dynamic> json) => Booking(
@@ -463,13 +514,18 @@ class Booking {
         totalPrice: json["totalPrice"],
         paymentType: json["paymentType"],
         bookingDate: json["bookingDate"],
-        hallChairs: json["hallChairs"] ?? [],
+        hallChairs: json["hallChairs"] == null
+            ? []
+            : List<Chair>.from(
+                json["hallChairs"].map((x) => Chair.fromJson(x))),
         bookingSnaks: json["bookingSnaks"] == null
             ? []
             : List<BookingSnak>.from(
                 json["bookingSnaks"].map((x) => BookingSnak.fromJson(x))),
-        payment:
-            json["payment"] == null ? null : Payment.fromJson(json["payment"]),
+        payment: json["payment"] == null
+            ? null
+            : Payment.fromJson(json["payment"]),
+        user: json["user"] == null ? null : UserModel.fromJson(json["user"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -479,11 +535,13 @@ class Booking {
         "totalPrice": totalPrice,
         "paymentType": paymentType,
         "bookingDate": bookingDate,
-        "hallChairs": hallChairs,
+        "hallChairs":
+            hallChairs == null ? [] : hallChairs!.map((x) => x.toJson()).toList(),
         "bookingSnaks": bookingSnaks == null
             ? []
             : List<dynamic>.from(bookingSnaks!.map((x) => x.toJson())),
         "payment": payment?.toJson(),
+        "user": user?.toJson(),
       };
 }
 
@@ -542,7 +600,7 @@ class Hall {
   final bool? isVip;
   final int? rowCount;
   final int? columnCount;
-  final List<dynamic>? hallChairs;
+  final List<Chair>? hallChairs;
 
   Hall({
     this.id,
@@ -561,7 +619,10 @@ class Hall {
         isVip: json["isVip"],
         rowCount: json["rowCount"],
         columnCount: json["columnCount"],
-        hallChairs: json["hallChairs"] ?? [],
+        hallChairs: json["hallChairs"] == null
+            ? []
+            : List<Chair>.from(
+                json["hallChairs"].map((x) => Chair.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -571,7 +632,43 @@ class Hall {
         "isVip": isVip,
         "rowCount": rowCount,
         "columnCount": columnCount,
-        "hallChairs": hallChairs,
+        "hallChairs": hallChairs?.map((x) => x.toJson()).toList(),
+      };
+}
+
+class Chair {
+  final int? id;
+  final int? hallId;
+  final String? column;
+  final String? row;
+  final String? code;
+  final bool? isValid;
+
+  Chair({
+    this.id,
+    this.hallId,
+    this.column,
+    this.row,
+    this.code,
+    this.isValid,
+  });
+
+  factory Chair.fromJson(Map<String, dynamic> json) => Chair(
+        id: json["id"],
+        hallId: json["hallId"],
+        column: json["column"],
+        row: json["row"],
+        code: json["code"],
+        isValid: json["isValid"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "hallId": hallId,
+        "column": column,
+        "row": row,
+        "code": code,
+        "isValid": isValid,
       };
 }
 
@@ -612,7 +709,7 @@ class Movie {
   final String? fromDate;
   final String? toDate;
   final String? lastDateShowing;
-  final int? rate;
+  final double? rate;
   final String? trailerUrl;
   final int? durationInMinutes;
 
@@ -639,7 +736,7 @@ class Movie {
         fromDate: json["fromDate"],
         toDate: json["toDate"],
         lastDateShowing: json["lastDateShowing"],
-        rate: json["rate"],
+        rate: json["rate"]?.toDouble(),
         trailerUrl: json["trailerUrl"],
         durationInMinutes: json["durationInMinutes"],
       );
@@ -708,23 +805,64 @@ class SnakVariant {
 class Payment {
   final int? id;
   final String? status;
+  final String? cancellationReason;
   final dynamic image;
 
   Payment({
     this.id,
     this.status,
+    this.cancellationReason,
     this.image,
   });
 
   factory Payment.fromJson(Map<String, dynamic> json) => Payment(
         id: json["id"],
         status: json["status"],
+        cancellationReason: json["cancellationReason"],
         image: json["image"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "status": status,
+        "cancellationReason": cancellationReason,
         "image": image,
       };
 }
+
+class UserModel {
+  final int? id;
+  final String? fullName;
+  final String? email;
+  final String? phoneNumber;
+  final String? image;
+  final bool? isBlocked;
+
+  UserModel({
+    this.id,
+    this.fullName,
+    this.email,
+    this.phoneNumber,
+    this.image,
+    this.isBlocked,
+  });
+
+  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
+        id: json["id"],
+        fullName: json["fullName"],
+        email: json["email"],
+        phoneNumber: json["phoneNumber"],
+        image: json["image"],
+        isBlocked: json["isBlocked"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "fullName": fullName,
+        "email": email,
+        "phoneNumber": phoneNumber,
+        "image": image,
+        "isBlocked": isBlocked,
+      };
+}
+

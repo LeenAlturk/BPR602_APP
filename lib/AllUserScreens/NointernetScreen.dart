@@ -45,7 +45,7 @@ class NoInternetScreen extends StatelessWidget {
               Padding(
                 padding:  EdgeInsets.symmetric(horizontal: size.width * 0.01),
                 child: Text(
-                  'Please Cheake Your Connection ',
+                  'Please Cheke Your Connection ',
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.white, fontSize: 15.sp),
                 ),

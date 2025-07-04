@@ -41,6 +41,7 @@ class GeHallRepo extends BaseClient {
               RefreshResponse.fromJson(refreshToken.data);
           DataStore.instance.setToken(reafreshTokenModel.data.accessToken);
           DataStore.instance.setRefreshToken(reafreshTokenModel.data.refreshToken);
+          
 
           return getHall(hallid , bookingDate);
         } catch (ex) {

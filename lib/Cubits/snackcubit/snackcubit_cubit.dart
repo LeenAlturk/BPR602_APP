@@ -26,6 +26,7 @@ class SnackcubitCubit extends Cubit<SnackcubitState> {
         DataStore.instance.deleateToken();
         DataStore.instance.deleateRoalUser();
         DataStore.instance.deleateUserId();
+        DataStore.instance.deleateFirstNameUser();
         emit(snackerror(message: snackResponsefood!.message!));
       }else if(snackResponsefood!.message == 'No Internet Connection'){
         emit(snackerror(message: snackResponsefood!.message!));

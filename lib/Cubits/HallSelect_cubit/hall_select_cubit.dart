@@ -24,6 +24,7 @@ class HallSelectCubit extends Cubit<HallSelectState> {
         DataStore.instance.deleateToken();
         DataStore.instance.deleateRefreshToken();
         DataStore.instance.deleateRoalUser();
+        DataStore.instance.deleateFirstNameUser();
         emit(MovietimeError(message: movieResponseById!.message!));
       }else if(movieResponseById!.message == 'No Internet Connection'){
          emit(MovietimeError(message: movieResponseById!.message!));

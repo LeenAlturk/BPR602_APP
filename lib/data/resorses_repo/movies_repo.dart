@@ -43,6 +43,7 @@ class GetMovieallinfoRepo extends BaseClient {
             DataStore.instance.setToken(reafreshTokenModel.data.accessToken);
             DataStore.instance
                 .setRefreshToken(reafreshTokenModel.data.refreshToken);
+            
 
             return gemovietype();
           } catch (ex) {
@@ -129,7 +130,7 @@ Future<MovieResponse> getallmovies({
               RefreshResponse.fromJson(refreshToken.data);
           DataStore.instance.setToken(reafreshTokenModel.data.accessToken);
           DataStore.instance.setRefreshToken(reafreshTokenModel.data.refreshToken);
-
+         
           return getallmovies();
         } catch (ex) {
           if (ex is DioException) {
@@ -205,7 +206,7 @@ if (ex.response?.data != null &&
               RefreshResponse.fromJson(refreshToken.data);
           DataStore.instance.setToken(reafreshTokenModel.data.accessToken);
           DataStore.instance.setRefreshToken(reafreshTokenModel.data.refreshToken);
-
+        
           return getmoviedetailse(hallid);
         } catch (ex) {
           if (ex is DioException) {

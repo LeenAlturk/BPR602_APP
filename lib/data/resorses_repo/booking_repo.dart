@@ -49,7 +49,8 @@ class BookingRepo extends BaseClient {
           final refreshParsed = RefreshResponse.fromJson(refreshTokenResponse.data);
           DataStore.instance.setToken(refreshParsed.data.accessToken);
           DataStore.instance.setRefreshToken(refreshParsed.data.refreshToken);
-
+          DataStore.instance.setFirstNameUser(refreshParsed.data.userName);
+          DataStore.instance.setEmailUSer(refreshParsed.data.email);
           // إعادة المحاولة بعد التجديد
           return await postbooking(bookingrequest);
         } catch (e) {
@@ -122,6 +123,7 @@ Future<Bookinguserresponse> getallbookinguser({
               RefreshResponse.fromJson(refreshToken.data);
           DataStore.instance.setToken(reafreshTokenModel.data.accessToken);
           DataStore.instance.setRefreshToken(reafreshTokenModel.data.refreshToken);
+          
 
           return getallbookinguser();
         } catch (ex) {
@@ -200,6 +202,7 @@ Future<Deletebookingresponse> deletebooking(int bookingid) async {
               RefreshResponse.fromJson(refreshToken.data);
           DataStore.instance.setToken(reafreshTokenModel.data.accessToken);
           DataStore.instance.setRefreshToken(reafreshTokenModel.data.refreshToken);
+          
 
           return deletebooking(bookingid);
         } catch (ex) {
@@ -277,6 +280,7 @@ Future<GetbookingbyidResponse> getticketdetailse(int userbookingid ) async {
               RefreshResponse.fromJson(refreshToken.data);
           DataStore.instance.setToken(reafreshTokenModel.data.accessToken);
           DataStore.instance.setRefreshToken(reafreshTokenModel.data.refreshToken);
+          
 
           return getticketdetailse(userbookingid);
         } catch (ex) {

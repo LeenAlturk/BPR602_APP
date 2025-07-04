@@ -26,6 +26,7 @@ class HomeCubit extends Cubit<HomeState> {
         DataStore.instance.deleateToken();
         DataStore.instance.deleateRoalUser();
         DataStore.instance.deleateUserId();
+        DataStore.instance.deleateFirstNameUser();
         emit(MovieErrortstate(message: nowShowingMovies!.message!));
       }else if(nowShowingMovies!.message == 'No Internet Connection'){
         emit(MovieErrortstate(message: nowShowingMovies!.message!));

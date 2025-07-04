@@ -57,11 +57,14 @@ class LoginCubit extends Cubit<LoginState> {
       Map<String, dynamic> decodedToken = JwtDecoder.decode(yourToken);
 
       DataStore.instance.setUserId(responseLogInModel!.data!.userId!);
+      DataStore.instance.setFirstNameUser(responseLogInModel!.data!.userName!);
       DataStore.instance.setEmailUSer(decodedToken['email']);
       if (responseLogInModel!.data!.role == "Customer") {
         emit(LogInAcceptState());
-      } else {
+      } else if(responseLogInModel!.data!.role == "Scanner") {
         emit(LogInscannerAcceptState());
+      }else{
+        emit(LogInFieldAcces());
       }
 
     

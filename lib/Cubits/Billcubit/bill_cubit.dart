@@ -110,6 +110,7 @@ Future<void> submitBooking(BuildContext context) async {
       DataStore.instance.deleateRefreshToken();
       DataStore.instance.deleateToken();
       DataStore.instance.deleateRoalUser();
+      DataStore.instance.deleateFirstNameUser();
       emit(BookingError(message: bookingresponse!.message!));
     } else if (bookingresponse!.message == 'No Internet Connection') {
       emit(BookingError(message: bookingresponse!.message!));

@@ -30,20 +30,20 @@ class Payments extends StatelessWidget {
       child: BlocListener<PaymentCubit, PaymentState>(
         listener: (context, state) {
           if (state is PaymentError) {
-              if (state.message == "Session Is Done") {
-                AppConstants.showToast(context, state.message);
-                Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) => LoginScreen()),
-                    (route) => false);
-              } else if(state.message == "No Internet Connection") {
-                 AppConstants.showToast(context, state.message);
-                Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) => NoInternetScreen()),
-                    (route) => false);
-              }else{
-                        AppConstants.showToast(context, state.message);
-              }
+            if (state.message == "Session Is Done") {
+              AppConstants.showToast(context, state.message);
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                  (route) => false);
+            } else if (state.message == "No Internet Connection") {
+              AppConstants.showToast(context, state.message);
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => NoInternetScreen()),
+                  (route) => false);
+            } else {
+              AppConstants.showToast(context, state.message);
             }
+          }
         },
         child: Scaffold(
           backgroundColor: Kbackground,
@@ -55,15 +55,16 @@ class Payments extends StatelessWidget {
               style: TextStyle(color: Ktext),
             ),
             leading: IconButton(
-              icon: const Icon(
-                Icons.arrow_back_ios,
-                color: kbutton,
-              ),
-              onPressed: () => NavigationWidget.pushPage(
-                                context,
-                                 IndexedStackTeacherScreen(initialIndex: 2,),
-                              )
-            ),
+                icon: const Icon(
+                  Icons.arrow_back_ios,
+                  color: kbutton,
+                ),
+                onPressed: () => NavigationWidget.pushPage(
+                      context,
+                      IndexedStackTeacherScreen(
+                        initialIndex: 2,
+                      ),
+                    )),
             actions: [
               Padding(
                   padding: EdgeInsets.all(size.height * 0.01),
@@ -126,7 +127,7 @@ class Payments extends StatelessWidget {
                         onSelected: () {
                           context
                               .read<PaymentCubit>()
-                              .selectFilter(2, "Canceled");
+                              .selectFilter(2, "canceled");
                         },
                       ),
                     ],
@@ -204,10 +205,15 @@ class Payments extends StatelessWidget {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
+                                                    '${item.booking!.movieTime!.movie?.name ?? "No Name"} ',
+                                                    style: TextStyle(
+                                                        fontSize: 15.sp,
+                                                        color: Ktext),
+                                                  ),
+                                                  Text(
                                                     'Total Price : ${item.booking!.totalPrice} SYP',
                                                     style: TextStyle(
-                                                        fontSize:
-                                                            size.width * 0.04,
+                                                        fontSize: 15.sp,
                                                         color: Whitconst),
                                                   ),
                                                   SizedBox(
@@ -216,10 +222,29 @@ class Payments extends StatelessWidget {
                                                   Text(
                                                     'Type : ${item.booking!.paymentType}',
                                                     style: TextStyle(
-                                                        fontSize:
-                                                            size.width * 0.04,
+                                                        fontSize: 15.sp,
                                                         color: Whitconst),
                                                   ),
+                                                  if (item.booking
+                                                              ?.hallChairs !=
+                                                          null &&
+                                                      item.booking!.hallChairs!
+                                                          .isNotEmpty)
+                                                    Padding(
+                                                      padding: EdgeInsets.only(
+                                                          top: size.height *
+                                                              0.005),
+                                                      child: Text(
+                                                        'Chairs: ${item.booking!.hallChairs!.map((e) => e.code).join(', ')}',
+                                                        style: TextStyle(
+                                                          fontSize: 15.sp,
+                                                          color: Whitconst,
+                                                        ),
+                                                        maxLines: 2,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                      ),
+                                                    ),
                                                   SizedBox(
                                                       height:
                                                           size.height * 0.005),
@@ -228,9 +253,7 @@ class Payments extends StatelessWidget {
                                                       Text(
                                                         'Status ',
                                                         style: TextStyle(
-                                                            fontSize:
-                                                                size.width *
-                                                                    0.04,
+                                                            fontSize: 15.sp,
                                                             color: Whitconst),
                                                       ),
                                                       SizedBox(
@@ -239,8 +262,7 @@ class Payments extends StatelessWidget {
                                                       Text(
                                                         '${item.status}',
                                                         style: TextStyle(
-                                                          fontSize:
-                                                              size.width * 0.04,
+                                                          fontSize: 15.sp,
                                                           color: item.status ==
                                                                   "Pending"
                                                               ? const Color
@@ -256,38 +278,16 @@ class Payments extends StatelessWidget {
                                                   ),
                                                 ],
                                               ),
-                                              Column(
-                                                children: [
-                                                  if (item.booking
-                                                              ?.paymentType !=
-                                                          "Cash" &&
-                                                      (cubit.seectedfilterString ==
-                                                              "Pending" ||
-                                                          cubit.seectedfilterString ==
-                                                              "Canceled"))
-                                                    TextButton(
-                                                      onPressed: () {
-                                                        NavigationWidget
-                                                            .pushPage(
-                                                          context,
-                                                          Uploadpayreceipts(
-                                                              paymentid:
-                                                                  item.id!),
-                                                        );
-                                                      },
-                                                      child: Text(
-                                                        "Upload Receipt",
-                                                        style: TextStyle(
-                                                          fontSize:
-                                                              size.width * 0.04,
-                                                          color: kbutton,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                ],
-                                              ),
                                             ],
                                           ),
+                                          if (cubit.seectedfilterString ==
+                                              "canceled")
+                                            Text(
+                                              '${item.cancellationReason ?? "No Reason"} ',
+                                              style: TextStyle(
+                                                  fontSize: 15.sp,
+                                                  color: Whitconst),
+                                            ),
                                           if (item.booking?.paymentType !=
                                               "Cash")
                                             Padding(
@@ -317,6 +317,31 @@ class Payments extends StatelessWidget {
                                                               0.035,
                                                         ),
                                                       ),
+                                              ),
+                                            ),
+                                          if (item.booking?.paymentType !=
+                                                  "Cash" &&
+                                              (cubit.seectedfilterString ==
+                                                      "Pending" ||
+                                                  cubit.seectedfilterString ==
+                                                      "canceled"))
+                                            Align(
+                                              alignment: Alignment.center,
+                                              child: TextButton(
+                                                onPressed: () {
+                                                  NavigationWidget.pushPage(
+                                                    context,
+                                                    Uploadpayreceipts(
+                                                        paymentid: item.id!),
+                                                  );
+                                                },
+                                                child: Text(
+                                                  "Upload Receipt",
+                                                  style: TextStyle(
+                                                    fontSize: size.width * 0.04,
+                                                    color: kbutton,
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                         ],

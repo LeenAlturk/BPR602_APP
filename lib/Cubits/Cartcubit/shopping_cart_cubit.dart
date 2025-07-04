@@ -115,6 +115,7 @@ double calculateTotal(List<snacks> cartItems) {
                 DataStore.instance.deleateToken();
                 DataStore.instance.deleateRoalUser();
                 DataStore.instance.deleateUserId();
+                DataStore.instance.deleateFirstNameUser();
         emit(DetailsnackEerorstate(message: snackResponsebyid!.message!));
       }else if(snackResponsebyid!.message == 'No Internet Connection'){
          emit(DetailsnackEerorstate(message: snackResponsebyid!.message!));

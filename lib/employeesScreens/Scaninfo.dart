@@ -64,67 +64,44 @@ class Scaninfo extends StatelessWidget {
           }
           if (cubit.getbookingbyidResponse!.data == null) {
             return Scaffold(
+              appBar: AppBar(
+                backgroundColor: Kbackground,
+                automaticallyImplyLeading: false,
+                title: const Text(
+                  "QR Scan Result",
+                  style: TextStyle(color: Colors.white),
+                ),
+                centerTitle: true,
+                leading: IconButton(
+                  icon: const Icon(Icons.arrow_back_ios, color: kbutton),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              ),
               backgroundColor: Kbackground,
-              body: Column(
-                // mainAxisAlignment: MainAxisAlignment.center,
-                // crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Center(
-                    child: Container(
-                      width: size.width * 0.3,
-                      height: size.height * 0.4,
-                      decoration: BoxDecoration(
-                        color: ksmallActionColor,
-                        borderRadius: BorderRadius.circular(12),
-                        gradient: const LinearGradient(
-                          colors: [Color(0xFF303030), ksmallActionColor],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Lottie.asset(
-                            'assets/svg/scan.json',
-                            width: size.width * 0.2,
-                            height: size.height * 0.1,
-                          ),
-                          SizedBox(
-                            height: size.height * 0.02,
-                          ),
-                          Text(
-                            "Client Ticket Information",
-                            style: TextStyle(
-                              color: const Color.fromARGB(255, 216, 207, 168),
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          // SizedBox(
-                          //   height: size.height * 0.01,
-                          // ),
-                          Center(
-                            child: Text(
-                              "No info available",
-                              style: TextStyle(
-                                color: Ktext,
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+              body: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                       SizedBox(
+                      height: size.height * 0.04
                     ),
-                  )
-                ],
+                    Icon(
+                      Icons.sentiment_dissatisfied,
+                      color: Colors.amber,
+                      size: 100,
+                    ),
+                    Text(
+                      "No ticket info available ",
+                      style: TextStyle(color: Ktext, fontSize: 14.sp),
+                    ),
+                  ],
+                ),
               ),
             );
           }
           if (state is ScaneddetailesAcceppt) {
             return Scaffold(
+              
               backgroundColor: Kbackground,
               appBar: AppBar(
                 backgroundColor: Kbackground,
@@ -183,6 +160,21 @@ class Scaninfo extends StatelessWidget {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
+                              Padding(
+  padding: EdgeInsets.symmetric(horizontal: 8),
+  child: Text(
+    "Chaires: ${cubit.getbookingbyidResponse!.data!.hallChairs!.map((e) => e.code).join(', ')}",
+    style: TextStyle(
+      fontSize: 14.sp,
+      color:Ktext,
+      fontWeight: FontWeight.bold
+    ),
+    textAlign: TextAlign.center,
+    softWrap: true,
+    overflow: TextOverflow.visible,
+  ),
+),
+
                                Text(
                                 " Booking Number: ${cubit.getbookingbyidResponse!.data!.id}",
                                 style: TextStyle(
@@ -218,13 +210,7 @@ class Scaninfo extends StatelessWidget {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              Text(
-                                " Chaires ${cubit.getbookingbyidResponse!.data!.hallChairs!.map((e) => e.code).join(', ')}",
-                                style: TextStyle(
-                                  fontSize: 16.sp,
-                                  color: Colors.grey,
-                                ),
-                              ),
+                             
                                Text(
                                 " Hall: ${cubit.getbookingbyidResponse!.data!.movieTime!.hall!.name}",
                                 style: TextStyle(

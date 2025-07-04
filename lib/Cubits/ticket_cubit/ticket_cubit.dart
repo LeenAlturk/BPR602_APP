@@ -17,9 +17,10 @@ class TicketCubit extends Cubit<TicketState> {
       getbookingbyidResponse =
           await GetIt.I.get<BookingRepo>().getticketdetailse(id);
       if (getbookingbyidResponse!.message == 'Session Is Done') {
-              
+              DataStore.instance.deleateFirstNameUser();
               DataStore.instance.deleateRefreshToken();
                 DataStore.instance.deleateToken();
+                DataStore.instance.deleateUserId();
         emit(TicketERROR(message: getbookingbyidResponse!.message!));
       }else if(getbookingbyidResponse!.message == 'No Internet Connection'){
          emit(TicketERROR(message: getbookingbyidResponse!.message!));

@@ -140,7 +140,9 @@ class SeeAllShowingNow extends StatelessWidget {
                               child: CustomFilterChip(
                                 label: "....",
                                 isSelected: false,
-                                onSelected: () {},
+                                onSelected: () {
+                                  
+                                },
                               ),
                             );
                           }),
@@ -162,6 +164,8 @@ class SeeAllShowingNow extends StatelessWidget {
                               isSelected: selectedIndex == 0,
                               onSelected: () {
                                 cubit.selectFilter(0);
+                           
+                                      searchController.clear();
                               },
                             ),
                           );
@@ -176,6 +180,7 @@ class SeeAllShowingNow extends StatelessWidget {
                             isSelected: selectedIndex == index,
                             onSelected: () {
                               cubit.selectFilter(index);
+                              searchController.clear();
                             },
                           ),
                         );

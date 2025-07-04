@@ -97,6 +97,8 @@ Future<void> deletebooking(int bookingid) async {
       await DataStore.instance.deleateRefreshToken();
       await DataStore.instance.deleateToken();
       await DataStore.instance.deleateRoalUser();
+      await DataStore.instance.deleateFirstNameUser();
+      await DataStore.instance.deleateUserId();
       emit(DeleteBookingError(message: response.message!));
     } else if (response.message == 'No Internet Connection') {
       emit(DeleteBookingError(message: response.message!));

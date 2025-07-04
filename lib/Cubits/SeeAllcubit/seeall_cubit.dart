@@ -53,6 +53,7 @@ class SeeallCubit extends Cubit<SeeallState> {
       selectedMovieTypeID = null; // All - لا نمرر أي نوع
     } else {
       selectedMovieTypeID = getMovieTypemodel?.data?[filterindex - 1].id;
+      
     }
 
     emit(SeeallFilterSelected(selectindex: filterindex));
@@ -98,6 +99,7 @@ class SeeallCubit extends Cubit<SeeallState> {
         DataStore.instance.deleateToken();
         DataStore.instance.deleateRoalUser();
          DataStore.instance.deleateUserId();
+         DataStore.instance.deleateFirstNameUser();
         emit(MovieallErrortstate(message: response.message!));
       }else if(response.message == 'No Internet Connection'){
           emit(MovieallErrortstate(message: response.message!));
