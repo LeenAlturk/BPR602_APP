@@ -4,11 +4,13 @@ import 'package:bpr602_cinema/data/resorses_repo/snacks_repo.dart';
 import 'package:bpr602_cinema/models/response/snacks_response.dart';
 import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';
-
+import 'dart:async';
 part 'seeallsnacks_state.dart';
 
 class SeeallsnacksCubit extends Cubit<SeeallsnacksState> {
   final String type;
+  Timer? _debounce;
+
   SeeallsnacksCubit({required this.type}) : super(SeeallsnacksInitial());
     int? selectedFilter = 0;
   void selectFilter(int filterindex) {
@@ -72,14 +74,27 @@ class SeeallsnacksCubit extends Cubit<SeeallsnacksState> {
     }
   }
 
+  // void searchsnacks(String query) {
+  //   searchQuery = query;
+  //   currentPage = 0;
+  //   hasMore = true;
+  //   snacks.clear();
+  //   emit(Seeallsnackloading());
+  //   getsnacks();
+  // }
   void searchsnacks(String query) {
+  if (_debounce?.isActive ?? false) _debounce?.cancel();
+
+  _debounce = Timer(const Duration(milliseconds: 400), () {
     searchQuery = query;
     currentPage = 0;
     hasMore = true;
     snacks.clear();
     emit(Seeallsnackloading());
     getsnacks();
-  }
+  });
+}
+
 
   void clearSearch() {
     searchQuery = '';

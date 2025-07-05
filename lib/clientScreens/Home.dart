@@ -195,7 +195,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // Helper Widgets
+ 
   Widget _buildLoadingCarousel(Size size) {
     return SizedBox(
       height: size.height * 0.36,

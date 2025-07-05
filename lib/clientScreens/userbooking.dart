@@ -19,7 +19,7 @@ class UserBooking extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    bool navigated = false; // ✅ لمنع التكرار
+    bool navigated = false; 
 
     return BlocProvider(
       create: (context) => UserbookingCubit()..getbookings(),

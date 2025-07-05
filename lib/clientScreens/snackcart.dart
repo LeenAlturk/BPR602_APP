@@ -200,6 +200,8 @@ class CartScreen extends StatelessWidget {
                       AppConstants.showToast(context, 'Snacks booking ready',
                           icon: Icons.done, iconcolor: Colors.green);
                       NavigationWidget.pushPage(context, BookingDetailes());
+                      
+
                     })
                 
               ],

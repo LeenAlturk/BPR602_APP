@@ -192,7 +192,10 @@ class _SnackScreenState extends State<SnackScreen> {
                                 builder: (BuildContext context) {
                                   return GestureDetector(
                                     onTap: () {
-                                      // Navigate to snack details if needed
+                                      NavigationWidget.pushPage(
+                                        context,
+                                        SnackDetails(snackId: snack.id!),
+                                      );
                                     },
                                     child: Container(
                                       width: size.width,

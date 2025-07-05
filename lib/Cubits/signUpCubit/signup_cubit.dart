@@ -30,7 +30,7 @@ class SignupCubit extends Cubit<SignupState> {
   final FormValidator fullNameValidator = FormValidator(
     hint: 'Full Name',
     regExp: RegExp(r'^[a-zA-Z]{3,}$'),
-    errorMessage: '3 or more characters',
+    errorMessage: '3 or more characters with no spaces',
   );
 
   final FormValidator emailValidator = FormValidator(

@@ -9,7 +9,7 @@ class BankDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    // Sample data for banks
+  
   final List<Map<String, String>> banks = [
   {
     'name': 'BEMO Saudi Fransi Bank',

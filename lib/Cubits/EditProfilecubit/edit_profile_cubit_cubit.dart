@@ -23,7 +23,7 @@ int? uploadedImageId;
     regExp: RegExp(r'^[a-zA-Z]{3,}$'),
 
 
-    errorMessage: 'No spaceses should be in username',
+    errorMessage: '3 or more with no spaces',
   );
 
   final FormValidator emailValidator = FormValidator(

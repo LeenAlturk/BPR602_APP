@@ -245,7 +245,7 @@ class SighnUpScreen extends StatelessWidget {
                                       .text
                                       .isEmpty) {
                                     AppConstants.showToast(
-                                        context, 'full name is empety');
+                                        context, 'UserName is empety');
                                     return;
                                   } else if (context
                                       .read<SignupCubit>()

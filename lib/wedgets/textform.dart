@@ -97,7 +97,7 @@ class InputTextForm extends StatelessWidget {
                 )
               : const SizedBox.shrink(),
           SizedBox(
-            height: mediaQuery.height * 0.08,
+            height: mediaQuery.height * 0.09,
             child: Padding(
               padding: Sizer.textFiledPadding,
               child: Center(
